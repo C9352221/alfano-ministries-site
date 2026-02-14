@@ -1,0 +1,6 @@
+moodboards/
+assets/
+*.zip
+.htaccess
+.htaccess_WITH_HSTS
+DEPLOYMENT_REPORT_20260214.md
