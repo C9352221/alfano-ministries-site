@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      width: 2560px;
+      height: 1440px;
+      overflow: hidden;
+      position: relative;
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    /* ── Background image with overlay (matches site hero) ── */
+    .bg-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('https://storage.googleapis.com/msgsndr/AIPTqymDwrSMF9zx8Pul/media/698bedd87305aa7e88676972.jpg');
+      background-size: cover;
+      background-position: center top;
+    }
+
+    .bg-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        180deg,
+        rgba(21, 44, 73, 0.82) 0%,
+        rgba(30, 58, 95, 0.78) 40%,
+        rgba(21, 44, 73, 0.88) 100%
+      );
+    }
+
+    /* ── Decorative gold lines (top & bottom) ── */
+    .gold-line-top {
+      position: absolute;
+      top: 200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1800px;
+      height: 1px;
+      background: linear-gradient(to right,
+        transparent 0%,
+        rgba(232, 185, 35, 0.06) 15%,
+        rgba(232, 185, 35, 0.15) 50%,
+        rgba(232, 185, 35, 0.06) 85%,
+        transparent 100%
+      );
+    }
+
+    .gold-line-bottom {
+      position: absolute;
+      bottom: 200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1800px;
+      height: 1px;
+      background: linear-gradient(to right,
+        transparent 0%,
+        rgba(232, 185, 35, 0.06) 15%,
+        rgba(232, 185, 35, 0.15) 50%,
+        rgba(232, 185, 35, 0.06) 85%,
+        transparent 100%
+      );
+    }
+
+    /* ── Corner accents ── */
+    .corner {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+    }
+    .corner-tl { top: 100px; left: 100px; border-top: 2px solid rgba(232,185,35,0.10); border-left: 2px solid rgba(232,185,35,0.10); }
+    .corner-tr { top: 100px; right: 100px; border-top: 2px solid rgba(232,185,35,0.10); border-right: 2px solid rgba(232,185,35,0.10); }
+    .corner-bl { bottom: 100px; left: 100px; border-bottom: 2px solid rgba(232,185,35,0.10); border-left: 2px solid rgba(232,185,35,0.10); }
+    .corner-br { bottom: 100px; right: 100px; border-bottom: 2px solid rgba(232,185,35,0.10); border-right: 2px solid rgba(232,185,35,0.10); }
+
+    /* ── Safe area guide (1546x423 centered) ── */
+    .safe-area {
+      position: absolute;
+      width: 1546px;
+      height: 423px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      /* border: 1px dashed rgba(255,255,255,0.08); */ /* uncomment to see safe zone */
+      pointer-events: none;
+    }
+
+    /* ── Content ── */
+    .content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      z-index: 10;
+    }
+
+    .eyebrow {
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 600;
+      font-size: 18px;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: #e8b923;
+      margin-bottom: 20px;
+    }
+
+    .title {
+      font-family: 'Lora', serif;
+      font-weight: 700;
+      font-size: 82px;
+      color: #ffffff;
+      letter-spacing: 4px;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .title-gold {
+      color: #e8b923;
+    }
+
+    .divider {
+      width: 120px;
+      height: 3px;
+      background: #e8b923;
+      margin: 24px 0;
+      border-radius: 2px;
+    }
+
+    .tagline {
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 400;
+      font-size: 22px;
+      color: rgba(255, 255, 255, 0.8);
+      letter-spacing: 2px;
+      line-height: 1.6;
+      max-width: 700px;
+    }
+
+    .social-bar {
+      margin-top: 24px;
+      display: flex;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .social-bar span {
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.45);
+    }
+
+    .social-dot {
+      width: 4px;
+      height: 4px;
+      background: rgba(232, 185, 35, 0.4);
+      border-radius: 50%;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Background -->
+  <div class="bg-image"></div>
+  <div class="bg-overlay"></div>
+
+  <!-- Decorative elements -->
+  <div class="gold-line-top"></div>
+  <div class="gold-line-bottom"></div>
+  <div class="corner corner-tl"></div>
+  <div class="corner corner-tr"></div>
+  <div class="corner corner-bl"></div>
+  <div class="corner corner-br"></div>
+
+  <!-- Safe area guide -->
+  <div class="safe-area"></div>
+
+  <!-- Content -->
+  <div class="content">
+    <div class="eyebrow">Advancing the Kingdom</div>
+    <div class="title">ALFANO <span class="title-gold">MINISTRIES</span></div>
+    <div class="divider"></div>
+    <div class="tagline">Empowering everyday believers to take the Gospel<br>beyond the four walls and into every sphere of influence.</div>
+    <div class="social-bar">
+      <span>alfanoministries.com</span>
+      <div class="social-dot"></div>
+      <span>19+ Countries</span>
+      <div class="social-dot"></div>
+      <span>Podcast</span>
+    </div>
+  </div>
+
+</body>
+</html>
