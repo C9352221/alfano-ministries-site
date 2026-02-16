@@ -140,6 +140,61 @@
         </div>
     </section>
 
+    <!-- Stay Connected Signup -->
+    <section class="section section-white">
+        <div class="container">
+            <div class="signup-section fade-in">
+                <div class="section-header">
+                    <div class="section-eyebrow">Stay Connected</div>
+                    <h2 class="section-title">Stay Connected with Alfano Ministries</h2>
+                    <div class="section-divider"></div>
+                    <p class="section-subtitle">Receive updates, encouragement, and event reminders by email and text.</p>
+                </div>
+
+                <form id="ghl-signup-form" class="signup-form" novalidate>
+                    <div class="signup-form-row">
+                        <div class="form-group">
+                            <label for="signup-first-name">First Name</label>
+                            <input type="text" id="signup-first-name" name="firstName" placeholder="First name">
+                        </div>
+                        <div class="form-group">
+                            <label for="signup-last-name">Last Name</label>
+                            <input type="text" id="signup-last-name" name="lastName" placeholder="Last name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-email">Email Address <span class="required">*</span></label>
+                        <input type="email" id="signup-email" name="email" placeholder="you@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-phone">Phone Number <span class="required">*</span></label>
+                        <input type="tel" id="signup-phone" name="phone" placeholder="(555) 123-4567" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-language">Preferred Language</label>
+                        <select id="signup-language" name="language">
+                            <option value="english">English</option>
+                            <option value="spanish">Spanish</option>
+                            <option value="portuguese">Portuguese</option>
+                            <option value="french">French</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group consent-group">
+                        <label class="consent-label">
+                            <input type="checkbox" id="signup-consent" name="consent" required>
+                            <span class="consent-text">By signing up, you agree to receive transactional messages from Alfano Ministries. Message frequency varies. Msg &amp; data rates may apply. Reply STOP to opt out.</span>
+                        </label>
+                    </div>
+                    <button type="submit" id="signup-submit" class="btn-primary" style="width: 100%; text-align: center;">
+                        Sign Up
+                    </button>
+                    <div id="signup-message" class="signup-message" role="alert" aria-live="polite"></div>
+                </form>
+            </div>
+        </div>
+    </section>
+
     <!-- Booking Section -->
     <section class="section section-blue">
         <div class="container">
