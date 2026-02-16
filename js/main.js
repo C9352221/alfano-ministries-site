@@ -9,17 +9,43 @@ document.addEventListener('DOMContentLoaded', () => {
     const navLinks = document.querySelector('.nav-links');
 
     if (hamburger && navLinks) {
+        function openMenu() {
+            hamburger.classList.add('open');
+            navLinks.classList.add('open');
+            hamburger.setAttribute('aria-expanded', 'true');
+            const firstLink = navLinks.querySelector('a');
+            if (firstLink) firstLink.focus();
+        }
+
+        function closeMenu() {
+            hamburger.classList.remove('open');
+            navLinks.classList.remove('open');
+            hamburger.setAttribute('aria-expanded', 'false');
+            hamburger.focus();
+        }
+
+        hamburger.setAttribute('aria-expanded', 'false');
+
         hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('open');
-            navLinks.classList.toggle('open');
+            if (navLinks.classList.contains('open')) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
         });
 
         // Close menu when a link is clicked
         navLinks.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
-                hamburger.classList.remove('open');
-                navLinks.classList.remove('open');
+                closeMenu();
             });
+        });
+
+        // ESC key closes menu
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && navLinks.classList.contains('open')) {
+                closeMenu();
+            }
         });
     }
 
@@ -123,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Fallback: show Spotify embed player
                     container.innerHTML = `
                         <div style="max-width: 800px; margin: 0 auto;">
-                            <iframe style="border-radius: 12px; width: 100%; height: 352px; border: none;" src="https://open.spotify.com/embed/show/6OuaAK03zmDwKwQCxG47mx?theme=0" allowfullscreen loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+                            <iframe class="spotify-embed" src="https://open.spotify.com/embed/show/6OuaAK03zmDwKwQCxG47mx?theme=0" allowfullscreen loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
                         </div>
                     `;
                 });
@@ -191,5 +217,9 @@ function copyToClipboard(btn, text) {
         const original = btn.textContent;
         btn.textContent = 'Copied!';
         setTimeout(() => { btn.textContent = original; }, 2000);
+    }).catch(() => {
+        const original = btn.textContent;
+        btn.textContent = 'Copy failed — try manually';
+        setTimeout(() => { btn.textContent = original; }, 3000);
     });
 }

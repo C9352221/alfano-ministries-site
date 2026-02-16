@@ -17,11 +17,23 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://alfanoministries.com/7k-revelation.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://alfanoministries.com/travel-map.html</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://alfanoministries.com/give.html</loc>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://alfanoministries.com/contact.html</loc>
     <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://alfanoministries.com/privacy.html</loc>
+    <priority>0.3</priority>
   </url>
 </urlset>

@@ -141,7 +141,7 @@ ul { list-style: none; }
 .nav-cta {
     background: var(--gold) !important;
     color: var(--royal-blue-dark) !important;
-    padding: 10px 24px;
+    padding: 12px 28px;
     border-radius: 8px;
     font-weight: 700 !important;
     letter-spacing: 1px;
@@ -563,6 +563,8 @@ ul { list-style: none; }
     color: var(--gold-warm);
     font-weight: 600;
     font-size: 14px;
+    padding: 8px 4px;
+    min-height: 44px;
     transition: color 0.3s;
 }
 
@@ -1110,7 +1112,7 @@ ul { list-style: none; }
 /* ── Podcast Episode Cards ── */
 .episode-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 24px;
     margin-bottom: 40px;
 }
@@ -1206,6 +1208,8 @@ ul { list-style: none; }
     font-size: 13px;
     font-weight: 600;
     color: var(--gold-warm);
+    padding: 8px 4px;
+    min-height: 44px;
     transition: color 0.3s;
 }
 
@@ -1295,8 +1299,8 @@ ul { list-style: none; }
     position: absolute;
     top: 16px;
     right: 16px;
-    width: 36px;
-    height: 36px;
+    width: 44px;
+    height: 44px;
     background: var(--cream);
     border: none;
     border-radius: 50%;
@@ -1416,5 +1420,124 @@ ul { list-style: none; }
 
     .popup-box h2 {
         font-size: 1.35rem;
+    }
+}
+
+/* ── Skip-to-Content Link (A11y) ── */
+.skip-link {
+    position: absolute;
+    top: -100%;
+    left: 16px;
+    background: var(--gold);
+    color: var(--royal-blue-dark);
+    padding: 12px 24px;
+    border-radius: 0 0 8px 8px;
+    font-weight: 700;
+    font-size: 14px;
+    z-index: 9999;
+    transition: top 0.2s;
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
+/* ── Focus-Visible System (A11y) ── */
+:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+}
+
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+.btn-outline:focus-visible,
+.btn-outline-light:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(232, 185, 35, 0.25);
+}
+
+/* ── Form Validation States (A11y) ── */
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: 2px solid var(--gold);
+    outline-offset: -1px;
+}
+
+.form-group input:invalid:not(:placeholder-shown),
+.form-group textarea:invalid:not(:placeholder-shown) {
+    border-color: #e53e3e;
+}
+
+/* ── Spotify Embed Responsive ── */
+.spotify-embed {
+    border-radius: 12px;
+    width: 100%;
+    height: 352px;
+    border: none;
+}
+
+/* ── Video Iframe Aspect Ratio Wrapper ── */
+.video-iframe-wrap {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    width: 100%;
+}
+
+.video-iframe-wrap iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* ── Mobile Overrides (768px) ── */
+@media (max-width: 768px) {
+    /* Phase 1.4: Grid gaps */
+    .contact-grid {
+        gap: 24px;
+    }
+    .family-grid {
+        gap: 28px;
+    }
+
+    /* Phase 2.1: Typography legibility */
+    .icon-card p {
+        font-size: 1rem;
+    }
+    .episode-card-body .episode-desc {
+        font-size: 0.95rem;
+    }
+    .stat-label {
+        color: rgba(255,255,255,0.85);
+    }
+    .footer-col a {
+        font-size: 15px;
+    }
+
+    /* Phase 2.2: Spotify embed compact */
+    .spotify-embed {
+        height: 232px;
+    }
+}
+
+/* ── Ultra-Wide Desktop (2.3) ── */
+@media (min-width: 1920px) {
+    .container {
+        max-width: 1400px;
+    }
+    .container-narrow {
+        max-width: 1000px;
+    }
+    .video-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .cards-grid {
+        grid-template-columns: repeat(3, 1fr);
     }
 }
