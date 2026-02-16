@@ -158,6 +158,76 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loadPodcastEpisodes();
 
+    // ── GHL Signup Form ──
+    const SIGNUP_WORKER_URL = 'https://ghl-signup.alfanoministries.workers.dev';
+
+    const signupForm = document.getElementById('ghl-signup-form');
+    if (signupForm) {
+        signupForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const submitBtn = document.getElementById('signup-submit');
+            const messageEl = document.getElementById('signup-message');
+            const email = document.getElementById('signup-email').value.trim();
+            const phone = document.getElementById('signup-phone').value.trim();
+            const consent = document.getElementById('signup-consent').checked;
+
+            // Clear previous messages
+            messageEl.textContent = '';
+            messageEl.className = 'signup-message';
+
+            // Validate required fields
+            if (!email || !phone) {
+                messageEl.textContent = 'Please fill in your email and phone number.';
+                messageEl.className = 'signup-message error';
+                return;
+            }
+
+            if (!consent) {
+                messageEl.textContent = 'Please agree to receive messages before signing up.';
+                messageEl.className = 'signup-message error';
+                return;
+            }
+
+            // Loading state
+            submitBtn.classList.add('loading');
+            submitBtn.textContent = 'Signing up...';
+
+            const payload = {
+                firstName: document.getElementById('signup-first-name').value.trim(),
+                lastName: document.getElementById('signup-last-name').value.trim(),
+                email: email,
+                phone: phone,
+                language: document.getElementById('signup-language').value
+            };
+
+            try {
+                const res = await fetch(SIGNUP_WORKER_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json();
+
+                if (res.ok && data.success) {
+                    messageEl.textContent = 'You\'re signed up! We\'ll be in touch soon.';
+                    messageEl.className = 'signup-message success';
+                    signupForm.reset();
+                } else {
+                    messageEl.textContent = data.message || 'Something went wrong. Please try again.';
+                    messageEl.className = 'signup-message error';
+                }
+            } catch (err) {
+                messageEl.textContent = 'Could not connect. Please try again later.';
+                messageEl.className = 'signup-message error';
+            }
+
+            submitBtn.classList.remove('loading');
+            submitBtn.textContent = 'Sign Up';
+        });
+    }
+
     // ── Mailing List Popup ──
     const POPUP_KEY = 'am_popup_dismissed';
     const POPUP_DAYS = 7; // show again after 7 days
