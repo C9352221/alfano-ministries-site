@@ -1519,6 +1519,53 @@ ul { list-style: none; }
     }
 }
 
+/* ── Travel Map ── */
+.map-wrap {
+    position: relative;
+    width: 100%;
+    height: 80vh;
+    min-height: 500px;
+}
+
+.map-touch-overlay {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .map-wrap {
+        height: 60vh;
+        min-height: 300px;
+    }
+
+    .map-touch-overlay {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 10;
+        background: rgba(21, 44, 73, 0.15);
+        cursor: pointer;
+    }
+
+    .map-touch-overlay span {
+        background: var(--royal-blue-dark);
+        color: var(--white);
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .map-touch-overlay.active {
+        display: none;
+    }
+}
+
 /* ── Skip-to-Content Link (A11y) ── */
 .skip-link {
     position: absolute;

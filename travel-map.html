@@ -59,8 +59,11 @@
 
     <!-- Embedded Map -->
     <section class="section section-white" style="padding-top: 0; padding-bottom: 0;">
-        <div style="width: 100%; height: 80vh; min-height: 500px;">
-            <iframe src="https://c9352221.github.io/travel-heatmap/" title="Alfano Ministries Travel Map" style="width: 100%; height: 100%; border: none;" allowfullscreen></iframe>
+        <div class="map-wrap">
+            <div class="map-touch-overlay" role="button" tabindex="0" aria-label="Tap to interact with map">
+                <span>Tap to interact with map</span>
+            </div>
+            <iframe src="https://c9352221.github.io/travel-heatmap/" title="Alfano Ministries Travel Map" style="width: 100%; height: 100%; border: none;" allowfullscreen loading="lazy"></iframe>
         </div>
     </section>
 

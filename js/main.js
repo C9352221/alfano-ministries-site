@@ -61,6 +61,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // ── Map touch overlay (mobile scroll fix) ──
+    const mapOverlay = document.querySelector('.map-touch-overlay');
+    if (mapOverlay) {
+        let overlayTimer;
+        mapOverlay.addEventListener('click', () => {
+            mapOverlay.classList.add('active');
+            clearTimeout(overlayTimer);
+            overlayTimer = setTimeout(() => {
+                mapOverlay.classList.remove('active');
+            }, 5000);
+        });
+    }
+
     // ── Scroll fade-in animations ──
     const fadeEls = document.querySelectorAll('.fade-in');
     if (fadeEls.length > 0) {
@@ -274,7 +287,38 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.target === overlay) dismissPopup();
         });
 
-        overlay.querySelector('.popup-form').addEventListener('submit', () => {
+        overlay.querySelector('.popup-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const form = e.target;
+            const emailInput = form.querySelector('input[name="email"]');
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const email = emailInput.value.trim();
+
+            if (!email) return;
+
+            submitBtn.textContent = 'Signing up...';
+            submitBtn.disabled = true;
+
+            try {
+                const res = await fetch(SIGNUP_WORKER_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email, phone: '' })
+                });
+                const data = await res.json();
+
+                if (res.ok && data.success) {
+                    form.innerHTML = '<p style="color: var(--gold-warm); font-weight: 600; padding: 12px 0;">You\'re signed up! Welcome aboard.</p>';
+                    setTimeout(dismissPopup, 2500);
+                } else {
+                    submitBtn.textContent = 'Try Again';
+                    submitBtn.disabled = false;
+                }
+            } catch {
+                submitBtn.textContent = 'Try Again';
+                submitBtn.disabled = false;
+            }
+
             localStorage.setItem(POPUP_KEY, Date.now().toString());
         });
     }
