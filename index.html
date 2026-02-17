@@ -192,7 +192,7 @@
                 <h2>Join Our Newsletter</h2>
                 <div class="divider"></div>
                 <p style="color: var(--text-body);">Get ministry updates, event announcements, and encouragement delivered to your inbox.</p>
-                <form class="newsletter-form" action="https://go.alfanoministries.com/contact" method="GET">
+                <form class="newsletter-form" onsubmit="event.preventDefault(); var e=this.email.value; if(e) window.location.href='contact.html?email='+encodeURIComponent(e)+'#stay-connected';">
                     <input type="email" name="email" placeholder="Your email address" required>
                     <button type="submit">Subscribe</button>
                 </form>

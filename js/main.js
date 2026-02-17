@@ -287,39 +287,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.target === overlay) dismissPopup();
         });
 
-        overlay.querySelector('.popup-form').addEventListener('submit', async (e) => {
+        overlay.querySelector('.popup-form').addEventListener('submit', (e) => {
             e.preventDefault();
-            const form = e.target;
-            const emailInput = form.querySelector('input[name="email"]');
-            const submitBtn = form.querySelector('button[type="submit"]');
+            const emailInput = e.target.querySelector('input[name="email"]');
             const email = emailInput.value.trim();
-
             if (!email) return;
-
-            submitBtn.textContent = 'Signing up...';
-            submitBtn.disabled = true;
-
-            try {
-                const res = await fetch(SIGNUP_WORKER_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: email, phone: '' })
-                });
-                const data = await res.json();
-
-                if (res.ok && data.success) {
-                    form.innerHTML = '<p style="color: var(--gold-warm); font-weight: 600; padding: 12px 0;">You\'re signed up! Welcome aboard.</p>';
-                    setTimeout(dismissPopup, 2500);
-                } else {
-                    submitBtn.textContent = 'Try Again';
-                    submitBtn.disabled = false;
-                }
-            } catch {
-                submitBtn.textContent = 'Try Again';
-                submitBtn.disabled = false;
-            }
-
-            localStorage.setItem(POPUP_KEY, Date.now().toString());
+            dismissPopup();
+            window.location.href = 'contact.html?email=' + encodeURIComponent(email) + '#stay-connected';
         });
     }
 

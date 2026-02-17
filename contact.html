@@ -141,7 +141,7 @@
     </section>
 
     <!-- Stay Connected Signup -->
-    <section class="section section-white">
+    <section id="stay-connected" class="section section-white">
         <div class="container">
             <div class="signup-section fade-in">
                 <div class="section-header">
@@ -249,5 +249,15 @@
     </footer>
 
     <script src="js/main.js" defer></script>
+    <script>
+    (function() {
+        var params = new URLSearchParams(window.location.search);
+        var email = params.get('email');
+        if (email) {
+            var field = document.getElementById('signup-email');
+            if (field) field.value = email;
+        }
+    })();
+    </script>
 </body>
 </html>
