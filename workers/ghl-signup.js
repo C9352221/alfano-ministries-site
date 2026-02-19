@@ -64,29 +64,31 @@ async function findExistingContact(email, phone, apiKey) {
   return data.contacts?.[0] || null;
 }
 
-// Remove then re-add tag to trigger the "Tag Added" workflow
-async function retriggerTag(contactId, existingTags, apiKey, tag = SIGNUP_TAG) {
+// Add a tag to a contact (or remove/re-add if they already have it)
+async function addOrRetriggerTag(contactId, existingTags, apiKey, tag) {
   const url = `${GHL_API_URL}${contactId}`;
   const headers = ghlHeaders(apiKey);
+  const hasTag = (existingTags || []).includes(tag);
 
-  // Keep all other tags, just remove the target tag
-  const tagsWithout = (existingTags || []).filter(t => t !== tag);
+  if (hasTag) {
+    // Contact already has this tag — remove it first, then re-add to trigger workflow
+    const tagsWithout = existingTags.filter(t => t !== tag);
+    await fetch(url, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify({ tags: tagsWithout }),
+    });
+    await new Promise(r => setTimeout(r, 500));
+  }
 
-  // Remove the signup tag (preserve others)
-  await fetch(url, {
-    method: 'PUT',
-    headers,
-    body: JSON.stringify({ tags: tagsWithout }),
-  });
-
-  // Small delay to ensure GHL processes the removal
-  await new Promise(r => setTimeout(r, 500));
-
-  // Re-add the tag (triggers "Tag Added" workflow)
+  // Add the tag (keep all existing tags, just append the new one)
+  const currentTags = hasTag
+    ? existingTags.filter(t => t !== tag)
+    : (existingTags || []);
   const res = await fetch(url, {
     method: 'PUT',
     headers,
-    body: JSON.stringify({ tags: [...tagsWithout, tag] }),
+    body: JSON.stringify({ tags: [...currentTags, tag] }),
   });
 
   return res.ok;
@@ -200,7 +202,7 @@ export default {
             const contactData = await contactRes.json();
             const existingTags = contactData.contact?.tags || [];
             console.log('Found existing contact:', existingId, 'tags:', existingTags);
-            await retriggerTag(existingId, existingTags, env.GHL_API_KEY, activeTag);
+            await addOrRetriggerTag(existingId, existingTags, env.GHL_API_KEY, activeTag);
             console.log('Tag re-triggered for:', existingId);
           }
         } else {
@@ -208,7 +210,7 @@ export default {
           const existing = await findExistingContact(email, phone, env.GHL_API_KEY);
           if (existing) {
             console.log('Found via search:', existing.id);
-            await retriggerTag(existing.id, existing.tags, env.GHL_API_KEY, activeTag);
+            await addOrRetriggerTag(existing.id, existing.tags, env.GHL_API_KEY, activeTag);
             console.log('Tag re-triggered for:', existing.id);
           }
         }
