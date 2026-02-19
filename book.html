@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Faith to Build — Free Ebook by Marc Alfano</title>
-    <meta name="description" content="Download your free copy of Faith to Build: A Kingdom Business Blueprint by Marc Alfano. Discover how to use your business as a platform for the Gospel.">
-    <meta property="og:title" content="Faith to Build — Free Ebook by Marc Alfano">
-    <meta property="og:description" content="A Kingdom Business Blueprint. Download your free copy now.">
+    <title>Faith to Build — Ebook by Marc Alfano</title>
+    <meta name="description" content="Get your free copy of Faith to Build: A Kingdom Business Blueprint by Marc Alfano with any donation. Discover how to use your business as a platform for the Gospel.">
+    <meta property="og:title" content="Faith to Build — Ebook by Marc Alfano">
+    <meta property="og:description" content="A Kingdom Business Blueprint. Donate any amount and receive your free copy.">
     <meta property="og:url" content="https://alfanoministries.com/book.html">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Faith to Build — Free Ebook by Marc Alfano">
-    <meta name="twitter:description" content="A Kingdom Business Blueprint. Download your free copy now.">
+    <meta name="twitter:title" content="Faith to Build — Ebook by Marc Alfano">
+    <meta name="twitter:description" content="A Kingdom Business Blueprint. Donate any amount and receive your free copy.">
     <link rel="canonical" href="https://alfanoministries.com/book.html">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -336,11 +336,11 @@
     <!-- Hero -->
     <section id="main" class="book-hero">
         <div class="book-hero-content">
-            <div class="eyebrow">Free Ebook</div>
+            <div class="eyebrow" id="hero-eyebrow">Free with Any Donation</div>
             <h1>Faith to <span>Build</span></h1>
             <div class="subtitle">A Kingdom Business Blueprint</div>
             <div class="divider"></div>
-            <p class="tagline">Discover how to use your business as a platform for the Gospel. Download your free copy from Marc Alfano.</p>
+            <p class="tagline" id="hero-tagline">Discover how to use your business as a platform for the Gospel. Donate any amount and receive your free copy from Marc Alfano.</p>
         </div>
     </section>
 
@@ -365,8 +365,16 @@
                 </ul>
             </div>
 
-            <!-- Right: Download Form -->
-            <div class="book-form-card">
+            <!-- Right: Donation CTA (default) -->
+            <div class="book-form-card" id="donation-cta">
+                <h3>Get Your Free Copy</h3>
+                <p class="form-subtitle">Donate any amount and receive the ebook via email</p>
+                <a href="give.html" class="btn-download" style="display: block; text-decoration: none; text-align: center;">Donate Any Amount</a>
+                <p class="form-note" style="margin-top: 16px; line-height: 1.6;">Every donor receives a free copy of <strong>Faith to Build</strong> via email. Your generosity fuels the mission.</p>
+            </div>
+
+            <!-- Right: Free Download Form (event mode — hidden by default) -->
+            <div class="book-form-card" id="event-form" style="display: none;">
                 <h3>Get Your Free Copy</h3>
                 <p class="form-subtitle">Enter your info and download instantly</p>
 
@@ -463,6 +471,20 @@
     <script>
     (function() {
         var params = new URLSearchParams(window.location.search);
+
+        // Event mode: ?free=1 shows the free download form
+        if (params.get('free') === '1') {
+            var donationCta = document.getElementById('donation-cta');
+            var eventForm = document.getElementById('event-form');
+            var heroEyebrow = document.getElementById('hero-eyebrow');
+            var heroTagline = document.getElementById('hero-tagline');
+            if (donationCta) donationCta.style.display = 'none';
+            if (eventForm) eventForm.style.display = '';
+            if (heroEyebrow) heroEyebrow.textContent = 'Free Ebook';
+            if (heroTagline) heroTagline.textContent = 'Discover how to use your business as a platform for the Gospel. Download your free copy from Marc Alfano.';
+        }
+
+        // Prefill email if provided
         var email = params.get('email');
         if (email) {
             var field = document.getElementById('ebook-email');

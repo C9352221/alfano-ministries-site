@@ -317,23 +317,21 @@ document.addEventListener('DOMContentLoaded', () => {
         if (overlay) overlay.classList.remove('active');
     }
 
-    // Don't show popup on the book page (they're already there)
+    // Don't show popup on the give page or book page (they're already there)
+    const isGivePage = window.location.pathname.includes('give');
     const isBookPage = window.location.pathname.includes('book');
 
-    if (shouldShowPopup() && !isBookPage) {
+    if (shouldShowPopup() && !isGivePage && !isBookPage) {
         const overlay = document.createElement('div');
         overlay.className = 'popup-overlay';
         overlay.innerHTML = `
             <div class="popup-box">
                 <button class="popup-close" aria-label="Close">&times;</button>
-                <div class="popup-eyebrow">Free Ebook</div>
+                <div class="popup-eyebrow">Free Gift with Any Donation</div>
                 <h2>Faith to Build</h2>
                 <div class="popup-divider"></div>
-                <p>Get your free copy of <strong>Faith to Build: A Kingdom Business Blueprint</strong> by Marc Alfano. Discover how to use your business as a platform for the Gospel.</p>
-                <form class="popup-form">
-                    <input type="email" name="email" placeholder="Your email address" required>
-                    <button type="submit">Get the Free Book</button>
-                </form>
+                <p>Donate any amount and receive a free copy of <strong>Faith to Build: A Kingdom Business Blueprint</strong> by Marc Alfano.</p>
+                <a href="give.html" class="popup-cta-btn">Give &amp; Get the Book</a>
                 <button class="popup-no-thanks">No thanks</button>
             </div>
         `;
@@ -349,13 +347,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.target === overlay) dismissPopup();
         });
 
-        overlay.querySelector('.popup-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const emailInput = e.target.querySelector('input[name="email"]');
-            const email = emailInput.value.trim();
-            if (!email) return;
+        overlay.querySelector('.popup-cta-btn').addEventListener('click', () => {
             dismissPopup();
-            window.location.href = 'book.html?email=' + encodeURIComponent(email);
         });
     }
 

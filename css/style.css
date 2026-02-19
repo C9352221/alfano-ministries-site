@@ -1493,6 +1493,32 @@ ul { list-style: none; }
     box-shadow: 0 8px 24px rgba(232, 185, 35, 0.3);
 }
 
+.popup-cta-btn {
+    display: inline-block;
+    padding: 16px 40px;
+    background: var(--gold);
+    color: var(--royal-blue-dark);
+    border: none;
+    border-radius: 8px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: var(--transition);
+    text-decoration: none;
+    text-align: center;
+    width: 100%;
+}
+
+.popup-cta-btn:hover {
+    background: var(--gold-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(232, 185, 35, 0.3);
+    color: var(--royal-blue-dark);
+}
+
 .popup-no-thanks {
     display: inline-block;
     margin-top: 12px;
