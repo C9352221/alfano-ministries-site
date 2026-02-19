@@ -65,7 +65,7 @@
                 <div style="flex: 1; min-width: 280px;">
                     <div style="font-family: 'Open Sans', sans-serif; font-weight: 600; font-size: 0.8rem; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px;">Free Gift With Your Donation</div>
                     <h3 style="font-family: 'Lora', serif; font-size: 1.5rem; color: white; margin-bottom: 8px;">Faith to Build: A Kingdom Business Blueprint</h3>
-                    <p style="color: rgba(255,255,255,0.8); font-size: 0.95rem; line-height: 1.6;">Every donor receives a free copy of Marc Alfano's ebook. Give any amount below and we'll send it to your email.</p>
+                    <p style="color: rgba(255,255,255,0.8); font-size: 0.95rem; line-height: 1.6;">Every donor receives a free copy of Marc Alfano's ebook. Donate any amount below, then claim your book at the bottom of this page.</p>
                 </div>
             </div>
         </div>
@@ -139,6 +139,45 @@
                     <h3>PayPal</h3>
                     <p>Send your gift via PayPal for a quick and trusted giving experience.</p>
                     <a href="https://www.paypal.com/ncp/payment/MBGN6QVGFXVZ4" class="btn-primary" style="margin-top: 12px; font-size: 13px; padding: 12px 28px;" target="_blank" rel="noopener">Give with PayPal</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Claim Your Free Ebook -->
+    <section class="section section-cream">
+        <div class="container-narrow">
+            <div class="section-header fade-in">
+                <div class="section-eyebrow">Free Gift</div>
+                <h2 class="section-title">Claim Your Free Ebook</h2>
+                <div class="section-divider"></div>
+                <p class="section-subtitle">Already donated? Enter your info below to receive your free copy of <em>Faith to Build: A Kingdom Business Blueprint</em>.</p>
+            </div>
+            <div class="claim-form-wrap fade-in">
+                <form id="claim-ebook-form" class="claim-form" novalidate>
+                    <div class="signup-form-row">
+                        <div class="form-group">
+                            <label for="claim-first-name">First Name <span class="required">*</span></label>
+                            <input type="text" id="claim-first-name" placeholder="First name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="claim-email">Email <span class="required">*</span></label>
+                            <input type="email" id="claim-email" placeholder="you@email.com" required>
+                        </div>
+                    </div>
+                    <div class="consent-group">
+                        <label class="consent-label">
+                            <input type="checkbox" id="claim-confirm">
+                            <span class="consent-text">I confirm that I have made a donation.</span>
+                        </label>
+                    </div>
+                    <button type="submit" id="claim-submit" class="btn-primary claim-submit-btn" disabled>Send Me the Book</button>
+                    <div id="claim-message" class="signup-message"></div>
+                </form>
+                <div id="claim-success" class="claim-success" style="display: none;">
+                    <div class="claim-success-icon">&#9993;</div>
+                    <h3>Check your email — your book is on the way!</h3>
+                    <p>Look for an email from Alfano Ministries with your free copy of <em>Faith to Build</em>.</p>
                 </div>
             </div>
         </div>

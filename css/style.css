@@ -733,6 +733,59 @@ ul { list-style: none; }
     word-break: break-all;
 }
 
+/* ── Claim Ebook Form ── */
+.claim-form-wrap {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.claim-form {
+    background: var(--white);
+    padding: 36px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
+}
+
+.claim-submit-btn {
+    width: 100%;
+    margin-top: 4px;
+}
+
+.claim-submit-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.claim-success {
+    text-align: center;
+    padding: 48px 24px;
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+}
+
+.claim-success-icon {
+    font-size: 3rem;
+    margin-bottom: 16px;
+}
+
+.claim-success h3 {
+    font-family: 'Lora', serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: var(--royal-blue);
+    margin-bottom: 12px;
+}
+
+.claim-success p {
+    color: var(--text-body);
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+
 /* ── Video Grid ── */
 .video-grid {
     display: grid;
@@ -985,6 +1038,14 @@ ul { list-style: none; }
 
 .pillar .pillar-icon {
     font-size: 2rem;
+    margin-bottom: 12px;
+}
+
+.pillar .pillar-img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 50%;
     margin-bottom: 12px;
 }
 

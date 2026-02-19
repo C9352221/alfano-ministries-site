@@ -300,6 +300,75 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // ── Claim Ebook Form (Give Page) ──
+    const claimForm = document.getElementById('claim-ebook-form');
+    if (claimForm) {
+        const claimCheckbox = document.getElementById('claim-confirm');
+        const claimSubmitBtn = document.getElementById('claim-submit');
+
+        // Enable/disable submit based on checkbox
+        claimCheckbox.addEventListener('change', () => {
+            claimSubmitBtn.disabled = !claimCheckbox.checked;
+        });
+
+        claimForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const messageEl = document.getElementById('claim-message');
+            const successEl = document.getElementById('claim-success');
+            const firstName = document.getElementById('claim-first-name').value.trim();
+            const email = document.getElementById('claim-email').value.trim();
+
+            messageEl.textContent = '';
+            messageEl.className = 'signup-message';
+
+            if (!firstName || !email) {
+                messageEl.textContent = 'Please enter your name and email.';
+                messageEl.className = 'signup-message error';
+                return;
+            }
+
+            if (!claimCheckbox.checked) {
+                messageEl.textContent = 'Please confirm that you have made a donation.';
+                messageEl.className = 'signup-message error';
+                return;
+            }
+
+            claimSubmitBtn.classList.add('loading');
+            claimSubmitBtn.textContent = 'Sending...';
+
+            const payload = {
+                firstName: firstName,
+                email: email,
+                formType: 'ebook'
+            };
+
+            try {
+                const res = await fetch(SIGNUP_WORKER_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json();
+
+                if (res.ok && data.success) {
+                    claimForm.style.display = 'none';
+                    successEl.style.display = 'block';
+                } else {
+                    messageEl.textContent = data.message || 'Something went wrong. Please try again.';
+                    messageEl.className = 'signup-message error';
+                }
+            } catch (err) {
+                messageEl.textContent = 'Could not connect. Please try again later.';
+                messageEl.className = 'signup-message error';
+            }
+
+            claimSubmitBtn.classList.remove('loading');
+            claimSubmitBtn.textContent = 'Send Me the Book';
+        });
+    }
+
     // ── Mailing List Popup ──
     const POPUP_KEY = 'am_popup_dismissed';
     const POPUP_DAYS = 7; // show again after 7 days
