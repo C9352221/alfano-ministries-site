@@ -1049,8 +1049,8 @@ ul { list-style: none; }
 }
 
 .pillar .pillar-img {
-    width: 80px;
-    height: 80px;
+    width: 120px;
+    height: 120px;
     object-fit: cover;
     border-radius: 50%;
     margin-bottom: 12px;
