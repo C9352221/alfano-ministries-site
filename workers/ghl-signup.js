@@ -25,6 +25,7 @@ const ALLOWED_ORIGINS = [
 const GHL_API_URL = 'https://services.leadconnectorhq.com/contacts/';
 const GHL_LOCATION_ID = 'AIPTqymDwrSMF9zx8Pul';
 const SIGNUP_TAG = 'website signup';
+const EBOOK_TAG = 'ebook download';
 
 function ghlHeaders(apiKey) {
   return {
@@ -64,12 +65,12 @@ async function findExistingContact(email, phone, apiKey) {
 }
 
 // Remove then re-add tag to trigger the "Tag Added" workflow
-async function retriggerTag(contactId, existingTags, apiKey) {
+async function retriggerTag(contactId, existingTags, apiKey, tag = SIGNUP_TAG) {
   const url = `${GHL_API_URL}${contactId}`;
   const headers = ghlHeaders(apiKey);
 
-  // Keep all other tags, just remove the signup tag
-  const tagsWithout = (existingTags || []).filter(t => t !== SIGNUP_TAG);
+  // Keep all other tags, just remove the target tag
+  const tagsWithout = (existingTags || []).filter(t => t !== tag);
 
   // Remove the signup tag (preserve others)
   await fetch(url, {
@@ -81,11 +82,11 @@ async function retriggerTag(contactId, existingTags, apiKey) {
   // Small delay to ensure GHL processes the removal
   await new Promise(r => setTimeout(r, 500));
 
-  // Re-add the signup tag (triggers "Tag Added" workflow)
+  // Re-add the tag (triggers "Tag Added" workflow)
   const res = await fetch(url, {
     method: 'PUT',
     headers,
-    body: JSON.stringify({ tags: [...tagsWithout, SIGNUP_TAG] }),
+    body: JSON.stringify({ tags: [...tagsWithout, tag] }),
   });
 
   return res.ok;
@@ -123,7 +124,7 @@ export default {
     }
 
     // Validate required fields
-    const { firstName, lastName, email, phone, language } = body;
+    const { firstName, lastName, email, phone, language, formType } = body;
 
     if (!email && !phone) {
       return jsonResponse({ success: false, message: 'Email or phone is required' }, 400, safeOrigin);
@@ -134,11 +135,16 @@ export default {
       return jsonResponse({ success: false, message: 'Invalid email address' }, 400, safeOrigin);
     }
 
+    // Determine tag and source based on form type
+    const isEbook = formType === 'ebook';
+    const activeTag = isEbook ? EBOOK_TAG : SIGNUP_TAG;
+    const activeSource = isEbook ? 'Faith to Build ebook' : 'Get on my list';
+
     // Build GHL contact payload
     const ghlPayload = {
       locationId: GHL_LOCATION_ID,
-      source: 'Get on my list',
-      tags: [SIGNUP_TAG],
+      source: activeSource,
+      tags: [activeTag],
     };
 
     if (firstName) ghlPayload.firstName = firstName;
@@ -194,7 +200,7 @@ export default {
             const contactData = await contactRes.json();
             const existingTags = contactData.contact?.tags || [];
             console.log('Found existing contact:', existingId, 'tags:', existingTags);
-            await retriggerTag(existingId, existingTags, env.GHL_API_KEY);
+            await retriggerTag(existingId, existingTags, env.GHL_API_KEY, activeTag);
             console.log('Tag re-triggered for:', existingId);
           }
         } else {
@@ -202,7 +208,7 @@ export default {
           const existing = await findExistingContact(email, phone, env.GHL_API_KEY);
           if (existing) {
             console.log('Found via search:', existing.id);
-            await retriggerTag(existing.id, existing.tags, env.GHL_API_KEY);
+            await retriggerTag(existing.id, existing.tags, env.GHL_API_KEY, activeTag);
             console.log('Tag re-triggered for:', existing.id);
           }
         }

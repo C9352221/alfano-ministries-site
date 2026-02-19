@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faith to Build — Free Ebook by Marc Alfano</title>
+    <meta name="description" content="Download your free copy of Faith to Build: A Kingdom Business Blueprint by Marc Alfano. Discover how to use your business as a platform for the Gospel.">
+    <meta property="og:title" content="Faith to Build — Free Ebook by Marc Alfano">
+    <meta property="og:description" content="A Kingdom Business Blueprint. Download your free copy now.">
+    <meta property="og:url" content="https://alfanoministries.com/book.html">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Faith to Build — Free Ebook by Marc Alfano">
+    <meta name="twitter:description" content="A Kingdom Business Blueprint. Download your free copy now.">
+    <link rel="canonical" href="https://alfanoministries.com/book.html">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <style>
+        .book-hero {
+            min-height: 50vh;
+            background: linear-gradient(135deg, var(--royal-blue-dark) 0%, var(--royal-blue) 50%, #2a4f7a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 120px 24px 60px;
+            position: relative;
+            overflow: hidden;
+        }
+        .book-hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(ellipse at 30% 20%, rgba(232,185,35,0.08) 0%, transparent 60%);
+        }
+        .book-hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+        }
+        .book-hero .eyebrow {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 16px;
+        }
+        .book-hero h1 {
+            font-family: 'Lora', serif;
+            font-size: clamp(2.2rem, 5vw, 3.4rem);
+            color: var(--white);
+            font-weight: 700;
+            line-height: 1.15;
+            margin-bottom: 8px;
+        }
+        .book-hero h1 span {
+            color: var(--gold);
+        }
+        .book-hero .subtitle {
+            font-family: 'Lora', serif;
+            font-style: italic;
+            font-size: 1.2rem;
+            color: var(--gold-light);
+            margin-bottom: 20px;
+        }
+        .book-hero .divider {
+            width: 60px;
+            height: 2px;
+            background: var(--gold);
+            margin: 0 auto 20px;
+        }
+        .book-hero .tagline {
+            font-size: 1.05rem;
+            color: rgba(255,255,255,0.8);
+            line-height: 1.7;
+            max-width: 550px;
+            margin: 0 auto;
+        }
+
+        .book-content {
+            padding: 80px 24px;
+            background: var(--warm-white);
+        }
+        .book-grid {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+        @media (max-width: 768px) {
+            .book-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+        }
+
+        .book-details h2 {
+            font-family: 'Lora', serif;
+            font-size: 1.8rem;
+            color: var(--royal-blue);
+            margin-bottom: 16px;
+        }
+        .book-details .pull-quote {
+            font-family: 'Lora', serif;
+            font-style: italic;
+            font-size: 1.1rem;
+            color: var(--royal-blue);
+            border-left: 3px solid var(--gold);
+            padding-left: 20px;
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+        .book-details p {
+            color: var(--text-body);
+            margin-bottom: 16px;
+            line-height: 1.7;
+        }
+        .book-details .discover-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+        .book-details .discover-list li {
+            padding: 8px 0 8px 28px;
+            position: relative;
+            color: var(--text-body);
+            line-height: 1.6;
+        }
+        .book-details .discover-list li::before {
+            content: '\2726';
+            position: absolute;
+            left: 0;
+            color: var(--gold);
+            font-size: 1.1rem;
+        }
+
+        .book-form-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            position: sticky;
+            top: 100px;
+        }
+        .book-form-card h3 {
+            font-family: 'Lora', serif;
+            font-size: 1.4rem;
+            color: var(--royal-blue);
+            text-align: center;
+            margin-bottom: 6px;
+        }
+        .book-form-card .form-subtitle {
+            text-align: center;
+            color: var(--text-light);
+            font-size: 0.95rem;
+            margin-bottom: 28px;
+        }
+        .book-form-card .form-group {
+            margin-bottom: 16px;
+        }
+        .book-form-card label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+        }
+        .book-form-card input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-family: 'Open Sans', sans-serif;
+            transition: var(--transition);
+            background: var(--warm-white);
+        }
+        .book-form-card input:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(232,185,35,0.15);
+        }
+        .book-form-card .btn-download {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background: var(--gold);
+            color: var(--royal-blue-dark);
+            border: none;
+            border-radius: var(--radius);
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 700;
+            font-size: 1.05rem;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+        .book-form-card .btn-download:hover {
+            background: var(--gold-light);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(232,185,35,0.3);
+        }
+        .book-form-card .btn-download.loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        .book-form-card .form-note {
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-top: 12px;
+        }
+
+        #ebook-message {
+            text-align: center;
+            padding: 10px;
+            border-radius: var(--radius);
+            margin-top: 12px;
+            font-size: 0.95rem;
+            display: none;
+        }
+        #ebook-message.success {
+            display: block;
+            background: #f0fdf4;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+        #ebook-message.error {
+            display: block;
+            background: #fef2f2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        #download-section {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            padding: 24px;
+            background: #f0fdf4;
+            border-radius: var(--radius);
+            border: 1px solid #bbf7d0;
+        }
+        #download-section.visible {
+            display: block;
+            animation: fadeUp 0.5s ease;
+        }
+        #download-section h4 {
+            font-family: 'Lora', serif;
+            color: #166534;
+            margin-bottom: 8px;
+            font-size: 1.15rem;
+        }
+        #download-section p {
+            color: #166534;
+            font-size: 0.9rem;
+            margin-bottom: 14px;
+        }
+        #download-section .btn-get-book {
+            display: inline-block;
+            padding: 14px 36px;
+            background: var(--royal-blue);
+            color: var(--white);
+            border-radius: var(--radius);
+            font-weight: 700;
+            font-size: 1.05rem;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        #download-section .btn-get-book:hover {
+            background: var(--royal-blue-light);
+            transform: translateY(-1px);
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .book-bottom-quote {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 60px 24px 80px;
+        }
+        .book-bottom-quote blockquote {
+            font-family: 'Lora', serif;
+            font-style: italic;
+            font-size: 1.15rem;
+            color: var(--royal-blue);
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+        .book-bottom-quote cite {
+            font-style: normal;
+            font-weight: 600;
+            color: var(--gold-warm);
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+    <a href="#main" class="skip-link">Skip to content</a>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">Alfano Ministries</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="marketplace.html">Marketplace</a>
+                <a href="media.html">Media</a>
+                <a href="7k-revelation.html">7K Revelation</a>
+                <a href="travel-map.html">Travel Map</a>
+                <a href="give.html" class="nav-cta">Give</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <button class="hamburger" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section id="main" class="book-hero">
+        <div class="book-hero-content">
+            <div class="eyebrow">Free Ebook</div>
+            <h1>Faith to <span>Build</span></h1>
+            <div class="subtitle">A Kingdom Business Blueprint</div>
+            <div class="divider"></div>
+            <p class="tagline">Discover how to use your business as a platform for the Gospel. Download your free copy from Marc Alfano.</p>
+        </div>
+    </section>
+
+    <!-- Book Content + Form -->
+    <section class="book-content">
+        <div class="book-grid fade-in">
+            <!-- Left: Book Details -->
+            <div class="book-details">
+                <div class="pull-quote">
+                    "They can take my business, but they can't take my anointing."
+                </div>
+                <p>Marc Alfano lost everything in 2009 — his restaurant, his income, his identity. But he never lost his calling.</p>
+                <p>In <strong>Faith to Build</strong>, Marc shares the blueprint that took him from bankruptcy to building businesses across 17 states, launching a global ministry, and discovering that the marketplace — not the church pew — is the greatest mission field on earth.</p>
+
+                <h2>Inside You'll Discover</h2>
+                <ul class="discover-list">
+                    <li>Why your business IS your pulpit</li>
+                    <li>The Joseph Blueprint for kingdom entrepreneurship</li>
+                    <li>How one seed — planted in faith — can produce a harvest beyond imagination</li>
+                    <li>The difference between God's economy and the world's system</li>
+                    <li>Practical steps to just start, even when the pool is empty</li>
+                </ul>
+            </div>
+
+            <!-- Right: Download Form -->
+            <div class="book-form-card">
+                <h3>Get Your Free Copy</h3>
+                <p class="form-subtitle">Enter your info and download instantly</p>
+
+                <form id="ebook-form" novalidate>
+                    <div class="form-group">
+                        <label for="ebook-first-name">First Name</label>
+                        <input type="text" id="ebook-first-name" name="firstName" placeholder="Your first name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ebook-email">Email Address</label>
+                        <input type="email" id="ebook-email" name="email" placeholder="you@example.com" required>
+                    </div>
+                    <button type="submit" id="ebook-submit" class="btn-download">
+                        Send Me the Book
+                    </button>
+                    <div id="ebook-message" role="alert" aria-live="polite"></div>
+                    <p class="form-note">We respect your privacy. Unsubscribe anytime.</p>
+                </form>
+
+                <div id="download-section">
+                    <h4>Your book is ready!</h4>
+                    <p>Click below to download your free copy.</p>
+                    <a href="assets/Faith-to-Build.pdf" download class="btn-get-book">Download PDF</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bottom Quote -->
+    <section class="section section-cream">
+        <div class="book-bottom-quote fade-in">
+            <blockquote>"Faith is standing on a high dive over an empty swimming pool. I'm praying, 'God, bring the water.' And God says, 'No — jump, and I'm going to bring the water.'"</blockquote>
+            <cite>— Marc Alfano</cite>
+        </div>
+    </section>
+
+    <!-- CTA Banner -->
+    <section class="section section-blue">
+        <div class="container">
+            <div class="cta-banner fade-in">
+                <div class="section-eyebrow" style="color: var(--gold);">Stay Connected</div>
+                <h2 style="color: var(--white);">Want More from Alfano Ministries?</h2>
+                <div class="divider"></div>
+                <p style="color: rgba(255,255,255,0.7);">Join our mailing list for ministry updates, event invitations, and encouragement.</p>
+                <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 8px;">
+                    <a href="contact.html#stay-connected" class="btn-primary">Join the List</a>
+                    <a href="7k-revelation.html" class="btn-outline-light">Listen to the Podcast</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="footer-brand">
+                <h3>Alfano Ministries</h3>
+                <p>Empowering everyday believers to advance the Kingdom across the nations through marketplace ministry, teaching, and global outreach.</p>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/alfanoministries" class="social-link" aria-label="Facebook" target="_blank" rel="noopener">f</a>
+                    <a href="https://www.instagram.com/alfanoministries" class="social-link" aria-label="Instagram" target="_blank" rel="noopener">ig</a>
+                    <a href="https://www.youtube.com/@alfanoministries" class="social-link" aria-label="YouTube" target="_blank" rel="noopener">yt</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Pages</h4>
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="marketplace.html">Marketplace</a>
+                <a href="media.html">Media</a>
+                <a href="7k-revelation.html">7K Revelation</a>
+                <a href="travel-map.html">Travel Map</a>
+            </div>
+            <div class="footer-col">
+                <h4>Connect</h4>
+                <a href="give.html">Give</a>
+                <a href="contact.html">Contact</a>
+                <a href="mailto:marc@alfanoministries.com">Email Us</a>
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="terms.html">Terms of Service</a>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <a href="mailto:marc@alfanoministries.com">marc@alfanoministries.com</a>
+                <a href="tel:+17244135224">724-413-5224</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-copy">&copy; 2026 Alfano Ministries. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <script src="js/main.js" defer></script>
+</body>
+</html>

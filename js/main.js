@@ -241,6 +241,65 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // ── Ebook Download Form ──
+    const ebookForm = document.getElementById('ebook-form');
+    if (ebookForm) {
+        ebookForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const submitBtn = document.getElementById('ebook-submit');
+            const messageEl = document.getElementById('ebook-message');
+            const downloadSection = document.getElementById('download-section');
+            const firstName = document.getElementById('ebook-first-name').value.trim();
+            const email = document.getElementById('ebook-email').value.trim();
+
+            // Clear previous messages
+            messageEl.textContent = '';
+            messageEl.className = '';
+            downloadSection.classList.remove('visible');
+
+            if (!email) {
+                messageEl.textContent = 'Please enter your email address.';
+                messageEl.className = 'error';
+                return;
+            }
+
+            // Loading state
+            submitBtn.classList.add('loading');
+            submitBtn.textContent = 'Sending...';
+
+            const payload = {
+                firstName: firstName,
+                email: email,
+                formType: 'ebook'
+            };
+
+            try {
+                const res = await fetch(SIGNUP_WORKER_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json();
+
+                if (res.ok && data.success) {
+                    ebookForm.style.display = 'none';
+                    downloadSection.classList.add('visible');
+                } else {
+                    messageEl.textContent = data.message || 'Something went wrong. Please try again.';
+                    messageEl.className = 'error';
+                }
+            } catch (err) {
+                messageEl.textContent = 'Could not connect. Please try again later.';
+                messageEl.className = 'error';
+            }
+
+            submitBtn.classList.remove('loading');
+            submitBtn.textContent = 'Send Me the Book';
+        });
+    }
+
     // ── Mailing List Popup ──
     const POPUP_KEY = 'am_popup_dismissed';
     const POPUP_DAYS = 7; // show again after 7 days
