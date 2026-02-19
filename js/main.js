@@ -317,19 +317,22 @@ document.addEventListener('DOMContentLoaded', () => {
         if (overlay) overlay.classList.remove('active');
     }
 
-    if (shouldShowPopup()) {
+    // Don't show popup on the book page (they're already there)
+    const isBookPage = window.location.pathname.includes('book');
+
+    if (shouldShowPopup() && !isBookPage) {
         const overlay = document.createElement('div');
         overlay.className = 'popup-overlay';
         overlay.innerHTML = `
             <div class="popup-box">
                 <button class="popup-close" aria-label="Close">&times;</button>
-                <div class="popup-eyebrow">Stay Connected</div>
-                <h2>Join Our Mailing List</h2>
+                <div class="popup-eyebrow">Free Ebook</div>
+                <h2>Faith to Build</h2>
                 <div class="popup-divider"></div>
-                <p>Get ministry updates, event announcements, and encouragement delivered straight to your inbox.</p>
-                <form class="popup-form" action="https://go.alfanoministries.com/contact" method="GET">
+                <p>Get your free copy of <strong>Faith to Build: A Kingdom Business Blueprint</strong> by Marc Alfano. Discover how to use your business as a platform for the Gospel.</p>
+                <form class="popup-form">
                     <input type="email" name="email" placeholder="Your email address" required>
-                    <button type="submit">Subscribe</button>
+                    <button type="submit">Get the Free Book</button>
                 </form>
                 <button class="popup-no-thanks">No thanks</button>
             </div>
@@ -352,7 +355,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const email = emailInput.value.trim();
             if (!email) return;
             dismissPopup();
-            window.location.href = 'contact.html?email=' + encodeURIComponent(email) + '#stay-connected';
+            window.location.href = 'book.html?email=' + encodeURIComponent(email);
         });
     }
 

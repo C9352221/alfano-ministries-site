@@ -460,5 +460,15 @@
     </footer>
 
     <script src="js/main.js" defer></script>
+    <script>
+    (function() {
+        var params = new URLSearchParams(window.location.search);
+        var email = params.get('email');
+        if (email) {
+            var field = document.getElementById('ebook-email');
+            if (field) field.value = email;
+        }
+    })();
+    </script>
 </body>
 </html>
