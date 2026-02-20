@@ -1029,7 +1029,7 @@ ul { list-style: none; }
 .pillar {
     text-align: center;
     padding: 32px 16px;
-    background: var(--white);
+    background: var(--cream);
     border-radius: var(--radius);
     border: 1px solid var(--border);
     transition: var(--transition);
