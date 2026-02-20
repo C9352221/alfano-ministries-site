@@ -317,13 +317,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const messageEl = document.getElementById('claim-message');
             const successEl = document.getElementById('claim-success');
             const firstName = document.getElementById('claim-first-name').value.trim();
+            const lastName = document.getElementById('claim-last-name').value.trim();
             const email = document.getElementById('claim-email').value.trim();
+            const phone = document.getElementById('claim-phone').value.trim();
+            const language = document.getElementById('claim-language').value;
 
             messageEl.textContent = '';
             messageEl.className = 'signup-message';
 
-            if (!firstName || !email) {
-                messageEl.textContent = 'Please enter your name and email.';
+            if (!firstName || !lastName || !email || !phone) {
+                messageEl.textContent = 'Please fill in all fields.';
                 messageEl.className = 'signup-message error';
                 return;
             }
@@ -339,7 +342,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const payload = {
                 firstName: firstName,
+                lastName: lastName,
                 email: email,
+                phone: phone,
+                language: language,
                 formType: 'ebook'
             };
 
