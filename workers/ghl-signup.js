@@ -155,7 +155,7 @@ export default {
     if (phone) ghlPayload.phone = phone;
 
     // Map form values to GHL dropdown values
-    const langMap = { 'english': 'English', 'spanish': 'Español', 'italian': 'Italiano' };
+    const langMap = { 'english': 'English', 'spanish': 'Español', 'italian': 'Italiano', 'polish': 'Polski' };
     ghlPayload.customFields = [
       { key: 'preferred_language', field_value: langMap[language] || 'English' }
     ];

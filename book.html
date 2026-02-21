@@ -397,7 +397,7 @@
                 <div id="download-section">
                     <h4>Your book is ready!</h4>
                     <p>Click below to download your free copy.</p>
-                    <a href="assets/Faith-to-Build.pdf" download class="btn-get-book">Download PDF</a>
+                    <a href="assets/Faith-to-Build.pdf" download id="pdf-download-link" class="btn-get-book">Download PDF</a>
                 </div>
             </div>
         </div>
@@ -472,7 +472,28 @@
     (function() {
         var params = new URLSearchParams(window.location.search);
 
-        // Event mode: ?free=1 shows the free download form
+        // Language-to-PDF mapping
+        var pdfMap = {
+            'pl': 'assets/Faith-to-Build-PL.pdf',
+            'it': 'assets/Faith-to-Build-IT.pdf',
+            'es': 'assets/Faith-to-Build-ES.pdf'
+        };
+
+        // UI text for event mode per language
+        var textMap = {
+            'pl': { eyebrow: 'Darmowy Ebook', tagline: 'Odkryj, jak uczyni\u0107 sw\u00f3j biznes platform\u0105 dla Ewangelii. Pobierz darmowy egzemplarz od Marca Alfano.', btn: 'Pobierz PDF' },
+            'it': { eyebrow: 'Ebook Gratuito', tagline: 'Scopri come usare la tua attivit\u00e0 come piattaforma per il Vangelo. Scarica la tua copia gratuita da Marc Alfano.', btn: 'Scarica PDF' },
+            'es': { eyebrow: 'Ebook Gratis', tagline: 'Descubre c\u00f3mo usar tu negocio como plataforma para el Evangelio. Descarga tu copia gratuita de Marc Alfano.', btn: 'Descargar PDF' }
+        };
+
+        var lang = params.get('lang');
+        var pdfUrl = pdfMap[lang] || 'assets/Faith-to-Build.pdf';
+
+        // Set correct PDF download link
+        var downloadLink = document.getElementById('pdf-download-link');
+        if (downloadLink) downloadLink.href = pdfUrl;
+
+        // Event mode: ?free=1
         if (params.get('free') === '1') {
             var donationCta = document.getElementById('donation-cta');
             var eventForm = document.getElementById('event-form');
@@ -480,8 +501,15 @@
             var heroTagline = document.getElementById('hero-tagline');
             if (donationCta) donationCta.style.display = 'none';
             if (eventForm) eventForm.style.display = '';
-            if (heroEyebrow) heroEyebrow.textContent = 'Free Ebook';
-            if (heroTagline) heroTagline.textContent = 'Discover how to use your business as a platform for the Gospel. Download your free copy from Marc Alfano.';
+
+            if (lang && textMap[lang]) {
+                if (heroEyebrow) heroEyebrow.textContent = textMap[lang].eyebrow;
+                if (heroTagline) heroTagline.textContent = textMap[lang].tagline;
+                if (downloadLink) downloadLink.textContent = textMap[lang].btn;
+            } else {
+                if (heroEyebrow) heroEyebrow.textContent = 'Free Ebook';
+                if (heroTagline) heroTagline.textContent = 'Discover how to use your business as a platform for the Gospel. Download your free copy from Marc Alfano.';
+            }
         }
 
         // Prefill email if provided
