@@ -369,6 +369,15 @@
             <div class="book-form-card" id="donation-cta">
                 <h3>Get Your Free Copy</h3>
                 <p class="form-subtitle">Donate any amount and receive the ebook via email</p>
+                <div class="form-group">
+                    <label for="donate-language">Choose Your Language</label>
+                    <select id="donate-language" style="width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;font-size:15px;font-family:inherit;margin-bottom:12px;">
+                        <option value="en">English</option>
+                        <option value="es">Espa&#241;ol</option>
+                        <option value="it">Italiano</option>
+                        <option value="pl">Polski</option>
+                    </select>
+                </div>
                 <a href="give.html" class="btn-download" style="display: block; text-decoration: none; text-align: center;">Donate Any Amount</a>
                 <p class="form-note" style="margin-top: 16px; line-height: 1.6;">Every donor receives a free copy of <strong>Faith to Build</strong> via email. Your generosity fuels the mission.</p>
             </div>
@@ -386,6 +395,15 @@
                     <div class="form-group">
                         <label for="ebook-email">Email Address</label>
                         <input type="email" id="ebook-email" name="email" placeholder="you@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ebook-language">Choose Your Language</label>
+                        <select id="ebook-language" name="language" style="width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;font-size:15px;font-family:inherit;">
+                            <option value="en">English</option>
+                            <option value="es">Espa&#241;ol</option>
+                            <option value="it">Italiano</option>
+                            <option value="pl">Polski</option>
+                        </select>
                     </div>
                     <button type="submit" id="ebook-submit" class="btn-download">
                         Send Me the Book
@@ -476,40 +494,91 @@
         var pdfMap = {
             'pl': 'assets/Faith-to-Build-PL.pdf',
             'it': 'assets/Faith-to-Build-IT.pdf',
-            'es': 'assets/Faith-to-Build-ES.pdf'
+            'es': 'assets/Faith-to-Build-ES.pdf',
+            'en': 'assets/Faith-to-Build.pdf'
         };
 
-        // UI text for event mode per language
+        // UI text per language
         var textMap = {
-            'pl': { eyebrow: 'Darmowy Ebook', tagline: 'Odkryj, jak uczyni\u0107 sw\u00f3j biznes platform\u0105 dla Ewangelii. Pobierz darmowy egzemplarz od Marca Alfano.', btn: 'Pobierz PDF' },
-            'it': { eyebrow: 'Ebook Gratuito', tagline: 'Scopri come usare la tua attivit\u00e0 come piattaforma per il Vangelo. Scarica la tua copia gratuita da Marc Alfano.', btn: 'Scarica PDF' },
-            'es': { eyebrow: 'Ebook Gratis', tagline: 'Descubre c\u00f3mo usar tu negocio como plataforma para el Evangelio. Descarga tu copia gratuita de Marc Alfano.', btn: 'Descargar PDF' }
+            'en': { eyebrow: 'Free Ebook', tagline: 'Discover how to use your business as a platform for the Gospel. Download your free copy from Marc Alfano.', btn: 'Download PDF', submit: 'Send Me the Book', ready: 'Your book is ready!', clickBelow: 'Click below to download your free copy.' },
+            'pl': { eyebrow: 'Darmowy Ebook', tagline: 'Odkryj, jak uczyni\u0107 sw\u00f3j biznes platform\u0105 dla Ewangelii. Pobierz darmowy egzemplarz od Marca Alfano.', btn: 'Pobierz PDF', submit: 'Wy\u015blij mi ksi\u0105\u017ck\u0119', ready: 'Twoja ksi\u0105\u017cka jest gotowa!', clickBelow: 'Kliknij poni\u017cej, aby pobra\u0107 darmowy egzemplarz.' },
+            'it': { eyebrow: 'Ebook Gratuito', tagline: 'Scopri come usare la tua attivit\u00e0 come piattaforma per il Vangelo. Scarica la tua copia gratuita da Marc Alfano.', btn: 'Scarica PDF', submit: 'Inviami il libro', ready: 'Il tuo libro \u00e8 pronto!', clickBelow: 'Clicca qui sotto per scaricare la tua copia gratuita.' },
+            'es': { eyebrow: 'Ebook Gratis', tagline: 'Descubre c\u00f3mo usar tu negocio como plataforma para el Evangelio. Descarga tu copia gratuita de Marc Alfano.', btn: 'Descargar PDF', submit: 'Env\u00edame el libro', ready: '\u00a1Tu libro est\u00e1 listo!', clickBelow: 'Haz clic abajo para descargar tu copia gratuita.' }
         };
 
         var lang = params.get('lang');
-        var pdfUrl = pdfMap[lang] || 'assets/Faith-to-Build.pdf';
-
-        // Set correct PDF download link
         var downloadLink = document.getElementById('pdf-download-link');
-        if (downloadLink) downloadLink.href = pdfUrl;
+        var donateDropdown = document.getElementById('donate-language');
+        var ebookDropdown = document.getElementById('ebook-language');
+        var donateLink = donateDropdown ? donateDropdown.closest('.book-form-card').querySelector('.btn-download') : null;
+
+        // Update PDF link and UI text based on selected language
+        function updateLanguage(selectedLang) {
+            var pdfUrl = pdfMap[selectedLang] || pdfMap['en'];
+            if (downloadLink) downloadLink.href = pdfUrl;
+
+            var t = textMap[selectedLang] || textMap['en'];
+            if (downloadLink) downloadLink.textContent = t.btn;
+
+            var heroEyebrow = document.getElementById('hero-eyebrow');
+            var heroTagline = document.getElementById('hero-tagline');
+            var submitBtn = document.getElementById('ebook-submit');
+            var downloadSection = document.getElementById('download-section');
+
+            if (params.get('free') === '1' || document.getElementById('event-form').style.display !== 'none') {
+                if (heroEyebrow) heroEyebrow.textContent = t.eyebrow;
+                if (heroTagline) heroTagline.textContent = t.tagline;
+            }
+            if (submitBtn) submitBtn.textContent = t.submit;
+            if (downloadSection) {
+                var h4 = downloadSection.querySelector('h4');
+                var p = downloadSection.querySelector('p');
+                if (h4) h4.textContent = t.ready;
+                if (p) p.textContent = t.clickBelow;
+            }
+        }
+
+        // Update donate link to pass language to give.html
+        function updateDonateLink(selectedLang) {
+            if (!donateLink) return;
+            var href = 'give.html';
+            if (selectedLang && selectedLang !== 'en') {
+                href += '?lang=' + selectedLang;
+            }
+            donateLink.href = href;
+        }
+
+        // Pre-select dropdowns from URL param
+        if (lang) {
+            if (donateDropdown) donateDropdown.value = lang;
+            if (ebookDropdown) ebookDropdown.value = lang;
+            updateLanguage(lang);
+            updateDonateLink(lang);
+        }
+
+        // Donation card dropdown change
+        if (donateDropdown) {
+            donateDropdown.addEventListener('change', function() {
+                updateDonateLink(this.value);
+            });
+        }
+
+        // Event form dropdown change
+        if (ebookDropdown) {
+            ebookDropdown.addEventListener('change', function() {
+                updateLanguage(this.value);
+            });
+        }
 
         // Event mode: ?free=1
         if (params.get('free') === '1') {
             var donationCta = document.getElementById('donation-cta');
             var eventForm = document.getElementById('event-form');
-            var heroEyebrow = document.getElementById('hero-eyebrow');
-            var heroTagline = document.getElementById('hero-tagline');
             if (donationCta) donationCta.style.display = 'none';
             if (eventForm) eventForm.style.display = '';
 
-            if (lang && textMap[lang]) {
-                if (heroEyebrow) heroEyebrow.textContent = textMap[lang].eyebrow;
-                if (heroTagline) heroTagline.textContent = textMap[lang].tagline;
-                if (downloadLink) downloadLink.textContent = textMap[lang].btn;
-            } else {
-                if (heroEyebrow) heroEyebrow.textContent = 'Free Ebook';
-                if (heroTagline) heroTagline.textContent = 'Discover how to use your business as a platform for the Gospel. Download your free copy from Marc Alfano.';
-            }
+            // If no lang param, still set default English text
+            if (!lang) updateLanguage('en');
         }
 
         // Prefill email if provided
