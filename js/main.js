@@ -375,6 +375,83 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // ── Tour Inquiry Form ──
+    const tourForm = document.getElementById('tour-inquiry-form');
+    if (tourForm) {
+        tourForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const submitBtn = document.getElementById('tour-submit');
+            const messageEl = document.getElementById('tour-message-status');
+            const firstName = document.getElementById('tour-first-name').value.trim();
+            const lastName = document.getElementById('tour-last-name').value.trim();
+            const email = document.getElementById('tour-email').value.trim();
+            const phone = document.getElementById('tour-phone').value.trim();
+            const groupSize = document.getElementById('tour-group-size').value;
+            const tourOption = document.getElementById('tour-option').value;
+            const message = document.getElementById('tour-message').value.trim();
+
+            messageEl.textContent = '';
+            messageEl.className = 'signup-message';
+
+            if (!firstName || !lastName || !email || !phone) {
+                messageEl.textContent = 'Please fill in all required fields.';
+                messageEl.className = 'signup-message error';
+                return;
+            }
+
+            submitBtn.classList.add('loading');
+            submitBtn.textContent = 'Sending...';
+
+            const payload = {
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                phone: phone,
+                groupSize: groupSize,
+                tourOption: tourOption,
+                message: message,
+                formType: 'tour-inquiry'
+            };
+
+            try {
+                const res = await fetch(SIGNUP_WORKER_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json();
+
+                if (res.ok && data.success) {
+                    messageEl.textContent = 'Thank you! We\'ll be in touch with tour details soon.';
+                    messageEl.className = 'signup-message success';
+                    tourForm.reset();
+                } else {
+                    messageEl.textContent = data.message || 'Something went wrong. Please try again.';
+                    messageEl.className = 'signup-message error';
+                }
+            } catch (err) {
+                messageEl.textContent = 'Could not connect. Please try again later.';
+                messageEl.className = 'signup-message error';
+            }
+
+            submitBtn.classList.remove('loading');
+            submitBtn.textContent = 'Send Inquiry';
+        });
+    }
+
+    // ── Itinerary Toggle (smooth scroll) ──
+    document.querySelectorAll('.itinerary-toggle').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const target = document.querySelector(btn.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+
     // ── Mailing List Popup ──
     const POPUP_KEY = 'am_popup_dismissed';
     const POPUP_DAYS = 7; // show again after 7 days

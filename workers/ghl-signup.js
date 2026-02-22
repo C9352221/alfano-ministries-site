@@ -26,6 +26,7 @@ const GHL_API_URL = 'https://services.leadconnectorhq.com/contacts/';
 const GHL_LOCATION_ID = 'AIPTqymDwrSMF9zx8Pul';
 const SIGNUP_TAG = 'website signup';
 const EBOOK_TAG = 'ebook download';
+const TOUR_TAG = 'tour inquiry';
 
 function ghlHeaders(apiKey) {
   return {
@@ -126,7 +127,7 @@ export default {
     }
 
     // Validate required fields
-    const { firstName, lastName, email, phone, language, formType } = body;
+    const { firstName, lastName, email, phone, language, formType, groupSize, tourOption, message } = body;
 
     if (!email && !phone) {
       return jsonResponse({ success: false, message: 'Email or phone is required' }, 400, safeOrigin);
@@ -139,8 +140,9 @@ export default {
 
     // Determine tag and source based on form type
     const isEbook = formType === 'ebook';
-    const activeTag = isEbook ? EBOOK_TAG : SIGNUP_TAG;
-    const activeSource = isEbook ? 'Faith to Build ebook' : 'Get on my list';
+    const isTour = formType === 'tour-inquiry';
+    const activeTag = isTour ? TOUR_TAG : (isEbook ? EBOOK_TAG : SIGNUP_TAG);
+    const activeSource = isTour ? 'Tour inquiry form' : (isEbook ? 'Faith to Build ebook' : 'Get on my list');
 
     // Build GHL contact payload
     const ghlPayload = {
@@ -156,9 +158,20 @@ export default {
 
     // Map form values to GHL dropdown values
     const langMap = { 'english': 'English', 'spanish': 'Español', 'italian': 'Italiano', 'polish': 'Polski' };
-    ghlPayload.customFields = [
-      { key: 'preferred_language', field_value: langMap[language] || 'English' }
-    ];
+    if (!isTour) {
+      ghlPayload.customFields = [
+        { key: 'preferred_language', field_value: langMap[language] || 'English' }
+      ];
+    }
+
+    // Build notes for tour inquiries
+    if (isTour) {
+      const noteParts = ['Tour Inquiry'];
+      if (tourOption) noteParts.push(`Preferred tour: ${tourOption}`);
+      if (groupSize) noteParts.push(`Group size: ${groupSize}`);
+      if (message) noteParts.push(`Message: ${message}`);
+      ghlPayload.notes = [noteParts.join(' | ')];
+    }
 
     // Call GHL API
     try {
