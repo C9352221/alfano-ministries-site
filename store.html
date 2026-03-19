@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store — Alfano Ministries</title>
+    <meta name="description" content="Books by Marc Alfano — Faith to Build: A Kingdom Business Blueprint and GO: Connected, Called, Commissioned. Available on Amazon.">
+    <meta name="theme-color" content="#1a3a5c">
+    <meta property="og:title" content="Store — Alfano Ministries">
+    <meta property="og:description" content="Books by Marc Alfano — Kingdom resources to equip and empower believers.">
+    <meta property="og:url" content="https://alfanoministries.com/store.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Alfano Ministries">
+    <meta property="og:image" content="https://storage.googleapis.com/msgsndr/AIPTqymDwrSMF9zx8Pul/media/698bedd87305aa7e88676972.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Store — Alfano Ministries">
+    <meta name="twitter:description" content="Books by Marc Alfano — Kingdom resources to equip and empower believers.">
+    <meta name="twitter:image" content="https://storage.googleapis.com/msgsndr/AIPTqymDwrSMF9zx8Pul/media/698bedd87305aa7e88676972.jpg">
+    <link rel="canonical" href="https://alfanoministries.com/store.html">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <style>
+        .store-book {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+        @media (max-width: 768px) {
+            .store-book {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+        }
+        .book-details h2 {
+            font-family: 'Lora', serif;
+            font-size: 1.8rem;
+            color: var(--royal-blue);
+            margin-bottom: 16px;
+        }
+        .book-details .pull-quote {
+            font-family: 'Lora', serif;
+            font-style: italic;
+            font-size: 1.1rem;
+            color: var(--royal-blue);
+            border-left: 3px solid var(--gold);
+            padding-left: 20px;
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+        .book-details p {
+            color: var(--text-body);
+            margin-bottom: 16px;
+            line-height: 1.7;
+        }
+        .book-details .discover-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+        .book-details .discover-list li {
+            padding: 8px 0 8px 28px;
+            position: relative;
+            color: var(--text-body);
+            line-height: 1.6;
+        }
+        .book-details .discover-list li::before {
+            content: '\2726';
+            position: absolute;
+            left: 0;
+            color: var(--gold);
+            font-size: 1.1rem;
+        }
+        .book-form-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            position: sticky;
+            top: 100px;
+        }
+        .book-form-card h3 {
+            font-family: 'Lora', serif;
+            font-size: 1.4rem;
+            color: var(--royal-blue);
+            text-align: center;
+            margin-bottom: 6px;
+        }
+        .book-form-card .form-subtitle {
+            text-align: center;
+            color: var(--text-light);
+            font-size: 0.95rem;
+            margin-bottom: 28px;
+        }
+        .book-form-card .form-group {
+            margin-bottom: 16px;
+        }
+        .book-form-card label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+        }
+        .book-form-card input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-family: 'Open Sans', sans-serif;
+            transition: var(--transition);
+            background: var(--warm-white);
+        }
+        .book-form-card input:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(232,185,35,0.15);
+        }
+        .book-form-card .btn-download {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background: var(--gold);
+            color: var(--royal-blue-dark);
+            border: none;
+            border-radius: var(--radius);
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 700;
+            font-size: 1.05rem;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+        .book-form-card .btn-download:hover {
+            background: var(--gold-light);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(232,185,35,0.3);
+        }
+        .book-form-card .btn-download.loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        .book-form-card .form-note {
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-top: 12px;
+        }
+        #ebook-message {
+            text-align: center;
+            padding: 10px;
+            border-radius: var(--radius);
+            margin-top: 12px;
+            font-size: 0.95rem;
+            display: none;
+        }
+        #ebook-message.success {
+            display: block;
+            background: #f0fdf4;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+        #ebook-message.error {
+            display: block;
+            background: #fef2f2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+        #download-section {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            padding: 24px;
+            background: #f0fdf4;
+            border-radius: var(--radius);
+            border: 1px solid #bbf7d0;
+        }
+        #download-section.visible {
+            display: block;
+            animation: fadeUp 0.5s ease;
+        }
+        #download-section h4 {
+            font-family: 'Lora', serif;
+            color: #166534;
+            margin-bottom: 8px;
+            font-size: 1.15rem;
+        }
+        #download-section p {
+            color: #166534;
+            font-size: 0.9rem;
+            margin-bottom: 14px;
+        }
+        #download-section .btn-get-book {
+            display: inline-block;
+            padding: 14px 36px;
+            background: var(--royal-blue);
+            color: var(--white);
+            border-radius: var(--radius);
+            font-weight: 700;
+            font-size: 1.05rem;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        #download-section .btn-get-book:hover {
+            background: var(--royal-blue-light);
+            transform: translateY(-1px);
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .book-bottom-quote {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 60px 24px 80px;
+        }
+        .book-bottom-quote blockquote {
+            font-family: 'Lora', serif;
+            font-style: italic;
+            font-size: 1.15rem;
+            color: var(--royal-blue);
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+        .book-bottom-quote cite {
+            font-style: normal;
+            font-weight: 600;
+            color: var(--gold-warm);
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+    <a href="#main" class="skip-link">Skip to content</a>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">Alfano Ministries</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="marketplace.html">Marketplace</a>
+                <a href="media.html">Media</a>
+                <a href="7k-revelation.html">7K Revelation</a>
+                <a href="travel-map.html">Travel Map</a>
+                <!-- <a href="tours.html">Tours</a> -->
+                <a href="store.html" class="active">Store</a>
+                <a href="give.html" class="nav-cta">Give</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <button class="hamburger" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section id="main" class="hero" style="min-height: 50vh;">
+        <div class="hero-bg" style="background-image: url('https://storage.googleapis.com/msgsndr/AIPTqymDwrSMF9zx8Pul/media/698bedd87305aa17ea676976.jpg');"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-eyebrow" id="hero-eyebrow">Books by Marc Alfano</div>
+            <h1>Kingdom <span class="gold">Resources</span></h1>
+            <div class="hero-divider"></div>
+            <p id="hero-tagline">Equipping believers with practical, Kingdom-focused teaching for everyday life.</p>
+        </div>
+    </section>
+
+    <!-- Book 1: GO -->
+    <section class="section section-cream">
+        <div class="container">
+            <div class="section-header fade-in">
+                <div class="section-eyebrow">New Release</div>
+                <h2 class="section-title">GO: Connected, Called, Commissioned</h2>
+                <div class="section-divider"></div>
+            </div>
+            <div class="store-book fade-in">
+                <div class="book-details">
+                    <div class="pull-quote">
+                        "Two men will be in the field; one will be taken and the other left."
+                    </div>
+                    <p><strong>GO</strong> is a call to every believer to step out of the pew and into purpose. Marc Alfano takes you on a journey from being connected to the Vine, to discovering your calling, to being commissioned and sent into the harvest field.</p>
+                    <p>Drawing from over 20 years of ministry across 19+ countries, Marc shares powerful testimonies, biblical foundations, and a clear roadmap for anyone who is ready to answer the call to GO.</p>
+
+                    <h2>Inside You'll Discover</h2>
+                    <ul class="discover-list">
+                        <li>How to stay connected to the Vine and bear lasting fruit</li>
+                        <li>The difference between being called and being commissioned</li>
+                        <li>Why the marketplace is the greatest mission field on earth</li>
+                        <li>Real stories of God's power in the nations</li>
+                        <li>Your next step to GO — wherever He sends you</li>
+                    </ul>
+
+                    <a href="https://www.amazon.com/GO-Connected-Commissioned-Marc-Alfano/dp/B0GSFYG7TT/" class="btn-primary" target="_blank" rel="noopener" style="display: inline-block; margin-top: 12px;">Buy on Amazon</a>
+                </div>
+                <div class="book-form-card" style="position: static;">
+                    <h3>GO</h3>
+                    <p class="form-subtitle">Connected, Called, Commissioned</p>
+                    <div style="text-align: center; padding: 20px 0;">
+                        <div style="font-size: 5rem; line-height: 1;">&#128214;</div>
+                        <p style="color: var(--text-body); font-size: 0.95rem; margin-top: 16px; line-height: 1.7;">Available now on Amazon in paperback and Kindle.</p>
+                    </div>
+                    <a href="https://www.amazon.com/GO-Connected-Commissioned-Marc-Alfano/dp/B0GSFYG7TT/" class="btn-download" target="_blank" rel="noopener" style="display: block; text-decoration: none; text-align: center;">Get Your Copy</a>
+                    <p class="form-note" style="margin-top: 16px;">By Marc Alfano</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Book 2: Faith to Build -->
+    <section class="section section-white">
+        <div class="container">
+            <div class="section-header fade-in">
+                <div class="section-eyebrow">Bestseller</div>
+                <h2 class="section-title">Faith to Build: A Kingdom Business Blueprint</h2>
+                <div class="section-divider"></div>
+            </div>
+            <div class="store-book fade-in">
+                <div class="book-details">
+                    <div class="pull-quote">
+                        "They can take my business, but they can't take my anointing."
+                    </div>
+                    <p>Marc Alfano lost everything in 2009 — his restaurant, his income, his identity. But he never lost his calling.</p>
+                    <p>In <strong>Faith to Build</strong>, Marc shares the blueprint that took him from bankruptcy to building businesses across 17 states, launching a global ministry, and discovering that the marketplace — not the church pew — is the greatest mission field on earth.</p>
+
+                    <h2>Inside You'll Discover</h2>
+                    <ul class="discover-list">
+                        <li>Why your business IS your pulpit</li>
+                        <li>The Joseph Blueprint for kingdom entrepreneurship</li>
+                        <li>How one seed — planted in faith — can produce a harvest beyond imagination</li>
+                        <li>The difference between God's economy and the world's system</li>
+                        <li>Practical steps to just start, even when the pool is empty</li>
+                    </ul>
+
+                    <a href="https://www.amazon.com/Faith-Build-Kingdom-Business-Blueprint/dp/B0GQPRBMSN/" class="btn-primary" target="_blank" rel="noopener" style="display: inline-block; margin-top: 12px;">Buy on Amazon</a>
+                </div>
+
+                <!-- Right: Donation CTA (default) -->
+                <div class="book-form-card" id="donation-cta" style="position: static;">
+                    <h3>Get Your Free Copy</h3>
+                    <p class="form-subtitle">Donate any amount and receive the ebook via email</p>
+                    <div class="form-group">
+                        <label for="donate-language">Choose Your Language</label>
+                        <select id="donate-language" style="width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;font-size:15px;font-family:inherit;margin-bottom:12px;">
+                            <option value="en">English</option>
+                            <option value="es">Espa&#241;ol</option>
+                            <option value="it">Italiano</option>
+                            <option value="pl">Polski</option>
+                        </select>
+                    </div>
+                    <a href="give.html" class="btn-download" style="display: block; text-decoration: none; text-align: center;">Donate Any Amount</a>
+                    <p class="form-note" style="margin-top: 16px; line-height: 1.6;">Every donor receives a free copy of <strong>Faith to Build</strong> via email. Your generosity fuels the mission.</p>
+                </div>
+
+                <!-- Right: Free Download Form (event mode — hidden by default) -->
+                <div class="book-form-card" id="event-form" style="display: none;">
+                    <h3>Get Your Free Copy</h3>
+                    <p class="form-subtitle">Enter your info and download instantly</p>
+
+                    <form id="ebook-form" novalidate>
+                        <div class="form-group">
+                            <label for="ebook-first-name">First Name</label>
+                            <input type="text" id="ebook-first-name" name="firstName" placeholder="Your first name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="ebook-email">Email Address</label>
+                            <input type="email" id="ebook-email" name="email" placeholder="you@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="ebook-language">Choose Your Language</label>
+                            <select id="ebook-language" name="language" style="width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;font-size:15px;font-family:inherit;">
+                                <option value="en">English</option>
+                                <option value="es">Espa&#241;ol</option>
+                                <option value="it">Italiano</option>
+                                <option value="pl">Polski</option>
+                            </select>
+                        </div>
+                        <button type="submit" id="ebook-submit" class="btn-download">
+                            Send Me the Book
+                        </button>
+                        <div id="ebook-message" role="alert" aria-live="polite"></div>
+                        <p class="form-note">We respect your privacy. Unsubscribe anytime.</p>
+                    </form>
+
+                    <div id="download-section">
+                        <h4>Your book is ready!</h4>
+                        <p>Click below to download your free copy.</p>
+                        <a href="assets/Faith-to-Build.pdf" download id="pdf-download-link" class="btn-get-book">Download PDF</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bottom Quote -->
+    <section class="section section-cream">
+        <div class="book-bottom-quote fade-in">
+            <blockquote>"Faith is standing on a high dive over an empty swimming pool. I'm praying, 'God, bring the water.' And God says, 'No — jump, and I'm going to bring the water.'"</blockquote>
+            <cite>— Marc Alfano</cite>
+        </div>
+    </section>
+
+    <!-- CTA Banner -->
+    <section class="section section-blue">
+        <div class="container">
+            <div class="cta-banner fade-in">
+                <div class="section-eyebrow" style="color: var(--gold);">Stay Connected</div>
+                <h2 style="color: var(--white);">Want More from Alfano Ministries?</h2>
+                <div class="divider"></div>
+                <p style="color: rgba(255,255,255,0.7);">Join our mailing list for ministry updates, event invitations, and encouragement.</p>
+                <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 8px;">
+                    <a href="contact.html#stay-connected" class="btn-primary">Join the List</a>
+                    <a href="7k-revelation.html" class="btn-outline-light">Listen to the Podcast</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="footer-brand">
+                <h3>Alfano Ministries</h3>
+                <p>Empowering everyday believers to advance the Kingdom across the nations through marketplace ministry, teaching, and global outreach.</p>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/alfanoministries" class="social-link" aria-label="Facebook" target="_blank" rel="noopener">f</a>
+                    <a href="https://www.instagram.com/alfanoministries" class="social-link" aria-label="Instagram" target="_blank" rel="noopener">ig</a>
+                    <a href="https://www.youtube.com/@alfanoministries" class="social-link" aria-label="YouTube" target="_blank" rel="noopener">yt</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Pages</h4>
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="marketplace.html">Marketplace</a>
+                <a href="media.html">Media</a>
+                <a href="7k-revelation.html">7K Revelation</a>
+                <a href="travel-map.html">Travel Map</a>
+                <!-- <a href="tours.html">Tours</a> -->
+                <a href="store.html">Store</a>
+            </div>
+            <div class="footer-col">
+                <h4>Connect</h4>
+                <a href="give.html">Give</a>
+                <a href="contact.html">Contact</a>
+                <a href="mailto:marc@alfanoministries.com">Email Us</a>
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="terms.html">Terms of Service</a>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <a href="mailto:marc@alfanoministries.com">marc@alfanoministries.com</a>
+                <a href="tel:+17244135224">724-413-5224</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-copy">&copy; 2026 Alfano Ministries. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <script src="js/main.js" defer></script>
+    <script>
+    (function() {
+        var params = new URLSearchParams(window.location.search);
+
+        // Language-to-PDF mapping
+        var pdfMap = {
+            'pl': 'assets/Faith-to-Build-PL.pdf',
+            'it': 'assets/Faith-to-Build-IT.pdf',
+            'es': 'assets/Faith-to-Build-ES.pdf',
+            'en': 'assets/Faith-to-Build.pdf'
+        };
+
+        // UI text per language
+        var textMap = {
+            'en': { eyebrow: 'Free Ebook', tagline: 'Discover how to use your business as a platform for the Gospel. Download your free copy from Marc Alfano.', btn: 'Download PDF', submit: 'Send Me the Book', ready: 'Your book is ready!', clickBelow: 'Click below to download your free copy.' },
+            'pl': { eyebrow: 'Darmowy Ebook', tagline: 'Odkryj, jak uczyni\u0107 sw\u00f3j biznes platform\u0105 dla Ewangelii. Pobierz darmowy egzemplarz od Marca Alfano.', btn: 'Pobierz PDF', submit: 'Wy\u015blij mi ksi\u0105\u017ck\u0119', ready: 'Twoja ksi\u0105\u017cka jest gotowa!', clickBelow: 'Kliknij poni\u017cej, aby pobra\u0107 darmowy egzemplarz.' },
+            'it': { eyebrow: 'Ebook Gratuito', tagline: 'Scopri come usare la tua attivit\u00e0 come piattaforma per il Vangelo. Scarica la tua copia gratuita da Marc Alfano.', btn: 'Scarica PDF', submit: 'Inviami il libro', ready: 'Il tuo libro \u00e8 pronto!', clickBelow: 'Clicca qui sotto per scaricare la tua copia gratuita.' },
+            'es': { eyebrow: 'Ebook Gratis', tagline: 'Descubre c\u00f3mo usar tu negocio como plataforma para el Evangelio. Descarga tu copia gratuita de Marc Alfano.', btn: 'Descargar PDF', submit: 'Env\u00edame el libro', ready: '\u00a1Tu libro est\u00e1 listo!', clickBelow: 'Haz clic abajo para descargar tu copia gratuita.' }
+        };
+
+        var lang = params.get('lang');
+        var downloadLink = document.getElementById('pdf-download-link');
+        var donateDropdown = document.getElementById('donate-language');
+        var ebookDropdown = document.getElementById('ebook-language');
+        var donateLink = donateDropdown ? donateDropdown.closest('.book-form-card').querySelector('.btn-download') : null;
+
+        // Update PDF link and UI text based on selected language
+        function updateLanguage(selectedLang) {
+            var pdfUrl = pdfMap[selectedLang] || pdfMap['en'];
+            if (downloadLink) downloadLink.href = pdfUrl;
+
+            var t = textMap[selectedLang] || textMap['en'];
+            if (downloadLink) downloadLink.textContent = t.btn;
+
+            var submitBtn = document.getElementById('ebook-submit');
+            var downloadSection = document.getElementById('download-section');
+
+            if (submitBtn) submitBtn.textContent = t.submit;
+            if (downloadSection) {
+                var h4 = downloadSection.querySelector('h4');
+                var p = downloadSection.querySelector('p');
+                if (h4) h4.textContent = t.ready;
+                if (p) p.textContent = t.clickBelow;
+            }
+        }
+
+        // Update donate link to pass language to give.html
+        function updateDonateLink(selectedLang) {
+            if (!donateLink) return;
+            var href = 'give.html';
+            if (selectedLang && selectedLang !== 'en') {
+                href += '?lang=' + selectedLang;
+            }
+            donateLink.href = href;
+        }
+
+        // Pre-select dropdowns from URL param
+        if (lang) {
+            if (donateDropdown) donateDropdown.value = lang;
+            if (ebookDropdown) ebookDropdown.value = lang;
+            updateLanguage(lang);
+            updateDonateLink(lang);
+        }
+
+        // Donation card dropdown change
+        if (donateDropdown) {
+            donateDropdown.addEventListener('change', function() {
+                updateDonateLink(this.value);
+            });
+        }
+
+        // Event form dropdown change
+        if (ebookDropdown) {
+            ebookDropdown.addEventListener('change', function() {
+                updateLanguage(this.value);
+            });
+        }
+
+        // Event mode: ?free=1
+        if (params.get('free') === '1') {
+            var donationCta = document.getElementById('donation-cta');
+            var eventForm = document.getElementById('event-form');
+            if (donationCta) donationCta.style.display = 'none';
+            if (eventForm) eventForm.style.display = '';
+
+            if (!lang) updateLanguage('en');
+        }
+
+        // Prefill email if provided
+        var email = params.get('email');
+        if (email) {
+            var field = document.getElementById('ebook-email');
+            if (field) field.value = email;
+        }
+    })();
+    </script>
+</body>
+</html>
