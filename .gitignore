@@ -1,5 +1,6 @@
 moodboards/
 assets/
+assets-backup-*/
 *.zip
 .htaccess
 .htaccess_WITH_HSTS

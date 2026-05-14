@@ -537,6 +537,15 @@ ul { list-style: none; }
     justify-content: center;
     font-size: 3rem;
     color: var(--gold);
+    overflow: hidden;
+    position: relative;
+}
+
+.card-icon-top img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 .card-body {
@@ -612,6 +621,29 @@ ul { list-style: none; }
     color: var(--text-body);
     font-size: 0.9rem;
     line-height: 1.7;
+}
+
+/* Icon-card variant with photo banner (used on About page Mission/Vision) */
+.icon-card-photo {
+    padding: 0;
+    overflow: hidden;
+}
+
+.icon-card-photo .card-photo-top {
+    height: 200px;
+    overflow: hidden;
+}
+
+.icon-card-photo .card-photo-top img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.icon-card-photo .card-photo-body {
+    padding: 28px 28px 32px;
+    text-align: center;
 }
 
 /* ── Stats ── */
@@ -1175,6 +1207,14 @@ ul { list-style: none; }
     color: var(--white);
     font-size: 1.1rem;
     transition: var(--transition);
+    text-decoration: none;
+}
+
+.social-link svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+    display: block;
 }
 
 .social-link:hover {
