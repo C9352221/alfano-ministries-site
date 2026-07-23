@@ -127,7 +127,7 @@ export default {
     }
 
     // Validate required fields
-    const { firstName, lastName, email, phone, language, formType, groupSize, tourOption, message } = body;
+    const { firstName, lastName, email, phone, country, language, formType, groupSize, tourOption, message } = body;
 
     if (!email && !phone) {
       return jsonResponse({ success: false, message: 'Email or phone is required' }, 400, safeOrigin);
@@ -155,6 +155,7 @@ export default {
     if (lastName) ghlPayload.lastName = lastName;
     if (email) ghlPayload.email = email;
     if (phone) ghlPayload.phone = phone;
+    if (country && country !== 'OTHER') ghlPayload.country = country;
 
     // Map form values to GHL dropdown values
     const langMap = { 'english': 'English', 'spanish': 'Español', 'italian': 'Italiano', 'polish': 'Polski' };

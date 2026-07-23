@@ -183,6 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const messageEl = document.getElementById('signup-message');
             const email = document.getElementById('signup-email').value.trim();
             const phone = document.getElementById('signup-phone').value.trim();
+            const country = document.getElementById('signup-country').value;
             const consent = document.getElementById('signup-consent').checked;
 
             // Clear previous messages
@@ -192,6 +193,12 @@ document.addEventListener('DOMContentLoaded', () => {
             // Validate required fields
             if (!email || !phone) {
                 messageEl.textContent = 'Please fill in your email and phone number.';
+                messageEl.className = 'signup-message error';
+                return;
+            }
+
+            if (!country) {
+                messageEl.textContent = 'Please select your country.';
                 messageEl.className = 'signup-message error';
                 return;
             }
@@ -211,6 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 lastName: document.getElementById('signup-last-name').value.trim(),
                 email: email,
                 phone: phone,
+                country: document.getElementById('signup-country').value,
                 language: document.getElementById('signup-language').value
             };
 
