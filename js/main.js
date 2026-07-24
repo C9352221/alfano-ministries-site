@@ -203,11 +203,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            if (!consent) {
-                messageEl.textContent = 'Please agree to receive messages before signing up.';
-                messageEl.className = 'signup-message error';
-                return;
-            }
+            // SMS consent is OPTIONAL and must never block signup (TCPA: consent
+            // cannot be a condition of service). If unchecked, the contact still
+            // joins; they just are not enrolled for SMS.
 
             // Loading state
             submitBtn.classList.add('loading');
@@ -219,6 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 email: email,
                 phone: phone,
                 country: document.getElementById('signup-country').value,
+                smsConsent: consent,
                 language: document.getElementById('signup-language').value
             };
 

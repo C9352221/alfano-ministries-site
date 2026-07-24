@@ -27,6 +27,7 @@ const GHL_LOCATION_ID = 'AIPTqymDwrSMF9zx8Pul';
 const SIGNUP_TAG = 'website signup';
 const EBOOK_TAG = 'ebook download';
 const TOUR_TAG = 'tour inquiry';
+const SMS_CONSENT_TAG = 'sms-consent';
 
 function ghlHeaders(apiKey) {
   return {
@@ -127,7 +128,7 @@ export default {
     }
 
     // Validate required fields
-    const { firstName, lastName, email, phone, country, language, formType, groupSize, tourOption, message } = body;
+    const { firstName, lastName, email, phone, country, smsConsent, language, formType, groupSize, tourOption, message } = body;
 
     if (!email && !phone) {
       return jsonResponse({ success: false, message: 'Email or phone is required' }, 400, safeOrigin);
@@ -144,11 +145,16 @@ export default {
     const activeTag = isTour ? TOUR_TAG : (isEbook ? EBOOK_TAG : SIGNUP_TAG);
     const activeSource = isTour ? 'Tour inquiry form' : (isEbook ? 'Faith to Build ebook' : 'Get on my list');
 
+    // SMS consent is optional. Only tag contacts who actively checked the box,
+    // so texting sends can be filtered to consented contacts only.
+    const tags = [activeTag];
+    if (smsConsent === true) tags.push(SMS_CONSENT_TAG);
+
     // Build GHL contact payload
     const ghlPayload = {
       locationId: GHL_LOCATION_ID,
       source: activeSource,
-      tags: [activeTag],
+      tags: tags,
     };
 
     if (firstName) ghlPayload.firstName = firstName;
