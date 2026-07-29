@@ -164,7 +164,7 @@ export default {
     if (country && country !== 'OTHER') ghlPayload.country = country;
 
     // Map form values to GHL dropdown values
-    const langMap = { 'english': 'English', 'spanish': 'Español', 'italian': 'Italiano', 'polish': 'Polski' };
+    const langMap = { 'en': 'English', 'es': 'Español', 'it': 'Italiano', 'pl': 'Polski', 'bg': 'Български' };
     if (!isTour) {
       ghlPayload.customFields = [
         { key: 'preferred_language', field_value: langMap[language] || 'English' }
