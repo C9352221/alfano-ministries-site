@@ -102,8 +102,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ── Podcast RSS Loader ──
+    // Anchor serves the feed with Access-Control-Allow-Origin: *, so we read it
+    // directly. No JSON proxy in the middle, which means no third-party cache
+    // holding new episodes back and no rate limit to trip over.
     const RSS_FEED = 'https://anchor.fm/s/f4cac4f8/podcast/rss';
-    const RSS_API = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(RSS_FEED);
+    const ITUNES_NS = 'http://www.itunes.com/dtds/podcast-1.0.dtd';
     const PODCAST_ART = 'https://d3t3ozftmdmh3i.cloudfront.net/production/podcast_uploaded_nologo/40969294/40969294-1713838427761-d93b6e3c8f43.jpg';
 
     function formatDate(dateStr) {
@@ -115,6 +118,55 @@ document.addEventListener('DOMContentLoaded', () => {
         const tmp = document.createElement('div');
         tmp.innerHTML = html;
         return tmp.textContent || tmp.innerText || '';
+    }
+
+    function tagText(node, tag) {
+        const el = node.getElementsByTagName(tag)[0];
+        return el ? el.textContent.trim() : '';
+    }
+
+    function itunesTag(node, tag) {
+        return node.getElementsByTagNameNS(ITUNES_NS, tag)[0] || null;
+    }
+
+    // Map the RSS <item> elements onto the same shape the cards already expect.
+    function parseFeed(xmlText) {
+        const doc = new DOMParser().parseFromString(xmlText, 'application/xml');
+        if (doc.getElementsByTagName('parsererror').length) {
+            throw new Error('Malformed feed XML');
+        }
+        return Array.from(doc.querySelectorAll('channel > item')).map(item => {
+            const art = itunesTag(item, 'image');
+            const epNum = itunesTag(item, 'episode');
+            const enc = item.getElementsByTagName('enclosure')[0];
+            return {
+                title: tagText(item, 'title'),
+                link: tagText(item, 'link'),
+                pubDate: tagText(item, 'pubDate'),
+                description: tagText(item, 'description'),
+                thumbnail: art ? art.getAttribute('href') : '',
+                itunes_episode: epNum ? epNum.textContent.trim() : '',
+                enclosure: { link: enc ? enc.getAttribute('url') : '' }
+            };
+        });
+    }
+
+    // Both podcast sections on a page share one request.
+    let feedPromise = null;
+    function getEpisodes() {
+        if (!feedPromise) {
+            feedPromise = fetch(RSS_FEED)
+                .then(res => {
+                    if (!res.ok) throw new Error('Feed returned ' + res.status);
+                    return res.text();
+                })
+                .then(parseFeed)
+                .then(episodes => {
+                    if (!episodes.length) throw new Error('No episodes found');
+                    return episodes;
+                });
+        }
+        return feedPromise;
     }
 
     function buildEpisodeCard(ep, index) {
@@ -148,13 +200,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const count = parseInt(container.getAttribute('data-episode-count') || '6', 10);
             container.innerHTML = '<div class="episode-loading"><div class="spinner"></div><p>Loading episodes...</p></div>';
 
-            fetch(RSS_API)
-                .then(res => res.json())
-                .then(data => {
-                    if (data.status !== 'ok' || !data.items || data.items.length === 0) {
-                        throw new Error('No episodes found');
-                    }
-                    const episodes = data.items.slice(0, count);
+            getEpisodes()
+                .then(items => {
+                    const episodes = items.slice(0, count);
                     const cards = episodes.map((ep, i) => buildEpisodeCard(ep, i)).join('');
                     container.innerHTML = `<div class="episode-grid">${cards}</div>`;
                 })
