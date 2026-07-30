@@ -1387,7 +1387,9 @@ ul { list-style: none; }
 
 .episode-card-img {
     width: 100%;
-    aspect-ratio: 16/9;
+    /* Podcast artwork is square. A 16/9 box center-cropped it and cut through
+       the episode title on any art with type at the bottom. */
+    aspect-ratio: 1/1;
     object-fit: cover;
     background: linear-gradient(135deg, var(--royal-blue) 0%, var(--royal-blue-light) 100%);
 }
