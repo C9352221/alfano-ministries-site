@@ -1,0 +1,15 @@
+{
+  "name": "Book Table",
+  "short_name": "Book Table",
+  "description": "Sell Marc Alfano's books in person.",
+  "start_url": "sell.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a162a",
+  "theme_color": "#0a162a",
+  "icons": [
+    { "src": "assets/sell-icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/sell-icon.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Book Table</title>
+<meta name="theme-color" content="#0a162a">
+<link rel="manifest" href="sell.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Book Table">
+<style>
+  :root{
+    --navy:#0a162a; --navy2:#12243f; --navy3:#1b3252; --card:#122844;
+    --gold:#e8b923; --goldd:#c99a1f; --cream:#f5f0dc; --dim:#9aa7bd;
+    --line:#243a5c; --ok:#2fbf71; --danger:#e06666;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+  html,body{margin:0; height:100%}
+  body{
+    background:linear-gradient(180deg,var(--navy),#081121);
+    color:var(--cream); font-family:Georgia,"Times New Roman",serif;
+    padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    min-height:100%;
+  }
+  .wrap{max-width:560px; margin:0 auto; padding:0 14px 120px}
+  header{display:flex; align-items:center; justify-content:space-between; padding:16px 2px 10px}
+  header h1{font-size:1.15rem; margin:0; letter-spacing:.02em}
+  header h1 .g{color:var(--gold)}
+  .cur select{
+    background:var(--navy3); color:var(--cream); border:1px solid var(--line);
+    border-radius:10px; padding:9px 10px; font-size:1rem; font-family:inherit;
+  }
+  .hint{color:var(--dim); font-size:.82rem; text-align:center; margin:6px 0 14px}
+  .hint.warn{color:var(--gold)}
+  /* catalog */
+  .grid{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+  .book{background:var(--card); border:1px solid var(--line); border-radius:14px;
+        overflow:hidden; display:flex; flex-direction:column}
+  .book img{width:100%; aspect-ratio:1/1.5; object-fit:cover; background:#0e1f38; display:block}
+  .book .b{padding:9px 10px 12px; display:flex; flex-direction:column; gap:6px; flex:1}
+  .book .t{font-size:.92rem; line-height:1.2}
+  .book .sub{color:var(--dim); font-size:.72rem; margin-top:-2px}
+  .book .p{color:var(--gold); font-weight:bold; font-size:1.02rem; margin-top:auto}
+  .add{background:var(--gold); color:#25200a; border:none; border-radius:9px;
+       padding:9px; font-family:inherit; font-weight:bold; font-size:.9rem; cursor:pointer}
+  .add:active{background:var(--goldd)}
+  .fmt{background:var(--navy3); color:var(--cream); border:1px solid var(--line); border-radius:8px;
+       padding:7px 8px; font-family:inherit; font-size:.82rem; width:100%}
+  .qtybar{display:flex; align-items:center; justify-content:space-between; gap:6px}
+  .qtybar button{width:34px; height:34px; border-radius:8px; border:1px solid var(--line);
+       background:var(--navy3); color:var(--cream); font-size:1.2rem; cursor:pointer}
+  .qtybar .n{font-weight:bold; min-width:20px; text-align:center}
+  /* cart bar */
+  .cartbar{position:fixed; left:0; right:0; bottom:0; background:var(--navy2);
+    border-top:1px solid var(--line); padding:12px 14px calc(12px + env(safe-area-inset-bottom));
+    display:flex; align-items:center; justify-content:space-between; gap:12px; z-index:20;
+    max-width:560px; margin:0 auto}
+  .cartbar .sum{font-size:.95rem}
+  .cartbar .sum b{color:var(--gold); font-size:1.15rem}
+  .btn{background:var(--gold); color:#25200a; border:none; border-radius:11px;
+    padding:14px 18px; font-family:inherit; font-weight:bold; font-size:1rem; cursor:pointer; flex:1}
+  .btn:active{background:var(--goldd)}
+  .btn.sec{background:var(--navy3); color:var(--cream); border:1px solid var(--line)}
+  .btn.ok{background:var(--ok); color:#06210f}
+  .btn:disabled{opacity:.4}
+  /* screens */
+  .screen{display:none}
+  .screen.on{display:block}
+  .panel{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px; margin-bottom:14px}
+  .row{display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--line)}
+  .row:last-child{border-bottom:none}
+  .row .l{display:flex; gap:10px; align-items:center}
+  .row .l img{width:38px; height:57px; object-fit:cover; border-radius:5px}
+  .row .name{font-size:.9rem} .row .meta{color:var(--dim); font-size:.76rem}
+  .row .amt{color:var(--gold); font-weight:bold}
+  .rm{width:34px; height:34px; border-radius:8px; border:1px solid var(--line);
+      background:transparent; color:var(--danger); font-size:.95rem; cursor:pointer; flex:0 0 auto}
+  .rm:active{background:rgba(224,102,102,.12)}
+  .totals{display:flex; justify-content:space-between; padding-top:12px; font-size:1.25rem}
+  .totals b{color:var(--gold)}
+  .back{background:none; border:none; color:var(--dim); font-family:inherit; font-size:.95rem; cursor:pointer; padding:8px 0}
+  h2.sc{font-size:1.25rem; margin:6px 0 14px}
+  /* pay method buttons */
+  .pays{display:grid; gap:10px; margin-top:8px}
+  .pay{display:flex; align-items:center; gap:12px; padding:15px; border-radius:12px;
+    border:1px solid var(--line); background:var(--navy3); color:var(--cream);
+    font-family:inherit; font-size:1.05rem; cursor:pointer; text-align:left}
+  .pay:active{background:var(--navy2)}
+  .pay .ic{font-size:1.4rem; width:30px; text-align:center}
+  .pay .d{color:var(--dim); font-size:.76rem}
+  .ruwrap{border:1px solid var(--line); border-radius:12px; padding:14px 14px 16px; margin:2px 0 16px; background:var(--navy3)}
+  .ruwrap .rulabel{font-size:.96rem; margin-bottom:11px} .ruwrap .heart{color:var(--gold)}
+  .ruwrap .rulabel .d{color:var(--dim); font-size:.76rem}
+  .ruopts{display:flex; gap:10px}
+  .ruchip{flex:1; padding:12px 8px; border-radius:10px; border:1px solid var(--line); background:var(--navy2);
+    color:var(--gold); font-family:inherit; font-weight:bold; font-size:1.1rem; cursor:pointer;
+    display:flex; flex-direction:column; align-items:center; gap:2px}
+  .ruchip .t{color:var(--dim); font-size:.72rem; font-weight:normal}
+  .ruchip.on{border-color:var(--gold); background:rgba(232,185,35,.14)}
+  /* forms */
+  label{display:block; font-size:.82rem; color:var(--dim); margin:12px 0 5px}
+  input{width:100%; background:var(--navy3); color:var(--cream); border:1px solid var(--line);
+    border-radius:10px; padding:13px; font-size:1.05rem; font-family:inherit}
+  input:focus{outline:1px solid var(--gold)}
+  .qr{background:#fff; border-radius:12px; padding:14px; text-align:center; margin:14px auto; max-width:260px}
+  .qr img{width:100%; max-width:230px; display:block; margin:0 auto}
+  .qr .tag{color:#111; font-weight:bold; margin-top:8px; font-family:sans-serif;
+           word-break:break-word; line-height:1.25; max-width:100%}
+  .big{text-align:center; font-size:2.4rem; color:var(--gold); font-weight:bold; margin:10px 0}
+  .center{text-align:center}
+  .done .check{font-size:3.4rem; color:var(--ok)}
+  .stub{color:var(--gold); font-size:.78rem; text-align:center; margin-top:10px}
+  /* pin */
+  #pin{display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:80vh; gap:16px}
+  #pin input{max-width:200px; text-align:center; letter-spacing:.4em; font-size:1.5rem}
+  .consent{display:flex; gap:11px; align-items:flex-start; margin-top:18px; cursor:pointer; font-size:.9rem; color:var(--cream); line-height:1.35}
+  .consent input{width:24px; height:24px; margin:1px 0 0; accent-color:var(--gold); flex:0 0 auto}
+  .fine{color:var(--dim); font-size:.76rem; margin:12px 4px 0; text-align:center; line-height:1.4}
+  .fine a{color:var(--goldd)}
+</style>
+</head>
+<body>
+
+<!-- ============================= CONFIG (Marc edits) ============================= -->
+<script>
+const CONFIG = {
+  // App unlock PIN (client-side gate; keeps casual users out).
+  PIN: "0814",
+
+  // Worker endpoints — filled in Phase 2/3 (leave blank to run in "demo" mode).
+  CHECKOUT_URL: "https://book-checkout.alfanoministries.workers.dev",
+  SALE_URL:     "",   // e.g. https://book-sale.<sub>.workers.dev
+
+  // Manual payment details — filled in Phase 4.
+  ZELLE:   { handle: "marc@alfanoministries.com", qr: "assets/pay/zelle-qr.jpg" },
+  CASHAPP: { handle: "$AlfanoMinistries",          qr: "assets/pay/cashapp-qr.jpg" },
+
+  // Foreign-currency prices always round UP to a whole number (no cents abroad).
+
+  // >>> Marc: set your church selling price (USD) per book. <<<
+  BOOKS: [
+    { id:"last-convert",  title:"The Last Convert",   sub:"A Novel",                 cover:"assets/books/the-last-convert-cover.jpg",  formats:[{label:"Paperback",usd:16},{label:"Hardcover",usd:25}] },
+    { id:"daily-sword",   title:"The Daily Sword",    sub:"Read the Bible in a Year",cover:"assets/books/daily-sword-cover.jpg",       formats:[{label:"Paperback",usd:30},{label:"Hardcover",usd:50}] },
+    { id:"now-faith",     title:"Now Faith",          sub:"",                        cover:"assets/books/now-faith-cover.jpg",         usd:15 },
+    { id:"nf-journal",    title:"Now Faith Journal",  sub:"365-Day Companion",       cover:"assets/books/now-faith-journal-cover.jpg", usd:17 },
+    { id:"nf-bundle",     title:"Now Faith + Journal",sub:"Book + Journal · Bundle",  cover:"assets/books/nf-bundle-cover.jpg",          usd:30 },
+    { id:"wiser",         title:"Wiser Than AI",      sub:"",                        cover:"assets/books/wiser-than-ai-cover.jpg",     usd:12 },
+    { id:"go",            title:"GO",                 sub:"Connected, Called, Sent",  cover:"assets/books/go-cover.jpg",                usd:15 },
+    { id:"faith-to-build",title:"Faith to Build",     sub:"Kingdom Business",        cover:"assets/books/faith-to-build-cover.jpg",    usd:12 },
+    { id:"sammy",         title:"Sammy Comes Home",   sub:"For Young Readers",       cover:"assets/books/sammy-comes-home-cover.jpg",  usd:17 },
+  ],
+
+  // Currencies offered. USD-only methods (Zelle/CashApp) auto-hide when not USD.
+  CURRENCIES: [
+    {code:"USD", sym:"$",  name:"US Dollar"},
+    {code:"EUR", sym:"€",  name:"Euro"},
+    {code:"GBP", sym:"£",  name:"British Pound"},
+    {code:"PLN", sym:"zł", name:"Polish Złoty"},
+    {code:"HUF", sym:"Ft", name:"Hungarian Forint"},
+    {code:"TRY", sym:"₺",  name:"Turkish Lira"},
+    {code:"MUR", sym:"₨",  name:"Mauritian Rupee"},
+  ],
+  // Currencies with NO minor units (whole-number only).
+  ZERO_DECIMAL: ["JPY","KRW","VND","CLP","ISK","HUF","UGX","XAF","XOF","RWF"],
+};
+</script>
+
+<div class="wrap">
+
+  <!-- PIN GATE -->
+  <div id="pin">
+    <h1 style="font-size:1.4rem">The <span style="color:var(--gold)">Book Table</span></h1>
+    <p class="hint">Enter passcode</p>
+    <input id="pinIn" type="tel" inputmode="numeric" maxlength="8" placeholder="••••">
+    <button class="btn" style="flex:0 0 auto; padding:13px 52px" onclick="tryPin()">Unlock</button>
+    <p id="pinErr" class="hint" style="color:var(--danger); min-height:1em"></p>
+  </div>
+
+  <!-- ===================== STORE ===================== -->
+  <div id="store" class="screen">
+    <header>
+      <h1>Book <span class="g">Table</span></h1>
+      <div class="cur">
+        <select id="curSel" onchange="setCurrency(this.value)"></select>
+      </div>
+    </header>
+    <div id="fxHint" class="hint"></div>
+    <div id="grid" class="grid"></div>
+  </div>
+
+  <!-- ===================== CHECKOUT ===================== -->
+  <div id="checkout" class="screen">
+    <button class="back" onclick="show('store')">‹ Back to books</button>
+    <h2 class="sc">Order</h2>
+    <div class="panel">
+      <div id="cartRows"></div>
+      <div class="totals"><span>Total</span><b id="grandTotal"></b></div>
+    </div>
+    <div id="roundup"></div>
+    <h2 class="sc">Payment</h2>
+    <div id="pays" class="pays"></div>
+  </div>
+
+  <!-- ===================== MANUAL PAY (Zelle/CashApp/Cash) ===================== -->
+  <div id="manual" class="screen">
+    <button class="back" onclick="show('checkout')">‹ Back</button>
+    <h2 class="sc" id="mTitle"></h2>
+    <div class="panel center">
+      <div class="big" id="mAmount"></div>
+      <div id="mBody"></div>
+      <p class="hint" id="mNote"></p>
+    </div>
+    <button class="btn ok" onclick="afterPaid()">✓ Payment received</button>
+  </div>
+
+  <!-- ===================== CAPTURE ===================== -->
+  <div id="capture" class="screen">
+    <h2 class="sc">Your receipt</h2>
+    <div class="panel">
+      <p class="hint" style="margin-top:0">Enter your email to get your receipt.</p>
+      <label>Full name</label><input id="cName" autocomplete="name">
+      <label>Email (for your receipt)</label><input id="cEmail" type="email" inputmode="email" autocomplete="email">
+      <label>Phone (optional)</label><input id="cPhone" type="tel" inputmode="tel" autocomplete="tel">
+      <label class="consent"><input type="checkbox" id="cConsent">
+        <span>Yes, add me to the Alfano Ministries email list for new books, teaching, and event updates. I can unsubscribe anytime.</span></label>
+    </div>
+    <button class="btn" id="finishBtn" onclick="finishSale()">Send my receipt</button>
+    <p class="fine">Your receipt is emailed to you. We never sell or share your information. <a href="privacy.html" target="_blank">Privacy Policy</a></p>
+    <div id="captureStub" class="stub"></div>
+  </div>
+
+  <!-- ===================== DONE ===================== -->
+  <div id="done" class="screen done center">
+    <div style="padding:36px 0">
+      <div class="check">✓</div>
+      <h2 class="sc" style="margin-top:12px">Thank you!</h2>
+      <p class="hint" id="doneMsg"></p>
+      <div id="doneOrder" style="color:var(--gold); font-size:.9rem"></div>
+    </div>
+    <button class="btn" onclick="newSale()">New sale</button>
+  </div>
+
+</div>
+
+<script>
+/* ============================ STATE ============================ */
+let CUR = "USD";
+let FX = { rates:{USD:1}, date:null, stale:true };
+const cart = {};              // cartKey -> qty  (cartKey = id or id::FormatLabel)
+const fsel = {};              // book id -> selected format index
+let giftMode = 0;             // 0 = no gift; 5 or 10 = round total up to next $5 / $10 as a ministry gift
+let pending = null;           // { method, items, total, currency }
+
+const bookById = id => CONFIG.BOOKS.find(b=>b.id===id);
+const isZeroDec = c => CONFIG.ZERO_DECIMAL.includes(c);
+const curInfo = c => CONFIG.CURRENCIES.find(x=>x.code===c) || {code:c,sym:"",name:c};
+const DEMO = () => !CONFIG.SALE_URL;   // no worker wired yet
+
+/* ============================ PIN ============================ */
+function gate(){
+  if(sessionStorage.getItem("bt_ok")==="1"){ unlock(); }
+  else { document.getElementById("pin").style.display="flex"; }
+}
+function tryPin(){
+  if(document.getElementById("pinIn").value===CONFIG.PIN){
+    sessionStorage.setItem("bt_ok","1"); unlock();
+  } else { document.getElementById("pinErr").textContent="Wrong passcode"; }
+}
+function unlock(){
+  document.getElementById("pin").style.display="none";
+  show("store"); initCurrencies(); loadFX(); renderCatalog();
+}
+
+/* ============================ CURRENCY / FX ============================ */
+function initCurrencies(){
+  const sel=document.getElementById("curSel");
+  sel.innerHTML = CONFIG.CURRENCIES.map(c=>`<option value="${c.code}">${c.code} · ${c.name}</option>`).join("");
+  sel.value=CUR;
+}
+function setCurrency(c){ CUR=c; renderCatalog(); renderCheckout(); }
+
+async function loadFX(){
+  // cache in localStorage; refresh once a day when online
+  try{
+    const cached = JSON.parse(localStorage.getItem("bt_fx")||"null");
+    if(cached){ FX = cached; }
+    const fresh = cached && cached.date && (Date.now()-cached.date < 20*3600*1000);
+    if(!fresh){
+      const r = await fetch("https://open.er-api.com/v6/latest/USD");
+      const d = await r.json();
+      if(d && d.rates){ FX={ rates:d.rates, date:Date.now(), stale:false };
+        localStorage.setItem("bt_fx", JSON.stringify(FX)); }
+    } else { FX.stale=false; }
+  }catch(e){ /* offline: keep cached or USD-only */ }
+  fxHint(); renderCatalog();
+}
+function fxHint(){
+  const el=document.getElementById("fxHint");
+  if(!FX.date){ el.className="hint warn"; el.textContent="Live rates unavailable — showing USD."; return; }
+  const days = Math.floor((Date.now()-FX.date)/86400000);
+  el.className = days>2 ? "hint warn" : "hint";
+  el.textContent = "Prices convert live · rates "+(days<=0?"today":days+"d old");
+}
+function rate(c){ return FX.rates[c] || (c==="USD"?1:null); }
+
+function convert(usd){
+  const rt = rate(CUR);
+  if(rt===null) return null;                        // no rate -> caller falls back to USD
+  const v = usd*rt;
+  if(CUR==="USD") return Math.round(v*100)/100;     // USD prices are exact whole dollars
+  return Math.ceil(v);                              // foreign currency: round UP to a whole number
+}
+function fmt(amount){
+  const info=curInfo(CUR);
+  if(amount===null){ return "$0 USD"; }
+  const dec = Number.isInteger(amount) ? 0 : 2;   // whole numbers show clean, no .00
+  return info.sym + amount.toLocaleString(undefined,{minimumFractionDigits:dec,maximumFractionDigits:dec}) + " " + info.code;
+}
+function priceOf(usd){ const v=convert(usd); return v===null?usd:v; }   // numeric in CUR
+
+/* ============================ FORMATS + CATALOG ============================ */
+const fmtsOf = b => b.formats || [{label:"", usd:b.usd}];
+const cartKey = (id,label) => label ? id+"::"+label : id;
+const parseKey = k => { const i=k.indexOf("::"); return i<0?{id:k,label:""}:{id:k.slice(0,i),label:k.slice(i+2)}; };
+const unitUSD = (b,label) => (fmtsOf(b).find(f=>f.label===label) || fmtsOf(b)[0]).usd;
+
+function renderCatalog(){
+  const g=document.getElementById("grid");
+  g.innerHTML = CONFIG.BOOKS.map(b=>{
+    let fmtSel="", unit, key;
+    if(b.formats){
+      const fi=fsel[b.id]||0, f=b.formats[fi];
+      unit=f.usd; key=cartKey(b.id,f.label);
+      fmtSel=`<select class="fmt" onchange="fsel['${b.id}']=+this.value;renderCatalog()">`
+           + b.formats.map((x,i)=>`<option value="${i}" ${i===fi?"selected":""}>${x.label}</option>`).join("")
+           + `</select>`;
+    } else { unit=b.usd; key=b.id; }
+    const q=cart[key]||0;
+    const ctl = q>0
+      ? `<div class="qtybar"><button onclick="decKey('${key}')">−</button><span class="n">${q}</span><button onclick="incKey('${key}')">+</button></div>`
+      : `<button class="add" onclick="incKey('${key}')">Add</button>`;
+    return `<div class="book">
+      <img src="${b.cover}" alt="" loading="lazy">
+      <div class="b">
+        <div class="t">${b.title}</div>
+        ${b.sub?`<div class="sub">${b.sub}</div>`:""}
+        ${fmtSel}
+        <div class="p">${fmt(priceOf(unit))}</div>
+        ${ctl}
+      </div></div>`;
+  }).join("");
+  renderCartBar();
+}
+function incKey(k){ cart[k]=(cart[k]||0)+1; renderCatalog(); }
+function decKey(k){ cart[k]=(cart[k]||0)-1; if(cart[k]<=0) delete cart[k]; renderCatalog(); }
+function cartItems(){ return Object.keys(cart).map(k=>{ const {id,label}=parseKey(k); const b=bookById(id);
+  return {book:b, format:label, unitUSD:unitUSD(b,label), qty:cart[k], key:k}; }); }
+function cartCount(){ return Object.values(cart).reduce((a,b)=>a+b,0); }
+function cartTotalUSD(){ return cartItems().reduce((s,i)=>s+i.unitUSD*i.qty,0); }
+function cartTotalCUR(){ return cartItems().reduce((s,i)=>s+priceOf(i.unitUSD)*i.qty,0); }
+function giftOptions(){                                   // gentle (next $5) + generous (next $10)
+  const t=cartTotalCUR(); if(t<=0) return [];
+  const mk=s=>{ const tgt=(Math.floor(t/s)+1)*s; return {step:s, target:tgt, gift:tgt-t}; };
+  const a=mk(5), b=mk(10);
+  return a.gift===b.gift ? [{...b}] : [a,b];              // same amount -> show one
+}
+function giftCUR(){ const o=giftOptions().find(x=>x.step===giftMode); return o?o.gift:0; }
+function orderTotalCUR(){ return cartTotalCUR() + giftCUR(); }
+
+function renderCartBar(){
+  document.querySelectorAll(".cartbar").forEach(e=>e.remove());
+  if(cartCount()===0 || !document.getElementById("store").classList.contains("on")) return;  // store screen only
+  const bar=document.createElement("div"); bar.className="cartbar";
+  bar.innerHTML=`<div class="sum">${cartCount()} book${cartCount()>1?"s":""} · <b>${fmt(cartTotalCUR())}</b></div>
+    <button class="btn" style="flex:0 0 auto" onclick="renderCheckout();show('checkout')">Checkout ›</button>`;
+  document.querySelector(".wrap").appendChild(bar);
+}
+
+/* ============================ CHECKOUT ============================ */
+function renderCheckout(){
+  const items=cartItems();
+  if(items.length===0){
+    document.getElementById("cartRows").innerHTML=`<p class="hint" style="padding:8px 0">No items in the order.</p>`;
+    document.getElementById("grandTotal").textContent=fmt(0);
+    document.getElementById("roundup").innerHTML="";
+    document.getElementById("pays").innerHTML=`<p class="hint">Add books to take payment.</p>`;
+    return;
+  }
+  document.getElementById("cartRows").innerHTML = items.map(i=>`
+    <div class="row"><div class="l">
+        <img src="${i.book.cover}" alt="">
+        <div><div class="name">${i.book.title}${i.format?` <span style="color:var(--dim)">— ${i.format}</span>`:""}</div>
+          <div class="meta">${fmt(priceOf(i.unitUSD))} each · <b style="color:var(--gold)">${fmt(priceOf(i.unitUSD)*i.qty)}</b></div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;flex:0 0 auto">
+        <div class="qtybar" style="gap:4px">
+          <button onclick="decKey('${i.key}');renderCheckout()">−</button>
+          <span class="n">${i.qty}</span>
+          <button onclick="incKey('${i.key}');renderCheckout()">+</button></div>
+        <button class="rm" title="Remove" onclick="delete cart['${i.key}'];renderCatalog();renderCheckout()">✕</button>
+      </div></div>`).join("");
+  const gopts = giftOptions();
+  if(giftMode && !gopts.some(o=>o.step===giftMode)) giftMode=0;   // clear a stale choice
+  document.getElementById("roundup").innerHTML = gopts.length ? `
+    <div class="ruwrap">
+      <div class="rulabel"><span class="heart">&#9829;</span> Round up as a gift to the ministry
+        <span class="d">&middot; tax-deductible</span></div>
+      <div class="ruopts">
+        ${gopts.map(o=>`<button class="ruchip ${giftMode===o.step?'on':''}"
+            onclick="giftMode = giftMode===${o.step}?0:${o.step}; renderCheckout()">
+            + ${fmt(o.gift)}<span class="t">total ${fmt(o.target)}</span></button>`).join("")}
+      </div>
+    </div>` : "";
+  document.getElementById("grandTotal").textContent = fmt(orderTotalCUR());
+
+  const usdOnly = CUR!=="USD";
+  const methods = [
+    {k:"card",   ic:"💳", t:"Pay by card",  d:"Visa · Mastercard · Amex", show:true},
+    {k:"zelle",  ic:"🏦", t:"Zelle",         d:"US bank transfer",         show:!usdOnly},
+    {k:"cashapp",ic:"💵", t:"Cash App",      d:"$"+"cashtag",              show:!usdOnly},
+    {k:"cash",   ic:"👐", t:"Cash",          d:"Pay Marc directly",        show:true},
+  ];
+  document.getElementById("pays").innerHTML = methods.filter(m=>m.show).map(m=>`
+    <button class="pay" onclick="pick('${m.k}')">
+      <span class="ic">${m.ic}</span>
+      <span><div>${m.t}</div><div class="d">${m.d}</div></span>
+    </button>`).join("")
+    + (usdOnly?`<p class="hint">Zelle and Cash App are US-only, so they're hidden for ${CUR}.</p>`:"");
+}
+
+function pick(method){
+  const gift = giftCUR();
+  const items = cartItems().map(i=>({id:i.book.id, format:i.format, title:i.book.title+(i.format?` (${i.format})`:""), qty:i.qty, unit:priceOf(i.unitUSD)}));
+  if(gift>0) items.push({id:"ministry-gift", format:"", title:"Gift to the ministry (tax-deductible)", qty:1, unit:gift, gift:true});
+  pending = { method, currency:CUR, items, gift, totalCUR: orderTotalCUR(), totalUSD: cartTotalUSD() };
+  if(method==="card") payCard();
+  else payManual(method);
+}
+
+/* ---- CARD (Stripe) — Phase 2 wires CONFIG.CHECKOUT_URL ---- */
+async function payCard(){
+  if(!CONFIG.CHECKOUT_URL){
+    alert("Card checkout connects in the next build step (Stripe worker).\n\nFor now, use Cash to walk through the full flow.");
+    return;
+  }
+  try{
+    const r = await fetch(CONFIG.CHECKOUT_URL,{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({items:cartItems().map(i=>({id:i.book.id,format:i.format,qty:i.qty})), currency:CUR, giftStep: giftCUR()>0?giftMode:0})});
+    const d = await r.json();
+    if(d.url){ sessionStorage.setItem("bt_pending", JSON.stringify(pending)); location.href=d.url; }
+    else alert(d.message||"Could not start checkout.");
+  }catch(e){ alert("Network error starting checkout."); }
+}
+
+/* ---- MANUAL (Zelle / CashApp / Cash) ---- */
+function payManual(method){
+  const amt = fmt(pending.totalCUR);
+  document.getElementById("mAmount").textContent = amt;
+  const map = {
+    zelle:  {title:"Zelle", handle:CONFIG.ZELLE.handle,  qr:CONFIG.ZELLE.qr,  note:"Have the buyer send to the Zelle above, then confirm it arrived."},
+    cashapp:{title:"Cash App", handle:CONFIG.CASHAPP.handle, qr:CONFIG.CASHAPP.qr, note:"Have the buyer scan / send to the $cashtag, then confirm it arrived."},
+    cash:   {title:"Cash", handle:"", qr:"", note:"Collect the cash, then tap the button below."},
+  }[method];
+  document.getElementById("mTitle").textContent = map.title + " payment";
+  let body="";
+  if(map.qr) body += `<div class="qr"><img src="${map.qr}" alt=""><div class="tag">${map.handle}</div></div>`;
+  else if(map.handle) body += `<div class="qr" style="padding:18px 16px"><div class="tag" style="font-size:1.05rem">${map.handle}</div></div>`;
+  document.getElementById("mBody").innerHTML = body;
+  document.getElementById("mNote").textContent = map.note;
+  show("manual");
+}
+function afterPaid(){ show("capture"); document.getElementById("captureStub").textContent = DEMO()?"Demo mode: receipt/list are not really sent until the worker is connected.":""; }
+
+/* ============================ CAPTURE + FINISH ============================ */
+async function finishSale(){
+  const name=val("cName"), email=val("cEmail"), phone=val("cPhone");
+  const consent=document.getElementById("cConsent").checked;
+  if(!email){ alert("Please enter an email so we can send the receipt."); return; }
+  const btn=document.getElementById("finishBtn"); btn.disabled=true; btn.textContent="Sending…";
+  const orderId = "AM-"+new Date().toISOString().slice(0,10).replace(/-/g,"")+"-"+Math.random().toString(36).slice(2,6).toUpperCase();
+  const payload = { orderId, customer:{name,email,phone,marketingConsent:consent}, order:pending, paymentMethod:pending.method };
+
+  if(DEMO()){
+    finishDone(orderId, email, true); return;
+  }
+  try{
+    const r = await fetch(CONFIG.SALE_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+    const d = await r.json();
+    if(d.success) finishDone(d.orderId||orderId, email, false);
+    else { alert(d.message||"Could not complete."); btn.disabled=false; btn.textContent="Send my receipt"; }
+  }catch(e){ alert("Network error."); btn.disabled=false; btn.textContent="Send my receipt"; }
+}
+function finishDone(orderId, email, demo){
+  document.getElementById("doneMsg").textContent = (email?("Receipt sent to "+email):"You're all set")+(demo?" (demo)":"");
+  document.getElementById("doneOrder").textContent = "Order "+orderId;
+  show("done");
+}
+function newSale(){
+  for(const k of Object.keys(cart)) delete cart[k];
+  pending=null; giftMode=0; ["cName","cEmail","cPhone"].forEach(id=>document.getElementById(id).value="");
+  document.getElementById("cConsent").checked=false;
+  const b=document.getElementById("finishBtn"); b.disabled=false; b.textContent="Send my receipt";
+  renderCatalog(); show("store");
+}
+
+/* ============================ HELPERS ============================ */
+function show(id){ document.querySelectorAll(".screen").forEach(s=>s.classList.remove("on"));
+  document.getElementById(id).classList.add("on"); window.scrollTo(0,0); renderCartBar(); }
+function val(id){ return document.getElementById(id).value.trim(); }
+
+/* return from Stripe? (?paid=SESSION_ID) — Phase 2/3 */
+(function returnFromStripe(){
+  const p = new URLSearchParams(location.search).get("paid");
+  if(p){ const pend=sessionStorage.getItem("bt_pending");
+    if(pend){ pending=JSON.parse(pend); pending.stripeSessionId=p; }
+    sessionStorage.setItem("bt_ok","1");
+    history.replaceState({}, "", "sell.html");
+    document.getElementById("pin").style.display="none";
+    show("capture"); return true; }
+})();
+
+if(!(new URLSearchParams(location.search).get("paid"))) gate();
+
+/* register service worker (Phase 5) */
+if("serviceWorker" in navigator){ navigator.serviceWorker.register("sw-sell.js").catch(()=>{}); }
+</script>
+</body>
+</html>
