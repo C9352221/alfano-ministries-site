@@ -1,0 +1,112 @@
+<!--
+  Alfano Ministries — Book Table receipt (GoHighLevel email template)
+  Paste into a GHL email (Code/Custom HTML block, or Import HTML).
+  Merge fields used (create these Contact custom fields; keys must match):
+    {{contact.first_name}}        standard
+    {{contact.order_number}}      order_number
+    {{contact.order_date}}        order_date
+    {{contact.order_items}}       order_items   (multi-line text; one book per line)
+    {{contact.order_books_total}} order_books_total
+    {{contact.order_gift}}        order_gift
+    {{contact.order_total}}       order_total
+    {{contact.order_payment}}     order_payment
+  Images are served from the live site, so they load in any email client.
+-->
+<div style="margin:0;padding:0;background:#eceff4;">
+  <!-- preheader (hidden) -->
+  <div style="display:none;max-height:0;overflow:hidden;opacity:0;">Thank you for your order and for supporting the ministry.</div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#eceff4;">
+    <tr><td align="center" style="padding:20px 12px;">
+
+      <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:600px;max-width:600px;background:#ffffff;border-radius:14px;overflow:hidden;font-family:Georgia,'Times New Roman',serif;">
+
+        <!-- header -->
+        <tr><td style="background:#0a162a;padding:22px 28px;text-align:center;">
+          <div style="color:#c8a24a;font-size:22px;letter-spacing:2px;font-weight:bold;">ALFANO MINISTRIES</div>
+          <div style="color:#9fb0c9;font-size:12px;letter-spacing:3px;margin-top:4px;">INTERNATIONAL</div>
+        </td></tr>
+
+        <!-- hero: family -->
+        <tr><td style="padding:0;">
+          <img src="https://alfanoministries.com/assets/email/alfano-family-europe.jpg" width="600" alt="The Alfano family" style="display:block;width:100%;max-width:600px;height:auto;">
+        </td></tr>
+
+        <!-- thank you -->
+        <tr><td style="padding:30px 34px 8px;">
+          <h1 style="margin:0;color:#0a162a;font-size:26px;">Thank you, {{contact.first_name}}!</h1>
+          <p style="margin:16px 0 0;color:#333;font-size:16px;line-height:1.65;">
+            From our family to yours, thank you for picking up a book today. We pray it draws you
+            closer to the Lord and stirs up the gift He has placed in you. Every book you carry home
+            carries the Gospel a little farther, and it helps us keep going to the nations.
+          </p>
+          <p style="margin:14px 0 0;color:#333;font-size:16px;line-height:1.65;">
+            With love and gratitude,<br><strong>Marc &amp; Christina Alfano</strong>
+          </p>
+        </td></tr>
+
+        <!-- order box -->
+        <tr><td style="padding:22px 34px 4px;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e2e6ee;border-radius:12px;">
+            <tr><td style="padding:18px 20px 6px;">
+              <div style="color:#0a162a;font-size:13px;letter-spacing:1.5px;font-weight:bold;">YOUR ORDER</div>
+              <div style="color:#88909e;font-size:12px;margin-top:3px;">
+                Order {{contact.order_number}} &nbsp;&bull;&nbsp; {{contact.order_date}} &nbsp;&bull;&nbsp; Paid by {{contact.order_payment}}
+              </div>
+            </td></tr>
+            <tr><td style="padding:6px 20px;">
+              <div style="white-space:pre-line;font-family:'Courier New',Courier,monospace;font-size:14px;color:#2a2f3a;line-height:1.7;border-top:1px solid #eef1f6;border-bottom:1px solid #eef1f6;padding:12px 0;">{{contact.order_items}}</div>
+            </td></tr>
+            <tr><td style="padding:10px 20px 4px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-family:Georgia,serif;font-size:15px;color:#2a2f3a;">
+                <tr>
+                  <td style="padding:4px 0;">Books</td>
+                  <td align="right" style="padding:4px 0;">{{contact.order_books_total}}</td>
+                </tr>
+                <tr>
+                  <td style="padding:4px 0;color:#7a6321;">Gift to the ministry</td>
+                  <td align="right" style="padding:4px 0;color:#7a6321;">{{contact.order_gift}}</td>
+                </tr>
+                <tr>
+                  <td style="padding:10px 0 4px;border-top:2px solid #0a162a;font-weight:bold;font-size:17px;color:#0a162a;">Total paid</td>
+                  <td align="right" style="padding:10px 0 4px;border-top:2px solid #0a162a;font-weight:bold;font-size:17px;color:#0a162a;">{{contact.order_total}}</td>
+                </tr>
+              </table>
+            </td></tr>
+            <tr><td style="padding:6px 20px 18px;">
+              <p style="margin:0;color:#88909e;font-size:12px;line-height:1.55;">
+                Alfano Ministries International Inc is a registered 501(c)(3). The book price is a
+                purchase; any gift you added above it is a tax-deductible contribution. EIN 99-1858016.
+                Please keep this receipt for your records.
+              </p>
+            </td></tr>
+          </table>
+        </td></tr>
+
+        <!-- giving -->
+        <tr><td style="padding:26px 34px 6px;">
+          <img src="https://alfanoministries.com/assets/email/marc-preaching-2026.jpg" width="532" alt="Marc preaching" style="display:block;width:100%;max-width:532px;height:auto;border-radius:12px;">
+        </td></tr>
+        <tr><td style="padding:16px 34px 4px;text-align:center;">
+          <h2 style="margin:0;color:#0a162a;font-size:20px;">Want to send us further?</h2>
+          <p style="margin:12px 0 20px;color:#333;font-size:15px;line-height:1.6;">
+            Your giving puts these books into more hands and takes us to more nations. If the Lord
+            stirs you to give again, we would be honored.
+          </p>
+          <a href="https://alfanoministries.com/give.html" style="display:inline-block;background:#c8a24a;color:#0a162a;font-family:Georgia,serif;font-weight:bold;font-size:16px;text-decoration:none;padding:14px 40px;border-radius:8px;">Give to the ministry</a>
+        </td></tr>
+
+        <!-- footer -->
+        <tr><td style="padding:26px 34px 30px;text-align:center;border-top:1px solid #eef1f6;margin-top:10px;">
+          <div style="color:#0a162a;font-size:14px;font-weight:bold;">Alfano Ministries International Inc</div>
+          <div style="color:#88909e;font-size:12px;margin-top:6px;line-height:1.6;">
+            A registered 501(c)(3) ministry &nbsp;&bull;&nbsp; EIN 99-1858016<br>
+            <a href="https://alfanoministries.com" style="color:#7a6321;text-decoration:none;">alfanoministries.com</a>
+          </div>
+        </td></tr>
+
+      </table>
+
+    </td></tr>
+  </table>
+</div>

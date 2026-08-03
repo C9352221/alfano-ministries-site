@@ -533,7 +533,22 @@ const RET_CANCEL = new URLSearchParams(location.search).get("canceled");
   document.getElementById("pin").style.display="none";
   history.replaceState({}, "", "sell.html");
   cardThanks();
+  fireCardSale(RET_PAID);
 })();
+/* Tell the sale worker a card sale finished: it reads name/email from Stripe, adds
+   the buyer to the list, and fires the receipt. Nothing to type on this device. */
+async function fireCardSale(sessionId){
+  if(!CONFIG.SALE_URL) return;               // demo mode: no worker wired yet
+  try{
+    const r=await fetch(CONFIG.SALE_URL,{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({stripeSessionId:sessionId, paymentMethod:"card"})});
+    const d=await r.json();
+    if(d.success){
+      document.getElementById("doneMsg").textContent = d.email?("Receipt on its way to "+d.email):"Receipt sent.";
+      if(d.orderId) document.getElementById("doneOrder").textContent = "Order "+d.orderId;
+    }
+  }catch(e){ /* payment already succeeded; receipt can be re-sent from GHL if needed */ }
+}
 if(!RET_PAID){ if(RET_CANCEL) history.replaceState({}, "", "sell.html"); gate(); }
 
 /* register service worker (Phase 5) */
