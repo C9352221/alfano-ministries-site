@@ -497,6 +497,15 @@ function finishDone(orderId, email, demo){
   document.getElementById("doneOrder").textContent = "Order "+orderId;
   show("done");
 }
+/* Card sale returned from Stripe: Stripe has the buyer's info + receipt email. Just confirm. */
+function cardThanks(){
+  const total = pending && pending.totalCUR!=null ? fmt(pending.totalCUR) : "";
+  document.getElementById("doneMsg").textContent = DEMO()
+    ? "Payment received. (Receipt + email list connect in the next step.)"
+    : "Payment received. Your receipt is on its way to your email.";
+  document.getElementById("doneOrder").textContent = total ? ("Paid "+total) : "";
+  show("done");
+}
 function newSale(){
   for(const k of Object.keys(cart)) delete cart[k];
   pending=null; giftMode=0; ["cName","cEmail","cPhone"].forEach(id=>document.getElementById(id).value="");
@@ -510,18 +519,22 @@ function show(id){ document.querySelectorAll(".screen").forEach(s=>s.classList.r
   document.getElementById(id).classList.add("on"); window.scrollTo(0,0); renderCartBar(); }
 function val(id){ return document.getElementById(id).value.trim(); }
 
-/* return from Stripe? (?paid=SESSION_ID) — Phase 2/3 */
+/* return from Stripe? (?paid=SESSION_ID). Stripe already collected the buyer's
+   name / email / phone + email-list opt-in, so a card sale skips the capture form
+   and goes straight to a thank-you. (Capture the flags BEFORE replaceState strips them.) */
+const RET_PAID = new URLSearchParams(location.search).get("paid");
+const RET_CANCEL = new URLSearchParams(location.search).get("canceled");
 (function returnFromStripe(){
-  const p = new URLSearchParams(location.search).get("paid");
-  if(p){ const pend=sessionStorage.getItem("bt_pending");
-    if(pend){ pending=JSON.parse(pend); pending.stripeSessionId=p; }
-    sessionStorage.setItem("bt_ok","1");
-    history.replaceState({}, "", "sell.html");
-    document.getElementById("pin").style.display="none";
-    show("capture"); return true; }
+  if(!RET_PAID) return;
+  const pend=sessionStorage.getItem("bt_pending");
+  if(pend){ pending=JSON.parse(pend); pending.stripeSessionId=RET_PAID; pending.method="card"; }
+  sessionStorage.setItem("bt_ok","1");
+  sessionStorage.removeItem("bt_pending");
+  document.getElementById("pin").style.display="none";
+  history.replaceState({}, "", "sell.html");
+  cardThanks();
 })();
-
-if(!(new URLSearchParams(location.search).get("paid"))) gate();
+if(!RET_PAID){ if(RET_CANCEL) history.replaceState({}, "", "sell.html"); gate(); }
 
 /* register service worker (Phase 5) */
 if("serviceWorker" in navigator){ navigator.serviceWorker.register("sw-sell.js").catch(()=>{}); }

@@ -105,6 +105,9 @@ export default {
     form.append("cancel_url", `${SITE}/sell.html?canceled=1`);
     form.append("customer_creation", "always");
     form.append("phone_number_collection[enabled]", "true");
+    // Show an "email me updates" opt-in on Stripe's page (GDPR-clean marketing consent).
+    form.append("consent_collection[promotions]", "auto");
+    form.append("custom_text[after_submit][message]", "Your receipt will be emailed to you.");
 
     let i = 0, totalCUR = 0;
     for (const it of items) {
