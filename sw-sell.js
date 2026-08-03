@@ -1,6 +1,6 @@
 /* Book Table — service worker: cache the app shell + covers for offline catalog use.
    Payment + capture still require connectivity (handled network-first). */
-const CACHE = "booktable-v1";
+const CACHE = "booktable-v2";
 const SHELL = [
   "sell.html",
   "sell.webmanifest",
@@ -36,6 +36,20 @@ self.addEventListener("fetch", (e) => {
   if (e.request.method !== "GET") return;                 // never cache POSTs (checkout/sale)
   const url = new URL(e.request.url);
   if (url.origin !== location.origin) return;             // let API/FX/Stripe hit the network
+
+  // The app HTML is network-first: always load the latest when online, fall back to cache offline.
+  const isDoc = e.request.mode === "navigate" || url.pathname.endsWith("/sell.html") || url.pathname.endsWith("sell.html");
+  if (isDoc) {
+    e.respondWith(
+      fetch(e.request).then((resp) => {
+        if (resp.ok) { const copy = resp.clone(); caches.open(CACHE).then((c) => c.put("sell.html", copy)); }
+        return resp;
+      }).catch(() => caches.match("sell.html"))
+    );
+    return;
+  }
+
+  // Static assets (covers, QR, icon, manifest) are cache-first for instant, offline-safe loads.
   e.respondWith(
     caches.match(e.request).then((hit) =>
       hit ||
