@@ -197,7 +197,7 @@ function renderReceipt(f, orderId, orderDate, paymentLabel) {
       <tr><td style="padding:16px 34px 4px;text-align:center;">
         <h2 style="margin:0;color:#0a162a;font-size:20px;">Want to send us further?</h2>
         <p style="margin:12px 0 20px;color:#333;font-size:15px;line-height:1.6;">Your giving puts these books into more hands and takes us to more nations. If the Lord stirs you to give again, we would be honored.</p>
-        <a href="https://alfanoministries.com/give.html" style="display:inline-block;background:#c8a24a;color:#0a162a;font-family:Georgia,serif;font-weight:bold;font-size:16px;text-decoration:none;padding:14px 40px;border-radius:8px;">Give to the ministry</a>
+        <a href="https://www.zeffy.com/en-US/donation-form/1233096c-7bc9-4427-9173-31614d53ba49" style="display:inline-block;background:#c8a24a;color:#0a162a;font-family:Georgia,serif;font-weight:bold;font-size:16px;text-decoration:none;padding:14px 40px;border-radius:8px;">Give to the ministry</a>
       </td></tr>
       <tr><td style="padding:26px 34px 30px;text-align:center;border-top:1px solid #eef1f6;">
         <div style="color:#0a162a;font-size:14px;font-weight:bold;">Alfano Ministries International Inc</div>
