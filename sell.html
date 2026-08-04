@@ -119,6 +119,15 @@
   .consent input{width:24px; height:24px; margin:1px 0 0; accent-color:var(--gold); flex:0 0 auto}
   .fine{color:var(--dim); font-size:.76rem; margin:12px 4px 0; text-align:center; line-height:1.4}
   .fine a{color:var(--goldd)}
+  .tally{display:flex; align-items:center; gap:9px; background:var(--navy3); border:1px solid var(--line); border-radius:12px; padding:10px 14px; margin:0 0 12px; cursor:pointer; font-size:.9rem}
+  .tally .tl{color:var(--gold); font-weight:bold; letter-spacing:.4px}
+  .tally .tv{color:var(--cream)}
+  .tally .tgo{margin-left:auto; color:var(--dim); font-size:.8rem}
+  .btn.secondary{background:transparent; border:1px solid var(--line); color:var(--dim)}
+  .bigt{font-size:2rem; color:var(--gold); font-weight:bold; text-align:center; margin:4px 0}
+  .srow{display:flex; justify-content:space-between; padding:10px 2px; border-bottom:1px solid var(--line); font-size:.95rem; color:var(--cream)}
+  .srow:last-child{border-bottom:none}
+  .srow b{color:var(--gold)}
 </style>
 </head>
 <body>
@@ -187,6 +196,7 @@ const CONFIG = {
       </div>
     </header>
     <div id="fxHint" class="hint"></div>
+    <div id="tally" class="tally" onclick="openSales()"></div>
     <div id="grid" class="grid"></div>
   </div>
 
@@ -240,6 +250,19 @@ const CONFIG = {
       <div id="doneOrder" style="color:var(--gold); font-size:.9rem"></div>
     </div>
     <button class="btn" onclick="newSale()">New sale</button>
+  </div>
+
+  <!-- ===================== TODAY'S SALES ===================== -->
+  <div id="sales" class="screen">
+    <button class="back" onclick="show('store')">‹ Back to books</button>
+    <h2 class="sc">Today's Sales</h2>
+    <div class="panel center">
+      <div id="salesTotals"></div>
+      <p class="hint" id="salesMeta" style="margin:6px 0 0"></p>
+    </div>
+    <div class="panel" id="salesList"></div>
+    <button class="btn secondary" onclick="clearToday()">Clear today</button>
+    <p class="fine">This tally is kept on this phone only. Clearing it does not affect any payment or receipt already made.</p>
   </div>
 
 </div>
@@ -495,6 +518,7 @@ async function finishSale(){
 function finishDone(orderId, email, demo){
   document.getElementById("doneMsg").textContent = (email?("Receipt sent to "+email):"You're all set")+(demo?" (demo)":"");
   document.getElementById("doneOrder").textContent = "Order "+orderId;
+  logSale();
   show("done");
 }
 /* Card sale returned from Stripe: Stripe has the buyer's info + receipt email. Just confirm. */
@@ -504,6 +528,7 @@ function cardThanks(){
     ? "Payment received. (Receipt + email list connect in the next step.)"
     : "Payment received. Your receipt is on its way to your email.";
   document.getElementById("doneOrder").textContent = total ? ("Paid "+total) : "";
+  logSale();
   show("done");
 }
 function newSale(){
@@ -514,9 +539,54 @@ function newSale(){
   renderCatalog(); show("store");
 }
 
+/* ============================ TODAY'S SALES TALLY (this phone only) ============================ */
+function todayKey(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+function readSales(){ try{ return JSON.parse(localStorage.getItem("bt_sales")||"[]"); }catch(e){ return []; } }
+function todaySales(){ const t=todayKey(); return readSales().filter(s=>s.date===t); }
+function logSale(){
+  if(!pending || pending.totalCUR==null) return;
+  const books=(pending.items||[]).filter(i=>!i.gift && i.id!=="ministry-gift").reduce((s,i)=>s+(i.qty||0),0);
+  const log=readSales();
+  log.push({ts:new Date().toISOString(), date:todayKey(), cur:pending.currency, amt:pending.totalCUR, method:pending.method, books});
+  try{ localStorage.setItem("bt_sales", JSON.stringify(log)); }catch(e){}
+}
+function fmtCur(amount, cur){ const info=curInfo(cur); const dp=Number.isInteger(amount)?0:2; return info.sym+Number(amount).toFixed(dp); }
+function renderTally(){
+  const el=document.getElementById("tally"); if(!el) return;
+  const s=todaySales();
+  if(s.length===0){ el.innerHTML=`<span class="tl">Today</span><span class="tv">No sales yet</span><span class="tgo">›</span>`; return; }
+  const byCur={}; s.forEach(x=>{ byCur[x.cur]=(byCur[x.cur]||0)+x.amt; });
+  const totals=Object.keys(byCur).map(c=>fmtCur(byCur[c],c)).join(" · ");
+  el.innerHTML=`<span class="tl">Today</span><span class="tv">${s.length} sale${s.length>1?"s":""} · ${totals}</span><span class="tgo">View ›</span>`;
+}
+const METHOD_LABEL={card:"Card", cash:"Cash", zelle:"Zelle", cashapp:"Cash App"};
+function openSales(){ renderSales(); show("sales"); }
+function renderSales(){
+  const s=todaySales();
+  const byCur={}, byMethod={}; let books=0;
+  s.forEach(x=>{ byCur[x.cur]=(byCur[x.cur]||0)+x.amt; byMethod[x.method]=(byMethod[x.method]||0)+1; books+=x.books||0; });
+  document.getElementById("salesTotals").innerHTML = s.length===0
+    ? `<p class="hint" style="margin:0">No sales yet today.</p>`
+    : Object.keys(byCur).map(c=>`<div class="bigt">${fmtCur(byCur[c],c)}</div>`).join("");
+  document.getElementById("salesMeta").innerHTML = s.length===0 ? "" :
+    `${s.length} sale${s.length>1?"s":""} · ${books} book${books!==1?"s":""}<br>`+
+    Object.keys(byMethod).map(m=>`${METHOD_LABEL[m]||m}: ${byMethod[m]}`).join(" · ");
+  document.getElementById("salesList").innerHTML = s.length===0 ? "" :
+    s.slice().reverse().map(x=>{
+      const t=new Date(x.ts).toLocaleTimeString([], {hour:"numeric", minute:"2-digit"});
+      return `<div class="srow"><span>${t} · ${METHOD_LABEL[x.method]||x.method}</span><b>${fmtCur(x.amt,x.cur)}</b></div>`;
+    }).join("");
+}
+function clearToday(){
+  if(!confirm("Clear today's tally on this phone? This does not affect any payment or receipt already made.")) return;
+  const t=todayKey();
+  try{ localStorage.setItem("bt_sales", JSON.stringify(readSales().filter(s=>s.date!==t))); }catch(e){}
+  renderSales(); renderTally();
+}
+
 /* ============================ HELPERS ============================ */
 function show(id){ document.querySelectorAll(".screen").forEach(s=>s.classList.remove("on"));
-  document.getElementById(id).classList.add("on"); window.scrollTo(0,0); renderCartBar(); }
+  document.getElementById(id).classList.add("on"); window.scrollTo(0,0); renderCartBar(); renderTally(); }
 function val(id){ return document.getElementById(id).value.trim(); }
 
 /* return from Stripe? (?paid=SESSION_ID). Stripe already collected the buyer's
