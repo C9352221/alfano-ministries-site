@@ -123,6 +123,16 @@
   footer{padding:40px 0 70px;text-align:center;}
   footer .tricolore{margin-bottom:16px;}
   footer p{font-family:var(--mono);font-size:.72rem;color:var(--sepia);letter-spacing:.04em;line-height:1.8;}
+  .gallery-note{font-size:.95rem;margin-top:22px;}
+  .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:16px;margin-top:20px;}
+  .gallery a{text-decoration:none;color:var(--sepia);display:block;}
+  .gallery .frame{display:block;aspect-ratio:3/4;overflow:hidden;border:1px solid var(--line);border-radius:8px;background:var(--card);box-shadow:0 5px 15px rgba(0,0,0,.16);}
+  .gallery img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;transition:transform .35s ease;}
+  .gallery a:hover .frame img{transform:scale(1.06);}
+  .gallery a:focus-visible .frame{outline:2px solid var(--green);outline-offset:2px;}
+  .gallery .cap{display:block;font-family:var(--mono);font-size:.63rem;letter-spacing:.02em;line-height:1.35;margin-top:7px;}
+  .catch{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--seal);border-radius:8px;padding:15px 20px;margin-top:24px;font-size:.92rem;}
+  .catch b{display:block;color:var(--seal);font-family:var(--mono);font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px;}
 </style>
 </head>
 <body>
@@ -164,6 +174,7 @@
       <div class="f"><div class="k">Trade</div><div class="v">Glassworker<small>Washington, PA</small></div></div>
       <div class="f"><div class="k">Died</div><div class="v">8 Aug 1952<small>Immaculate Conception Cem.</small></div></div>
     </div>
+    <p class="measure" style="margin-top:26px;font-family:var(--serif);font-style:italic;font-size:1.12rem;color:var(--sepia);">Santo and Teresa were married forty-three years. In August 1952 his heart gave out; the cancer took Teresa the following summer. As the family remembers it, the two were never meant to be apart for long.</p>
   </section>
 
   <section>
@@ -211,29 +222,27 @@
       <span class="count">17</span>
       <h2 style="flex:1;min-width:220px;">documents, found in a single afternoon</h2>
     </div>
-    <div class="trove">
-      <div class="grp"><div class="gh">Santo &mdash; a life in paper</div><ul>
-        <li>Declaration of Intention, 1936</li>
-        <li>Ellis Island manifest, 1902</li>
-        <li>Marriage license, 1909</li>
-        <li>Census: 1910 · 1920 · 1930 · 1940 · 1950</li>
-        <li>WWII draft card, 1942</li>
-        <li>Death certificate, 1952</li>
-        <li>City directory · his photograph</li>
-      </ul></div>
-      <div class="grp"><div class="gh">The direct line</div><ul>
-        <li>John&rsquo;s WWII draft card, 1942</li>
-        <li>John &amp; Ruth&rsquo;s marriage, 1947</li>
-      </ul></div>
-      <div class="grp"><div class="gh">The family around them</div><ul>
-        <li>Teresa&rsquo;s death certificate, 1953</li>
-        <li>Salvatore&rsquo;s birth certificate, 1912</li>
-        <li>Donald&rsquo;s draft card</li>
-      </ul></div>
-      <div class="grp"><div class="gh">And a careful catch</div><ul>
-        <li>Ruled out a <em>second</em> John L. West of the same age &mdash; a same-name trap that fools professionals.</li>
-      </ul></div>
+    <p class="gallery-note">Every one is here to see &mdash; <strong>tap any document to open the original scan.</strong></p>
+    <div class="gallery">
+      <a href="alfano-line/docs/santo-photo.jpg" target="_blank" rel="noopener"><span class="frame"><img loading="lazy" src="alfano-line/thumbs/santo-photo.jpg" alt="Santo's portrait"></span><span class="cap">Santo&rsquo;s portrait</span></a>
+      <a href="alfano-line/docs/ship-manifest-1902.jpg" target="_blank" rel="noopener"><span class="frame"><img loading="lazy" src="alfano-line/thumbs/ship-manifest-1902.jpg" alt="Ship manifest 1902"></span><span class="cap">Ship manifest &middot; 1902</span></a>
+      <a href="alfano-line/docs/santo-marriage-1909.jpg" target="_blank" rel="noopener"><span class="frame"><img loading="lazy" src="alfano-line/thumbs/santo-marriage-1909.jpg" alt="Marriage 1909"></span><span class="cap">Marriage &middot; 1909</span></a>
+      <a href="alfano-line/docs/census-1910.jpg" target="_blank" rel="noopener"><span class="frame"><img loading="lazy" src="alfano-line/thumbs/census-1910.jpg" alt="1910 census"></span><span class="cap">Census &middot; 1910</span></a>
+      <a href="alfano-line/docs/census-1920.jpg" target="_blank" rel="noopener"><span class="frame"><img loading="lazy" src="alfano-line/thumbs/census-1920.jpg" alt="1920 census"></span><span class="cap">Census &middot; 1920 (alien)</span></a>
+      <a href="alfano-line/docs/census-1930.jpg" target="_blank" rel="noopener"><span class="frame"><img loading="lazy" src="alfano-line/thumbs/census-1930.jpg" alt="1930 census"></span><span class="cap">Census &middot; 1930 (alien)</span></a>
+      <a href="alfano-line/docs/declaration-1936.jpg" target="_blank" rel="noopener"><span class="frame"><img loading="lazy" src="alfano-line/thumbs/declaration-1936.jpg" alt="Declaration of Intention 1936"></span><span class="cap">Declaration &middot; 1936</span></a>
+      <a href="alfano-line/docs/census-1940.jpg" target="_blank" rel="noopener"><span class="frame"><img loading="lazy" src="alfano-line/thumbs/census-1940.jpg" alt="1940 census"></span><span class="cap">Census &middot; 1940</span></a>
+      <a href="alfano-line/docs/santo-draftcard-1942.jpg" target="_blank" rel="noopener"><span class="frame"><img loading="lazy" src="alfano-line/thumbs/santo-draftcard-1942.jpg" alt="Santo draft card 1942"></span><span class="cap">Santo&rsquo;s draft card &middot; 1942</span></a>
+      <a href="alfano-line/docs/census-1950.jpg" target="_blank" rel="noopener"><span class="frame"><img loading="lazy" src="alfano-line/thumbs/census-1950.jpg" alt="1950 census"></span><span class="cap">Census &middot; 1950</span></a>
+      <a href="alfano-line/docs/santo-death-1952.jpg" target="_blank" rel="noopener"><span class="frame"><img loading="lazy" src="alfano-line/thumbs/santo-death-1952.jpg" alt="Santo death certificate 1952"></span><span class="cap">Santo&rsquo;s death cert &middot; 1952</span></a>
+      <a href="alfano-line/docs/city-directory.jpg" target="_blank" rel="noopener"><span class="frame"><img loading="lazy" src="alfano-line/thumbs/city-directory.jpg" alt="City directory"></span><span class="cap">City directory</span></a>
+      <a href="alfano-line/docs/teresa-death-1953.png" target="_blank" rel="noopener"><span class="frame"><img loading="lazy" src="alfano-line/thumbs/teresa-death-1953.jpg" alt="Teresa death certificate 1953"></span><span class="cap">Teresa&rsquo;s death cert &middot; 1953</span></a>
+      <a href="alfano-line/docs/salvatore-birth-1912.jpg" target="_blank" rel="noopener"><span class="frame"><img loading="lazy" src="alfano-line/thumbs/salvatore-birth-1912.jpg" alt="Salvatore birth certificate 1912"></span><span class="cap">Salvatore&rsquo;s birth &middot; 1912</span></a>
+      <a href="alfano-line/docs/donald-draftcard.jpg" target="_blank" rel="noopener"><span class="frame"><img loading="lazy" src="alfano-line/thumbs/donald-draftcard.jpg" alt="Donald draft card"></span><span class="cap">Donald&rsquo;s draft card</span></a>
+      <a href="alfano-line/docs/john-draftcard-1942.jpg" target="_blank" rel="noopener"><span class="frame"><img loading="lazy" src="alfano-line/thumbs/john-draftcard-1942.jpg" alt="John draft card 1942"></span><span class="cap">John&rsquo;s draft card &middot; 1942</span></a>
+      <a href="alfano-line/docs/john-marriage-1947.jpg" target="_blank" rel="noopener"><span class="frame"><img loading="lazy" src="alfano-line/thumbs/john-marriage-1947.jpg" alt="John and Ruth marriage 1947"></span><span class="cap">John &amp; Ruth &middot; 1947</span></a>
     </div>
+    <div class="catch"><b>A careful catch</b>We ruled out a <em>second</em> John L. West of the same age and town &mdash; a same-name trap that fools professionals, kept out of your line.</div>
   </section>
 
   <section>
