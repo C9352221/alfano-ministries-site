@@ -208,18 +208,24 @@ function renderReceipt(f, orderId, orderDate, paymentLabel) {
 </div>`;
 }
 
-// Email the receipt through Resend.
+// Email the receipt through Resend. Returns { ok, status, error } for diagnostics.
 async function sendReceipt(env, toEmail, html) {
+  if (!env.RESEND_API_KEY) return { ok: false, status: 0, error: "RESEND_API_KEY not set" };
   try {
     const r = await fetch(RESEND_URL, {
       method: "POST",
-      headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, "Content-Type": "application/json" },
+      headers: {
+        Authorization: `Bearer ${env.RESEND_API_KEY}`,
+        "Content-Type": "application/json",
+        "User-Agent": "AlfanoMinistries-BookTable/1.0",
+      },
       body: JSON.stringify({ from: RECEIPT_FROM, to: [toEmail], subject: RECEIPT_SUBJECT, html }),
     });
-    if (r.ok) return true;
-    console.error("Resend failed:", r.status, await r.text());
-    return false;
-  } catch (e) { console.error("Resend error:", e); return false; }
+    const txt = await r.text();
+    if (r.ok) return { ok: true };
+    console.error("Resend failed:", r.status, txt);
+    return { ok: false, status: r.status, error: txt.slice(0, 300) };
+  } catch (e) { return { ok: false, status: 0, error: String(e).slice(0, 200) }; }
 }
 
 export default {
@@ -264,8 +270,8 @@ export default {
 
     // Email the branded receipt via Resend.
     const html = renderReceipt(fields, orderId, orderDate, paymentLabel);
-    const receiptSent = await sendReceipt(env, fields.email, html);
+    const rc = await sendReceipt(env, fields.email, html);
 
-    return json({ success: true, orderId, email: fields.email, receiptSent, listed }, 200, safe);
+    return json({ success: true, orderId, email: fields.email, receiptSent: rc.ok, receiptError: rc.ok ? undefined : rc, listed }, 200, safe);
   },
 };
