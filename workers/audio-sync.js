@@ -34,7 +34,9 @@
 const ZEFFY_API = "https://api.zeffy.com/api/v1";
 const GHL_BASE = "https://services.leadconnectorhq.com";
 const GHL_LOCATION_ID = "AIPTqymDwrSMF9zx8Pul";
-const PARTNER_TAG = "audio partner";
+// Must match the tag Marc uses in GoHighLevel exactly, or synced partners land
+// outside the segment he emails. GHL lowercases tags on save.
+const PARTNER_TAG = "monthly partner audio";
 
 const LOOKBACK_HOURS = 48;
 const RECURRING_GRACE_DAYS = 5;
