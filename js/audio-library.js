@@ -136,11 +136,11 @@
           msg.textContent = (res.data && res.data.message) || "If that email has access, a sign-in link is on its way.";
           msg.className = "gate-msg gate-msg-ok";
         }
-        if (btn) { btn.disabled = false; btn.textContent = "Email me a link"; }
+        if (btn) { btn.disabled = false; btn.textContent = "Send my sign-in link"; }
         form.reset();
       }).catch(function () {
         if (msg) { msg.textContent = "Something went wrong. Please try again in a moment."; msg.className = "gate-msg gate-msg-error"; }
-        if (btn) { btn.disabled = false; btn.textContent = "Email me a link"; }
+        if (btn) { btn.disabled = false; btn.textContent = "Send my sign-in link"; }
       });
     });
   }

@@ -2403,7 +2403,15 @@ ul { list-style: none; }
     font-weight: 600;
     font-size: 0.9rem;
     color: var(--text-body);
-    margin-bottom: 12px;
+    margin-bottom: 6px;
+}
+
+.gate-signin-help {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--text-light);
+    max-width: 420px;
+    margin: 0 auto 14px;
 }
 
 .gate-form {
