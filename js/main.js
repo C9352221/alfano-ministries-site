@@ -588,7 +588,10 @@ function copyToClipboard(btn, text) {
 // single mutation is not enough; this polls until the shadow root exists and
 // only then starts observing it.
 (function themeChatWidget() {
-    const AVATAR = '/assets/photos/marc-avatar.jpg';
+    // bin/stamp-assets.py only rewrites HTML, so this reference cannot be
+    // hashed automatically. Bump ?v= by hand whenever the image is replaced,
+    // or browsers will keep serving the old one for the cache lifetime.
+    const AVATAR = '/assets/photos/marc-avatar.jpg?v=2';
     const DEFAULT_AVATAR = 'defaultAvatar.png';
     const started = Date.now();
     let observing = false;
