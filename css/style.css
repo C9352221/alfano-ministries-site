@@ -188,8 +188,11 @@ ul { list-style: none; }
     transform: rotate(-45deg) translate(5px, -5px);
 }
 
-/* Mobile Menu */
-@media (max-width: 768px) {
+/* Mobile Menu.
+   Breakpoint is 1200px, not 768px: the desktop nav needs ~1205px for its nine
+   items, so anything narrower overflowed — 7K Revelation wrapped and Give and
+   Contact ran off the right edge on tablets and small laptops. */
+@media (max-width: 1200px) {
     .hamburger { display: flex; }
 
     .nav-links {
