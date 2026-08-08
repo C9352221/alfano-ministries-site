@@ -21,7 +21,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Open+Sans:wght@300;400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Open+Sans:wght@300;400;500;600;700&display=swap"></noscript>
-    <link rel="stylesheet" href="css/style.css?v=dbe7526f5a">
+    <link rel="stylesheet" href="css/style.css?v=16f787d0bd">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
 <body>
@@ -63,14 +63,32 @@
         </div>
     </section>
 
-    <!-- Embedded Map -->
-    <section class="section section-white" style="padding-top: 0; padding-bottom: 0;">
-        <div class="map-wrap">
-            <div class="map-touch-overlay" role="button" tabindex="0" aria-label="Tap to interact with map">
-                <span>Tap to interact with map</span>
+    <!-- Wall Map -->
+    <section class="wallroom">
+        <div class="wallmap-board">
+            <div class="wm-viewport" id="wm-viewport">
+                <div class="wm-canvas" id="wm-canvas">
+                    <img class="wm-sheet" id="wm-sheet"
+                         src="assets/travel/world-map-1200.jpg"
+                         srcset="assets/travel/world-map-1200.jpg 1200w, assets/travel/world-map-2400.jpg 2400w"
+                         sizes="(max-width: 1220px) 100vw, 1146px"
+                         width="2400" height="1173"
+                         alt="An antique world map with a push pin in each of the 23 countries Alfano Ministries has carried the Gospel to">
+                </div>
             </div>
-            <iframe src="https://c9352221.github.io/travel-heatmap/" title="Alfano Ministries Travel Map" style="width: 100%; height: 100%; border: none;" allowfullscreen loading="lazy"></iframe>
+            <span class="wm-tack tl" aria-hidden="true"></span>
+            <span class="wm-tack tr" aria-hidden="true"></span>
+            <span class="wm-tack bl" aria-hidden="true"></span>
+            <span class="wm-tack br" aria-hidden="true"></span>
+            <div class="wm-controls">
+                <button type="button" id="wm-out" aria-label="Zoom out">&minus;</button>
+                <button type="button" id="wm-in" aria-label="Zoom in">+</button>
+                <button type="button" id="wm-reset">Reset</button>
+            </div>
         </div>
+        <p class="wm-hint">23 countries &middot; 190 places &middot; tap a pin, or choose a country below</p>
+        <div class="wm-panel" id="wm-panel" role="status" aria-live="polite"></div>
+        <div class="wm-list" id="wm-list"></div>
     </section>
 
     <!-- CTA -->
@@ -106,6 +124,7 @@
                 <a href="media.html">Media</a>
                 <a href="7k-revelation.html">7K Revelation</a>
                 <a href="travel-map.html">Travel Map</a>
+                <a href="travel-heatmap.html">Travel Heatmap</a>
                 <!-- <a href="tours.html">Tours</a> -->
                 <a href="store.html">Store</a>
                 <a href="sammy.html">Sammy</a>
@@ -130,6 +149,7 @@
     </footer>
 
     <script src="js/main.js?v=289c1d07eb" defer></script>
+    <script src="js/travel-map.js?v=baaff76382" defer></script>
     <!-- GHL Chat Widget -->
     <script src="https://widgets.leadconnectorhq.com/loader.js" data-resources-url="https://widgets.leadconnectorhq.com/chat-widget/loader.js" data-widget-id="6a05e884f127bb1bb0a44a06" data-source="WEB_USER"></script>
 </body>

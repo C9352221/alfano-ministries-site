@@ -1,0 +1,1918 @@
+[
+ {
+  "code": "US",
+  "name": "United States",
+  "points": 19264,
+  "bounds": [
+   [
+    20.7775014619422,
+    -157.88221253706456
+   ],
+   [
+    47.68255664872792,
+    -70.9997461
+   ]
+  ],
+  "states": [
+   {
+    "name": "Florida",
+    "bounds": [
+     [
+      25.886458672180453,
+      -87.20870126556153
+     ],
+     [
+      30.702011724645892,
+      -80.09225558988881
+     ]
+    ],
+    "cities": [
+     {
+      "name": "Hillsborough County",
+      "lat": 27.912749799870998,
+      "lng": -82.34426320402987,
+      "visits": 108852
+     },
+     {
+      "name": "Orange County",
+      "lat": 28.38960499333857,
+      "lng": -81.51079088135323,
+      "visits": 3813
+     },
+     {
+      "name": "Lakeland",
+      "lat": 28.05142383867304,
+      "lng": -81.9354176619247,
+      "visits": 3346
+     },
+     {
+      "name": "Manatee County",
+      "lat": 27.440477402423916,
+      "lng": -82.51145198916339,
+      "visits": 2104
+     },
+     {
+      "name": "Pinellas County",
+      "lat": 27.843344778329577,
+      "lng": -82.72130849909708,
+      "visits": 1772
+     },
+     {
+      "name": "Pasco County",
+      "lat": 28.2618443148457,
+      "lng": -82.35022940183485,
+      "visits": 1199
+     },
+     {
+      "name": "West Palm Beach",
+      "lat": 26.74386256946411,
+      "lng": -80.09225558988881,
+      "visits": 989
+     },
+     {
+      "name": "Tallahassee",
+      "lat": 30.528727739652872,
+      "lng": -84.22544343591447,
+      "visits": 749
+     },
+     {
+      "name": "Ocala",
+      "lat": 29.187803495299825,
+      "lng": -82.17750663484604,
+      "visits": 617
+     },
+     {
+      "name": "Pensacola",
+      "lat": 30.475655893554283,
+      "lng": -87.20870126556153,
+      "visits": 543
+     },
+     {
+      "name": "Miami-Dade County",
+      "lat": 25.886458672180453,
+      "lng": -80.31337173684209,
+      "visits": 532
+     },
+     {
+      "name": "Jacksonville",
+      "lat": 30.298173697731563,
+      "lng": -81.89952729243853,
+      "visits": 529
+     },
+     {
+      "name": "Bradford County",
+      "lat": 29.888302792356686,
+      "lng": -82.13177606135883,
+      "visits": 471
+     },
+     {
+      "name": "Winter Haven",
+      "lat": 27.981977185714285,
+      "lng": -81.68048064242424,
+      "visits": 462
+     },
+     {
+      "name": "Hernando County",
+      "lat": 28.55213771359448,
+      "lng": -82.22102767949306,
+      "visits": 434
+     },
+     {
+      "name": "Nassau County",
+      "lat": 30.702011724645892,
+      "lng": -81.66723217563741,
+      "visits": 353
+     },
+     {
+      "name": "Alachua County",
+      "lat": 29.510223394630874,
+      "lng": -82.16065015033556,
+      "visits": 298
+     },
+     {
+      "name": "Sumter County",
+      "lat": 28.858326632467538,
+      "lng": -82.09948528484848,
+      "visits": 231
+     }
+    ]
+   },
+   {
+    "name": "Pennsylvania",
+    "bounds": [
+     [
+      39.907064621052626,
+      -80.506508517094
+     ],
+     [
+      41.29961303991418,
+      -75.56761819915015
+     ]
+    ],
+    "cities": [
+     {
+      "name": "North Franklin Township",
+      "lat": 40.15098191128453,
+      "lng": -80.23718930248799,
+      "visits": 54749
+     },
+     {
+      "name": "Robinson Township",
+      "lat": 40.45591770188752,
+      "lng": -80.11356104253815,
+      "visits": 12450
+     },
+     {
+      "name": "Bradford Township",
+      "lat": 41.01721404579534,
+      "lng": -78.30533000293819,
+      "visits": 987
+     },
+     {
+      "name": "Monroeville",
+      "lat": 40.4164382442571,
+      "lng": -79.77404171548999,
+      "visits": 949
+     },
+     {
+      "name": "Barnett Township",
+      "lat": 41.29961303991418,
+      "lng": -79.18759265193134,
+      "visits": 932
+     },
+     {
+      "name": "Slippery Rock Township",
+      "lat": 40.99809293271144,
+      "lng": -80.18770452276124,
+      "visits": 804
+     },
+     {
+      "name": "East Huntingdon Township",
+      "lat": 40.182786153925626,
+      "lng": -79.58157483326445,
+      "visits": 484
+     },
+     {
+      "name": "West Fallowfield Township",
+      "lat": 39.907064621052626,
+      "lng": -75.96973634210528,
+      "visits": 475
+     },
+     {
+      "name": "Jefferson Township",
+      "lat": 40.070304039189175,
+      "lng": -79.15601147297298,
+      "visits": 370
+     },
+     {
+      "name": "East Goshen Township",
+      "lat": 40.00810812464591,
+      "lng": -75.56761819915015,
+      "visits": 353
+     },
+     {
+      "name": "Bedford Township",
+      "lat": 40.012866300909074,
+      "lng": -78.50900996484847,
+      "visits": 330
+     },
+     {
+      "name": "Fallowfield Township",
+      "lat": 40.138753114743594,
+      "lng": -79.91147660673077,
+      "visits": 312
+     },
+     {
+      "name": "Taylor Township",
+      "lat": 40.048609217589565,
+      "lng": -78.03828199283389,
+      "visits": 307
+     },
+     {
+      "name": "Beaver Township",
+      "lat": 41.19091898390411,
+      "lng": -79.57819178013699,
+      "visits": 292
+     },
+     {
+      "name": "Boggs Township",
+      "lat": 40.91238227147888,
+      "lng": -79.39674520598594,
+      "visits": 284
+     },
+     {
+      "name": "Lower Swatara Township",
+      "lat": 40.237431306844115,
+      "lng": -76.7478851821293,
+      "visits": 263
+     },
+     {
+      "name": "East Lampeter Township",
+      "lat": 40.03616281954023,
+      "lng": -76.22603937241381,
+      "visits": 261
+     },
+     {
+      "name": "Hanover Township",
+      "lat": 40.37679247863247,
+      "lng": -80.506508517094,
+      "visits": 234
+     }
+    ]
+   },
+   {
+    "name": "North Carolina",
+    "bounds": [
+     [
+      35.17045345700827,
+      -80.8483464813102
+     ],
+     [
+      36.25406780571429,
+      -80.78369528995435
+     ]
+    ],
+    "cities": [
+     {
+      "name": "Charlotte",
+      "lat": 35.17045345700827,
+      "lng": -80.83329131349781,
+      "visits": 9446
+     },
+     {
+      "name": "Mecklenburg County",
+      "lat": 35.40592542885843,
+      "lng": -80.78369528995435,
+      "visits": 1095
+     },
+     {
+      "name": "Iredell County",
+      "lat": 35.875943516763,
+      "lng": -80.8483464813102,
+      "visits": 519
+     },
+     {
+      "name": "Elkin",
+      "lat": 36.25406780571429,
+      "lng": -80.82259506190475,
+      "visits": 210
+     }
+    ]
+   },
+   {
+    "name": "West Virginia",
+    "bounds": [
+     [
+      37.31634181966642,
+      -81.15559793291874
+     ],
+     [
+      40.0618510488889,
+      -80.02554381472144
+     ]
+    ],
+    "cities": [
+     {
+      "name": "Braxton County",
+      "lat": 38.61264350457107,
+      "lng": -80.72445127726989,
+      "visits": 1597
+     },
+     {
+      "name": "Monongalia County",
+      "lat": 39.630465293368694,
+      "lng": -80.02554381472144,
+      "visits": 1508
+     },
+     {
+      "name": "Mercer County",
+      "lat": 37.31634181966642,
+      "lng": -81.09343881174428,
+      "visits": 1439
+     },
+     {
+      "name": "Fayette County",
+      "lat": 37.92191918656717,
+      "lng": -81.15559793291874,
+      "visits": 1206
+     },
+     {
+      "name": "Lewis County",
+      "lat": 38.97678702224138,
+      "lng": -80.51247004784481,
+      "visits": 1160
+     },
+     {
+      "name": "Wheeling",
+      "lat": 40.0618510488889,
+      "lng": -80.67550008777782,
+      "visits": 810
+     },
+     {
+      "name": "Bridgeport",
+      "lat": 39.29489993742513,
+      "lng": -80.26546280703595,
+      "visits": 668
+     },
+     {
+      "name": "Nicholas County",
+      "lat": 38.220609474308944,
+      "lng": -80.8779252422764,
+      "visits": 615
+     },
+     {
+      "name": "Raleigh County",
+      "lat": 37.656725496378826,
+      "lng": -81.12658783008357,
+      "visits": 359
+     }
+    ]
+   },
+   {
+    "name": "Ohio",
+    "bounds": [
+     [
+      40.024233302803744,
+      -83.04205084215047
+     ],
+     [
+      40.0862311183565,
+      -81.06261506598985
+     ]
+    ],
+    "cities": [
+     {
+      "name": "Worthington",
+      "lat": 40.0862311183565,
+      "lng": -83.04205084215047,
+      "visits": 2446
+     },
+     {
+      "name": "Guernsey County",
+      "lat": 40.024233302803744,
+      "lng": -81.53616065171342,
+      "visits": 321
+     },
+     {
+      "name": "Morristown",
+      "lat": 40.06380478629441,
+      "lng": -81.06261506598985,
+      "visits": 197
+     }
+    ]
+   },
+   {
+    "name": "South Carolina",
+    "bounds": [
+     [
+      32.3321708825112,
+      -81.03170596771304
+     ],
+     [
+      34.83693570771703,
+      -80.65092830558376
+     ]
+    ],
+    "cities": [
+     {
+      "name": "Forest Acres",
+      "lat": 34.018564231871366,
+      "lng": -80.98463176335281,
+      "visits": 1026
+     },
+     {
+      "name": "Hardeeville",
+      "lat": 32.3321708825112,
+      "lng": -81.03170596771304,
+      "visits": 446
+     },
+     {
+      "name": "Hampton County",
+      "lat": 32.70654159974489,
+      "lng": -80.8403265117347,
+      "visits": 392
+     },
+     {
+      "name": "York County",
+      "lat": 34.83693570771703,
+      "lng": -81.00963585787778,
+      "visits": 311
+     },
+     {
+      "name": "Orangeburg County",
+      "lat": 33.54887890924656,
+      "lng": -80.80547547979452,
+      "visits": 292
+     },
+     {
+      "name": "Colleton County",
+      "lat": 33.06937499543147,
+      "lng": -80.65092830558376,
+      "visits": 197
+     }
+    ]
+   },
+   {
+    "name": "Texas",
+    "bounds": [
+     [
+      29.460635056778898,
+      -96.8206392322422
+     ],
+     [
+      32.786524120294644,
+      -95.07966550309372
+     ]
+    ],
+    "cities": [
+     {
+      "name": "Dickinson",
+      "lat": 29.460635056778898,
+      "lng": -95.07966550309372,
+      "visits": 1099
+     },
+     {
+      "name": "Dallas",
+      "lat": 32.786524120294644,
+      "lng": -96.8206392322422,
+      "visits": 611
+     },
+     {
+      "name": "Houston",
+      "lat": 29.7604,
+      "lng": -95.3698,
+      "visits": 20
+     }
+    ]
+   },
+   {
+    "name": "Virginia",
+    "bounds": [
+     [
+      36.619808719977925,
+      -81.02693266433664
+     ],
+     [
+      36.966054118830236,
+      -80.76103993333334
+     ]
+    ],
+    "cities": [
+     {
+      "name": "Carroll County",
+      "lat": 36.619808719977925,
+      "lng": -80.76103993333334,
+      "visits": 906
+     },
+     {
+      "name": "Wythe County",
+      "lat": 36.966054118830236,
+      "lng": -81.02693266433664,
+      "visits": 701
+     }
+    ]
+   },
+   {
+    "name": "Georgia",
+    "bounds": [
+     [
+      31.24182936422535,
+      -81.52145751661973
+     ],
+     [
+      32.058946598498494,
+      -81.23035161621625
+     ]
+    ],
+    "cities": [
+     {
+      "name": "Savannah",
+      "lat": 32.058946598498494,
+      "lng": -81.23035161621625,
+      "visits": 666
+     },
+     {
+      "name": "Glynn County",
+      "lat": 31.24182936422535,
+      "lng": -81.52145751661973,
+      "visits": 355
+     }
+    ]
+   },
+   {
+    "name": "Alabama",
+    "bounds": [
+     [
+      34.65021103356973,
+      -87.32552981527446
+     ],
+     [
+      34.95460530572794,
+      -86.57107210638297
+     ]
+    ],
+    "cities": [
+     {
+      "name": "Huntsville",
+      "lat": 34.65021103356973,
+      "lng": -86.57107210638297,
+      "visits": 423
+     },
+     {
+      "name": "Lauderdale County",
+      "lat": 34.95460530572794,
+      "lng": -87.32552981527446,
+      "visits": 419
+     }
+    ]
+   },
+   {
+    "name": "Hawaii",
+    "bounds": [
+     [
+      20.7984,
+      -157.8583
+     ],
+     [
+      21.3069,
+      -156.3307052956134
+     ]
+    ],
+    "cities": [
+     {
+      "name": "Maui County",
+      "lat": 20.799430449075263,
+      "lng": -156.3307052956134,
+      "visits": 200
+     },
+     {
+      "name": "Honolulu",
+      "lat": 21.3069,
+      "lng": -157.8583,
+      "visits": 200
+     },
+     {
+      "name": "Maui",
+      "lat": 20.7984,
+      "lng": -156.3319,
+      "visits": 200
+     }
+    ]
+   },
+   {
+    "name": "Tennessee",
+    "bounds": [
+     [
+      35.86065938244898,
+      -86.42737207510203
+     ],
+     [
+      36.26804207901638,
+      -83.21996135245904
+     ]
+    ],
+    "cities": [
+     {
+      "name": "Hamblen County",
+      "lat": 36.26804207901638,
+      "lng": -83.21996135245904,
+      "visits": 305
+     },
+     {
+      "name": "Murfreesboro",
+      "lat": 35.86065938244898,
+      "lng": -86.42737207510203,
+      "visits": 245
+     }
+    ]
+   },
+   {
+    "name": "New York",
+    "bounds": [
+     [
+      42.248435999521526,
+      -79.47279905645932
+     ],
+     [
+      42.8478087015,
+      -78.835128979
+     ]
+    ],
+    "cities": [
+     {
+      "name": "Town of Chautauqua",
+      "lat": 42.248435999521526,
+      "lng": -79.47279905645932,
+      "visits": 209
+     },
+     {
+      "name": "Buffalo",
+      "lat": 42.8478087015,
+      "lng": -78.835128979,
+      "visits": 200
+     }
+    ]
+   },
+   {
+    "name": "Washington",
+    "bounds": [
+     [
+      47.60555116720833,
+      -122.33102059928272
+     ],
+     [
+      47.659701235107875,
+      -117.4246987539445
+     ]
+    ],
+    "cities": [
+     {
+      "name": "Seattle",
+      "lat": 47.60555116720833,
+      "lng": -122.33102059928272,
+      "visits": 200
+     },
+     {
+      "name": "Spokane",
+      "lat": 47.659701235107875,
+      "lng": -117.4246987539445,
+      "visits": 200
+     }
+    ]
+   },
+   {
+    "name": "California",
+    "bounds": [
+     [
+      37.77534526023837,
+      -122.42029186442699
+     ],
+     [
+      38.40261121791989,
+      -122.36042668738362
+     ]
+    ],
+    "cities": [
+     {
+      "name": "San Francisco",
+      "lat": 37.77534526023837,
+      "lng": -122.42029186442699,
+      "visits": 200
+     },
+     {
+      "name": "Yountville",
+      "lat": 38.40261121791989,
+      "lng": -122.36042668738362,
+      "visits": 200
+     }
+    ]
+   },
+   {
+    "name": "Maryland",
+    "bounds": [
+     [
+      38.584402097560975,
+      -77.65800351463417
+     ],
+     [
+      39.584402097560975,
+      -76.65800351463417
+     ]
+    ],
+    "cities": [
+     {
+      "name": "Rockville",
+      "lat": 39.084402097560975,
+      "lng": -77.15800351463417,
+      "visits": 369
+     }
+    ]
+   },
+   {
+    "name": "Arizona",
+    "bounds": [
+     [
+      33.04969798686131,
+      -112.74992488613134
+     ],
+     [
+      34.04969798686131,
+      -111.74992488613134
+     ]
+    ],
+    "cities": [
+     {
+      "name": "Glendale",
+      "lat": 33.54969798686131,
+      "lng": -112.24992488613134,
+      "visits": 274
+     }
+    ]
+   },
+   {
+    "name": "New Jersey",
+    "bounds": [
+     [
+      38.587071246037745,
+      -75.3419636573585
+     ],
+     [
+      39.587071246037745,
+      -74.3419636573585
+     ]
+    ],
+    "cities": [
+     {
+      "name": "Middle Township",
+      "lat": 39.087071246037745,
+      "lng": -74.8419636573585,
+      "visits": 265
+     }
+    ]
+   }
+  ],
+  "pin": {
+   "lat": 35.2698,
+   "lng": -86.5669
+  },
+  "region": "Americas"
+ },
+ {
+  "code": "IT",
+  "name": "Italy",
+  "points": 310,
+  "bounds": [
+   [
+    38.2581053,
+    6.9500154
+   ],
+   [
+    45.9192428,
+    16.3485567
+   ]
+  ],
+  "cities": [
+   {
+    "name": "San Felice sul Panaro, Italia",
+    "lat": 44.841473124872685,
+    "lng": 11.134097707979612,
+    "visits": 1178
+   },
+   {
+    "name": "Torino, Italia",
+    "lat": 45.11848826312432,
+    "lng": 7.661655363974494,
+    "visits": 941
+   },
+   {
+    "name": "Bologna, Italia",
+    "lat": 44.521339618861205,
+    "lng": 11.314859520996439,
+    "visits": 281
+   },
+   {
+    "name": "Roma, Italia",
+    "lat": 41.895182482894725,
+    "lng": 12.445620704385968,
+    "visits": 228
+   },
+   {
+    "name": "Lucca, Italia",
+    "lat": 43.84384063546799,
+    "lng": 10.478501374876847,
+    "visits": 203
+   },
+   {
+    "name": "Modena, Italia",
+    "lat": 44.647753811731825,
+    "lng": 10.929230864804476,
+    "visits": 179
+   },
+   {
+    "name": "Verona, Italia",
+    "lat": 45.4204141868613,
+    "lng": 10.98152991386861,
+    "visits": 137
+   },
+   {
+    "name": "Lonate Pozzolo, Italia",
+    "lat": 45.59715324245282,
+    "lng": 8.734889262264154,
+    "visits": 106
+   },
+   {
+    "name": "Parma, Italia",
+    "lat": 44.75452239999998,
+    "lng": 10.363325865979382,
+    "visits": 97
+   },
+   {
+    "name": "La Spezia, Italia",
+    "lat": 44.102598998837216,
+    "lng": 9.816663908139532,
+    "visits": 86
+   },
+   {
+    "name": "Venezia, Italia",
+    "lat": 45.4408,
+    "lng": 12.3155,
+    "visits": 200
+   },
+   {
+    "name": "Calabria, Italia",
+    "lat": 38.9064,
+    "lng": 16.5942,
+    "visits": 200
+   },
+   {
+    "name": "Milano",
+    "lat": 45.4642,
+    "lng": 9.19,
+    "visits": 10
+   }
+  ],
+  "pin": {
+   "lat": 42.0887,
+   "lng": 11.6493
+  },
+  "region": "Europe"
+ },
+ {
+  "code": "GB",
+  "name": "United Kingdom",
+  "points": 142,
+  "bounds": [
+   [
+    51.4321145,
+    -6.7139999999999995
+   ],
+   [
+    55.5436213,
+    0.0313883
+   ]
+  ],
+  "cities": [
+   {
+    "name": "Greater London, United Kingdom",
+    "lat": 51.511991923443325,
+    "lng": -0.0014299738705738521,
+    "visits": 819
+   },
+   {
+    "name": "Belfast, United Kingdom",
+    "lat": 54.60056525117716,
+    "lng": -5.929928708798019,
+    "visits": 807
+   },
+   {
+    "name": "Reading, United Kingdom",
+    "lat": 51.45468000500002,
+    "lng": -0.9784385537500002,
+    "visits": 80
+   },
+   {
+    "name": "Ayrshire, United Kingdom",
+    "lat": 55.49520042307691,
+    "lng": -4.650259546153846,
+    "visits": 39
+   },
+   {
+    "name": "Mid and East Antrim District, United Kingdom",
+    "lat": 54.8405409923077,
+    "lng": -6.265844223076922,
+    "visits": 13
+   },
+   {
+    "name": "South Ayrshire, United Kingdom",
+    "lat": 55.239763159999995,
+    "lng": -4.863018739999999,
+    "visits": 5
+   },
+   {
+    "name": "Wiltshire, United Kingdom",
+    "lat": 51.3733038,
+    "lng": -1.9787194,
+    "visits": 1
+   },
+   {
+    "name": "Test Valley, United Kingdom",
+    "lat": 51.3338879,
+    "lng": -1.4412584,
+    "visits": 1
+   },
+   {
+    "name": "Coleraine",
+    "lat": 55.1344,
+    "lng": -6.664,
+    "visits": 4
+   }
+  ],
+  "pin": {
+   "lat": 53.4879,
+   "lng": -3.1159
+  },
+  "region": "Europe"
+ },
+ {
+  "code": "DK",
+  "name": "Denmark",
+  "points": 112,
+  "bounds": [
+   [
+    55.6264871,
+    12.3036653
+   ],
+   [
+    55.9539697,
+    12.6449193
+   ]
+  ],
+  "cities": [
+   {
+    "name": "København, Danmark",
+    "lat": 55.650380997144914,
+    "lng": 12.575945081513208,
+    "visits": 1401
+   },
+   {
+    "name": "Hillerød Kommune, Danmark",
+    "lat": 55.91134694761905,
+    "lng": 12.337483226984126,
+    "visits": 63
+   },
+   {
+    "name": "Køge Kommune, Danmark",
+    "lat": 55.3981914,
+    "lng": 12.0595815,
+    "visits": 1
+   }
+  ],
+  "pin": {
+   "lat": 55.7902,
+   "lng": 12.4743
+  },
+  "region": "Europe"
+ },
+ {
+  "code": "AT",
+  "name": "Austria",
+  "points": 107,
+  "bounds": [
+   [
+    47.422871,
+    11.7365376
+   ],
+   [
+    48.2115804,
+    16.446422
+   ]
+  ],
+  "cities": [
+   {
+    "name": "Eben am Achensee, Österreich",
+    "lat": 47.42856929160609,
+    "lng": 11.74362991532848,
+    "visits": 1096
+   },
+   {
+    "name": "Wien, Österreich",
+    "lat": 48.189849782745085,
+    "lng": 16.369878009411767,
+    "visits": 255
+   },
+   {
+    "name": "Hallwang, Österreich",
+    "lat": 47.861746688888886,
+    "lng": 13.102002022222223,
+    "visits": 9
+   },
+   {
+    "name": "Parndorf/Pandrof, Österreich",
+    "lat": 48.00577046666667,
+    "lng": 16.814714966666667,
+    "visits": 6
+   },
+   {
+    "name": "Michelhausen, Österreich",
+    "lat": 48.294175800000005,
+    "lng": 15.99609388,
+    "visits": 5
+   },
+   {
+    "name": "Asten, Österreich",
+    "lat": 48.21938692,
+    "lng": 14.422898839999998,
+    "visits": 5
+   },
+   {
+    "name": "Sankt Georgen am Ybbsfelde, Österreich",
+    "lat": 48.135582166666666,
+    "lng": 14.950738766666666,
+    "visits": 3
+   },
+   {
+    "name": "Leonding, Österreich",
+    "lat": 48.2552053,
+    "lng": 14.227491033333335,
+    "visits": 3
+   },
+   {
+    "name": "St. Pölten, Österreich",
+    "lat": 48.2079716,
+    "lng": 15.6309842,
+    "visits": 2
+   },
+   {
+    "name": "Attnang-Puchheim, Österreich",
+    "lat": 48.0098376,
+    "lng": 13.702054,
+    "visits": 2
+   }
+  ],
+  "pin": {
+   "lat": 47.8172,
+   "lng": 14.0915
+  },
+  "region": "Europe"
+ },
+ {
+  "code": "HU",
+  "name": "Hungary",
+  "points": 80,
+  "bounds": [
+   [
+    46.9524256,
+    17.1471328
+   ],
+   [
+    47.913205,
+    19.2611531
+   ]
+  ],
+  "cities": [
+   {
+    "name": "Budapest, Magyarország",
+    "lat": 47.523599565625005,
+    "lng": 19.041581777678545,
+    "visits": 672
+   },
+   {
+    "name": "Balatonfüred, Magyarország",
+    "lat": 46.96268280750755,
+    "lng": 17.888486636036014,
+    "visits": 333
+   },
+   {
+    "name": "Sárszentmihály, Magyarország",
+    "lat": 47.14725472,
+    "lng": 18.30724547,
+    "visits": 10
+   },
+   {
+    "name": "Velence, Magyarország",
+    "lat": 47.25302934444444,
+    "lng": 18.63699028888889,
+    "visits": 9
+   },
+   {
+    "name": "Komárom, Magyarország",
+    "lat": 47.73534156,
+    "lng": 18.05497576,
+    "visits": 5
+   },
+   {
+    "name": "Monori járás, Magyarország",
+    "lat": 47.29994706666667,
+    "lng": 19.419088733333336,
+    "visits": 3
+   },
+   {
+    "name": "Hegyeshalom, Magyarország",
+    "lat": 47.9097159,
+    "lng": 17.1493218,
+    "visits": 3
+   },
+   {
+    "name": "Győr, Magyarország",
+    "lat": 47.677319749999995,
+    "lng": 17.6231781,
+    "visits": 2
+   },
+   {
+    "name": "Tatabánya, Magyarország",
+    "lat": 47.56972155,
+    "lng": 18.4425617,
+    "visits": 2
+   },
+   {
+    "name": "Kardoskút, Magyarország",
+    "lat": 46.5031918,
+    "lng": 20.625833,
+    "visits": 1
+   }
+  ],
+  "pin": {
+   "lat": 47.4328,
+   "lng": 18.2041
+  },
+  "region": "Europe"
+ },
+ {
+  "code": "TT",
+  "name": "Trinidad & Tobago",
+  "points": 76,
+  "bounds": [
+   [
+    10.0887166,
+    -61.5974252
+   ],
+   [
+    10.6452223,
+    -61.3389016
+   ]
+  ],
+  "cities": [
+   {
+    "name": "10.49, -61.43, Trinidad and Tobago",
+    "lat": 10.488178818282213,
+    "lng": -61.42993789754607,
+    "visits": 815
+   },
+   {
+    "name": "10.15, -61.51, Trinidad and Tobago",
+    "lat": 10.149858814285713,
+    "lng": -61.50831736593408,
+    "visits": 182
+   }
+  ],
+  "pin": {
+   "lat": 10.367,
+   "lng": -61.4682
+  },
+  "region": "Americas"
+ },
+ {
+  "code": "NL",
+  "name": "Netherlands",
+  "points": 61,
+  "bounds": [
+   [
+    52.2914113,
+    4.6370607
+   ],
+   [
+    52.3885629,
+    4.9082819
+   ]
+  ],
+  "cities": [
+   {
+    "name": "Hoofddorp, Nederland",
+    "lat": 52.308559306383145,
+    "lng": 4.730399518523169,
+    "visits": 799
+   },
+   {
+    "name": "Oosthuizen, Nederland",
+    "lat": 52.5574824,
+    "lng": 4.9792805,
+    "visits": 1
+   },
+   {
+    "name": "Amsterdam, Nederland",
+    "lat": 52.3676,
+    "lng": 4.9041,
+    "visits": 200
+   }
+  ],
+  "pin": {
+   "lat": 52.34,
+   "lng": 4.7727
+  },
+  "region": "Europe"
+ },
+ {
+  "code": "HN",
+  "name": "Honduras",
+  "points": 39,
+  "bounds": [
+   [
+    14.8023758,
+    -87.9752119
+   ],
+   [
+    15.4558373,
+    -87.7955401
+   ]
+  ],
+  "cities": [
+   {
+    "name": "El Progreso, Honduras",
+    "lat": 15.238222044081633,
+    "lng": -87.8779053440816,
+    "visits": 490
+   },
+   {
+    "name": "Santa Cruz de Yojoa, Honduras",
+    "lat": 14.85575461578947,
+    "lng": -87.95632056842105,
+    "visits": 19
+   },
+   {
+    "name": "El Rosario, Honduras",
+    "lat": 14.6723289,
+    "lng": -87.7463352,
+    "visits": 2
+   },
+   {
+    "name": "La Lima, Honduras",
+    "lat": 15.5839446,
+    "lng": -87.8091758,
+    "visits": 1
+   }
+  ],
+  "pin": {
+   "lat": 15.1291,
+   "lng": -87.8854
+  },
+  "region": "Americas"
+ },
+ {
+  "code": "GT",
+  "name": "Guatemala",
+  "points": 37,
+  "bounds": [
+   [
+    14.4279509,
+    -91.6838023
+   ],
+   [
+    14.8367345,
+    -90.5054586
+   ]
+  ],
+  "cities": [
+   {
+    "name": "San Andrés Semetabaj, Guatemala",
+    "lat": 14.740092437349402,
+    "lng": -91.12897367911647,
+    "visits": 249
+   },
+   {
+    "name": "Mixco, Guatemala",
+    "lat": 14.592225726250001,
+    "lng": -90.61058373875002,
+    "visits": 160
+   },
+   {
+    "name": "Santa Cruz Muluá, Guatemala",
+    "lat": 14.548440932653063,
+    "lng": -91.62484330204083,
+    "visits": 49
+   },
+   {
+    "name": "San Juan Bautista, Guatemala",
+    "lat": 14.423002980000001,
+    "lng": -91.20774727333335,
+    "visits": 15
+   },
+   {
+    "name": "Zaragoza, Guatemala",
+    "lat": 14.638838072727275,
+    "lng": -90.88867502727273,
+    "visits": 11
+   },
+   {
+    "name": "Fray Bartolomé de las Casas, Guatemala",
+    "lat": 15.8797474,
+    "lng": -89.7560995,
+    "visits": 1
+   },
+   {
+    "name": "Senahú, Guatemala",
+    "lat": 15.3829526,
+    "lng": -90.0873027,
+    "visits": 1
+   },
+   {
+    "name": "Sanarate, Guatemala",
+    "lat": 14.8609465,
+    "lng": -90.3742686,
+    "visits": 1
+   }
+  ],
+  "pin": {
+   "lat": 14.6323,
+   "lng": -91.0946
+  },
+  "region": "Americas"
+ },
+ {
+  "code": "MX",
+  "name": "Mexico",
+  "points": 28,
+  "bounds": [
+   [
+    16.6826071,
+    -99.0891531
+   ],
+   [
+    19.442028,
+    -92.6389104
+   ]
+  ],
+  "cities": [
+   {
+    "name": "San Cristóbal, México",
+    "lat": 16.75647693967612,
+    "lng": -92.67512499959511,
+    "visits": 247
+   },
+   {
+    "name": "Tuxtla Gutiérrez, México",
+    "lat": 16.704349817045458,
+    "lng": -93.08586808863633,
+    "visits": 88
+   },
+   {
+    "name": "Ciudad de México, México",
+    "lat": 19.426408374074075,
+    "lng": -99.08034386666667,
+    "visits": 27
+   }
+  ],
+  "pin": {
+   "lat": 18.0623,
+   "lng": -95.864
+  },
+  "region": "Americas"
+ },
+ {
+  "code": "SE",
+  "name": "Sweden",
+  "points": 19,
+  "bounds": [
+   [
+    55.8373859,
+    13.3109324
+   ],
+   [
+    59.6006297,
+    18.093218
+   ]
+  ],
+  "cities": [
+   {
+    "name": "Stockholm, Sverige",
+    "lat": 59.3275453936508,
+    "lng": 18.071619136507945,
+    "visits": 189
+   },
+   {
+    "name": "Sigtuna kommun, Sverige",
+    "lat": 59.635226627272715,
+    "lng": 17.91636865454545,
+    "visits": 11
+   },
+   {
+    "name": "Malmö, Sverige",
+    "lat": 55.63584413333333,
+    "lng": 13.073939877777779,
+    "visits": 9
+   },
+   {
+    "name": "Norrköping, Sverige",
+    "lat": 58.599971919999994,
+    "lng": 16.1356429,
+    "visits": 5
+   },
+   {
+    "name": "Linköping, Sverige",
+    "lat": 58.41128578,
+    "lng": 15.5999414,
+    "visits": 5
+   },
+   {
+    "name": "Hässleholms kommun, Sverige",
+    "lat": 56.07580974,
+    "lng": 13.721129100000002,
+    "visits": 5
+   },
+   {
+    "name": "Södertälje, Sverige",
+    "lat": 59.163155025,
+    "lng": 17.708824025,
+    "visits": 4
+   },
+   {
+    "name": "Södertälje kommun, Sverige",
+    "lat": 59.0483171,
+    "lng": 17.351981575,
+    "visits": 4
+   },
+   {
+    "name": "Alvesta kommun, Sverige",
+    "lat": 56.90514685,
+    "lng": 14.540421825,
+    "visits": 4
+   },
+   {
+    "name": "Eslövs kommun, Sverige",
+    "lat": 55.864308124999994,
+    "lng": 13.34516775,
+    "visits": 4
+   }
+  ],
+  "pin": {
+   "lat": 57.719,
+   "lng": 15.7021
+  },
+  "region": "Europe"
+ },
+ {
+  "code": "AR",
+  "name": "Argentina",
+  "points": 15,
+  "bounds": [
+   [
+    -34.61869665428432,
+    -58.40421623831429
+   ],
+   [
+    -34.582047775041936,
+    -58.36814782957493
+   ]
+  ],
+  "cities": [
+   {
+    "name": "Buenos Aires, Argentina",
+    "lat": -34.60305513474081,
+    "lng": -58.3811236536455,
+    "visits": 200
+   },
+   {
+    "name": "Mar del Plata, Argentina",
+    "lat": -38.0055,
+    "lng": -57.5426,
+    "visits": 200
+   }
+  ],
+  "pin": {
+   "lat": -34.6004,
+   "lng": -58.3862
+  },
+  "region": "Americas"
+ },
+ {
+  "code": "FR",
+  "name": "France",
+  "points": 14,
+  "bounds": [
+   [
+    48.8603223,
+    2.1130812
+   ],
+   [
+    50.7830482,
+    2.4666978
+   ]
+  ],
+  "cities": [
+   {
+    "name": "Paris, France",
+    "lat": 48.88104838039216,
+    "lng": 2.329533425490196,
+    "visits": 153
+   },
+   {
+    "name": "Tillé, France",
+    "lat": 49.450836800000005,
+    "lng": 2.1108700555555555,
+    "visits": 9
+   },
+   {
+    "name": "Seclin, France",
+    "lat": 50.550212666666674,
+    "lng": 3.010950166666667,
+    "visits": 3
+   },
+   {
+    "name": "Peuplingues, France",
+    "lat": 50.9208077,
+    "lng": 1.7878506,
+    "visits": 2
+   },
+   {
+    "name": "Bornel, France",
+    "lat": 49.200496,
+    "lng": 2.1774146,
+    "visits": 1
+   },
+   {
+    "name": "Vémars, France",
+    "lat": 49.0597402,
+    "lng": 2.5515406,
+    "visits": 1
+   },
+   {
+    "name": "Oxelaëre, France",
+    "lat": 50.7830482,
+    "lng": 2.4666978,
+    "visits": 1
+   }
+  ],
+  "pin": {
+   "lat": 49.8217,
+   "lng": 2.2899
+  },
+  "region": "Europe"
+ },
+ {
+  "code": "DE",
+  "name": "Germany",
+  "points": 6,
+  "bounds": [
+   [
+    47.7739969,
+    8.5997434
+   ],
+   [
+    50.0498811,
+    12.133784
+   ]
+  ],
+  "cities": [
+   {
+    "name": "Oberding, Deutschland",
+    "lat": 48.34173225769231,
+    "lng": 11.780930303846155,
+    "visits": 26
+   },
+   {
+    "name": "Frankfurt am Main, Deutschland",
+    "lat": 50.04426117333334,
+    "lng": 8.570139206666665,
+    "visits": 15
+   },
+   {
+    "name": "Bad Wiessee, Deutschland",
+    "lat": 47.730934700000006,
+    "lng": 11.704238387499998,
+    "visits": 8
+   },
+   {
+    "name": "Teisendorf, Deutschland",
+    "lat": 47.86488858,
+    "lng": 12.781614119999999,
+    "visits": 5
+   },
+   {
+    "name": "Prien am Chiemsee, Deutschland",
+    "lat": 47.84864245999999,
+    "lng": 12.31386644,
+    "visits": 5
+   },
+   {
+    "name": "Saulheim, Deutschland",
+    "lat": 49.8766297,
+    "lng": 8.114715366666667,
+    "visits": 3
+   },
+   {
+    "name": "Friedrichsholm, Deutschland",
+    "lat": 54.3070331,
+    "lng": 9.4251478,
+    "visits": 1
+   },
+   {
+    "name": "Wittmund, Deutschland",
+    "lat": 53.5461699,
+    "lng": 7.7182281,
+    "visits": 1
+   },
+   {
+    "name": "Uedem, Deutschland",
+    "lat": 51.7071784,
+    "lng": 6.2390404,
+    "visits": 1
+   },
+   {
+    "name": "Wuppertal, Deutschland",
+    "lat": 51.2850548,
+    "lng": 7.1924749,
+    "visits": 1
+   }
+  ],
+  "pin": {
+   "lat": 48.9119,
+   "lng": 10.3668
+  },
+  "region": "Europe"
+ },
+ {
+  "code": "TR",
+  "name": "Turkey",
+  "points": 10,
+  "bounds": [
+   [
+    40.9078264,
+    28.7363236
+   ],
+   [
+    41.26669,
+    29.3153202
+   ]
+  ],
+  "cities": [
+   {
+    "name": "Arnavutköy, Türkiye",
+    "lat": 41.254558337142846,
+    "lng": 28.75876056285714,
+    "visits": 35
+   },
+   {
+    "name": "Pendik, Türkiye",
+    "lat": 40.931832552380946,
+    "lng": 29.28816259047619,
+    "visits": 21
+   },
+   {
+    "name": "Istanbul",
+    "lat": 41.0082,
+    "lng": 28.9784,
+    "visits": 6
+   }
+  ],
+  "pin": {
+   "lat": 41.0873,
+   "lng": 29.0258
+  },
+  "region": "Europe"
+ },
+ {
+  "code": "CA",
+  "name": "Canada",
+  "points": 4,
+  "bounds": [
+   [
+    43.674507,
+    -79.6347593
+   ],
+   [
+    56.5671338,
+    -65.9594177
+   ]
+  ],
+  "cities": [
+   {
+    "name": "Victoria, Canada",
+    "lat": 48.4284,
+    "lng": -123.3656,
+    "visits": 200
+   },
+   {
+    "name": "Mississauga, Canada",
+    "lat": 43.676885640740736,
+    "lng": -79.61917811851852,
+    "visits": 27
+   },
+   {
+    "name": "Rivière-Koksoak, Canada",
+    "lat": 56.5671338,
+    "lng": -65.9594177,
+    "visits": 1
+   },
+   {
+    "name": "42.81, -79.31, Canada",
+    "lat": 42.8131341,
+    "lng": -79.3094991,
+    "visits": 1
+   },
+   {
+    "name": "Bridgewater, Canada",
+    "lat": 44.3727634,
+    "lng": -64.5326154,
+    "visits": 1
+   }
+  ],
+  "pin": {
+   "lat": 50.1208,
+   "lng": -72.7971
+  },
+  "region": "Americas"
+ },
+ {
+  "code": "PT",
+  "name": "Portugal",
+  "points": 2,
+  "bounds": [
+   [
+    38.7653738,
+    -9.136103
+   ],
+   [
+    38.7754153,
+    -9.131313
+   ]
+  ],
+  "cities": [
+   {
+    "name": "Lisboa, Portugal",
+    "lat": 38.773829269230774,
+    "lng": -9.132116926923077,
+    "visits": 26
+   }
+  ],
+  "pin": {
+   "lat": 38.7704,
+   "lng": -9.1337
+  },
+  "region": "Europe"
+ },
+ {
+  "code": "IS",
+  "name": "Iceland",
+  "points": 1,
+  "bounds": [
+   [
+    63.9844649,
+    -22.6266347
+   ],
+   [
+    63.9844649,
+    -22.6266347
+   ]
+  ],
+  "cities": [
+   {
+    "name": "Suðurnesjabær, Ísland",
+    "lat": 63.992320066666665,
+    "lng": -22.624055119999998,
+    "visits": 15
+   }
+  ],
+  "pin": {
+   "lat": 63.9845,
+   "lng": -22.6266
+  },
+  "region": "Europe"
+ },
+ {
+  "code": "IE",
+  "name": "Ireland",
+  "points": 8,
+  "bounds": [
+   [
+    53.2,
+    -6.5
+   ],
+   [
+    53.5,
+    -6.0
+   ]
+  ],
+  "cities": [
+   {
+    "name": "Dublin",
+    "lat": 53.3498,
+    "lng": -6.2603,
+    "visits": 8
+   }
+  ],
+  "pin": {
+   "lat": 53.3498,
+   "lng": -6.2603
+  },
+  "region": "Europe"
+ },
+ {
+  "code": "PL",
+  "name": "Poland",
+  "points": 6,
+  "bounds": [
+   [
+    52.0,
+    20.8
+   ],
+   [
+    52.4,
+    21.2
+   ]
+  ],
+  "cities": [
+   {
+    "name": "Warsaw",
+    "lat": 52.2297,
+    "lng": 21.0122,
+    "visits": 6
+   }
+  ],
+  "pin": {
+   "lat": 52.2297,
+   "lng": 21.0122
+  },
+  "region": "Europe"
+ },
+ {
+  "code": "CH",
+  "name": "Switzerland",
+  "points": 8,
+  "bounds": [
+   [
+    45.9,
+    8.7
+   ],
+   [
+    46.2,
+    9.0
+   ]
+  ],
+  "cities": [
+   {
+    "name": "Lugano",
+    "lat": 46.0037,
+    "lng": 8.9511,
+    "visits": 5
+   },
+   {
+    "name": "Ascona",
+    "lat": 46.1534,
+    "lng": 8.7713,
+    "visits": 3
+   }
+  ],
+  "pin": {
+   "lat": 46.0037,
+   "lng": 8.9511
+  },
+  "region": "Europe"
+ },
+ {
+  "code": "MC",
+  "name": "Monaco",
+  "points": 5,
+  "bounds": [
+   [
+    43.72,
+    7.4
+   ],
+   [
+    43.76,
+    7.45
+   ]
+  ],
+  "cities": [
+   {
+    "name": "Monte Carlo",
+    "lat": 43.7384,
+    "lng": 7.4246,
+    "visits": 5
+   }
+  ],
+  "pin": {
+   "lat": 43.7384,
+   "lng": 7.4246
+  },
+  "region": "Europe"
+ }
+]

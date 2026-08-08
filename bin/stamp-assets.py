@@ -28,6 +28,7 @@ ASSETS = [
     "css/style.css",
     "js/main.js",
     "js/audio-library.js",
+    "js/travel-map.js",
     "assets/books/faith-to-build-audiobook.jpg",
     "assets/books/go-audiobook.jpg",
     "assets/books/wiser-audiobook.jpg",

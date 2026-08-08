@@ -7,3 +7,4 @@ assets-backup-*/
 DEPLOYMENT_REPORT_20260214.md
 node_modules/
 workers/node_modules/
+bin/.cache/
