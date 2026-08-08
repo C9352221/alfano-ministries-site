@@ -20,7 +20,18 @@ import re
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-ASSETS = ["css/style.css", "js/main.js", "js/audio-library.js"]
+
+# The audiobook covers are here for the same reason: all three were rebuilt
+# from portrait to square, and a cached portrait against the new markup gives
+# ragged card heights on library.html and media.html.
+ASSETS = [
+    "css/style.css",
+    "js/main.js",
+    "js/audio-library.js",
+    "assets/books/faith-to-build-audiobook.jpg",
+    "assets/books/go-audiobook.jpg",
+    "assets/books/wiser-audiobook.jpg",
+]
 
 
 def short_hash(path: pathlib.Path) -> str:
