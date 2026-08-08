@@ -156,6 +156,35 @@ ul { list-style: none; }
     transform: translateY(-1px);
 }
 
+/* Give, always visible on mobile.
+   The desktop Give sits inside .nav-links, which becomes the off-canvas
+   drawer below 1200px, so on a phone the primary call to action was hidden
+   behind the hamburger. This copy lives in the bar itself and only appears
+   once the drawer takes over. It sits outside .nav-links, so it has to carry
+   its own typography rather than inherit from `.nav-links a`. */
+.nav-cta-mobile { display: none; }
+
+@media (max-width: 1200px) {
+    .nav-cta-mobile {
+        display: inline-block;
+        margin-left: auto;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        padding: 10px 22px;
+        white-space: nowrap;
+    }
+
+    /* 2.5rem between the button and the hamburger is too much on a phone. */
+    .nav-inner { gap: 14px; }
+}
+
+@media (max-width: 380px) {
+    .nav-cta-mobile { font-size: 12px; padding: 9px 16px; }
+}
+
 /* Hamburger */
 .hamburger {
     display: none;
