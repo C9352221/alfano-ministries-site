@@ -197,7 +197,7 @@ def main():
             "top": [clean(ci["name"]) for ci in cities if is_named(ci["name"])][:6],
         })
 
-    order = {"Americas": 0, "Europe": 1, "Africa": 2}
+    order = {"Americas": 0, "Europe": 1, "Middle East": 2, "Africa": 3}
     rows.sort(key=lambda r: (order.get(r["region"], 9), -r["cities"], r["name"]))
     block = "[\n" + ",\n".join(
         "  " + json.dumps(r, ensure_ascii=False) for r in rows) + "\n]"

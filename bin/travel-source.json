@@ -1935,5 +1935,32 @@
    "lng": 57.5522
   },
   "region": "Africa"
+ },
+ {
+  "code": "AE",
+  "name": "United Arab Emirates",
+  "points": 0,
+  "bounds": [
+   [
+    22.6333,
+    51.5
+   ],
+   [
+    26.084,
+    56.3816
+   ]
+  ],
+  "cities": [
+   {
+    "name": "Dubai, United Arab Emirates",
+    "lat": 25.2048,
+    "lng": 55.2708
+   }
+  ],
+  "pin": {
+   "lat": 25.2048,
+   "lng": 55.2708
+  },
+  "region": "Middle East"
  }
 ]

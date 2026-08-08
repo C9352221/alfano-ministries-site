@@ -35,6 +35,7 @@
   {"code": "MC", "name": "Monaco", "region": "Europe", "x": 51.807, "y": 29.34, "cities": 1, "regions": 0, "top": ["Monte Carlo"]},
   {"code": "PL", "name": "Poland", "region": "Europe", "x": 54.784, "y": 23.375, "cities": 1, "regions": 0, "top": ["Warsaw"]},
   {"code": "PT", "name": "Portugal", "region": "Europe", "x": 47.708, "y": 32.786, "cities": 1, "regions": 0, "top": ["Lisboa"]},
+  {"code": "AE", "name": "United Arab Emirates", "region": "Middle East", "x": 64.717, "y": 41.889, "cities": 1, "regions": 0, "top": ["Dubai"]},
   {"code": "MU", "name": "Mauritius", "region": "Africa", "x": 65.557, "y": 74.102, "cities": 0, "regions": 0, "top": []}
 ];
     // </countries>
