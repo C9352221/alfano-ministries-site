@@ -34,7 +34,8 @@
   {"code": "IE", "name": "Ireland", "region": "Europe", "x": 48.588, "y": 22.667, "cities": 1, "regions": 0, "top": ["Dublin"]},
   {"code": "MC", "name": "Monaco", "region": "Europe", "x": 51.807, "y": 29.34, "cities": 1, "regions": 0, "top": ["Monte Carlo"]},
   {"code": "PL", "name": "Poland", "region": "Europe", "x": 54.784, "y": 23.375, "cities": 1, "regions": 0, "top": ["Warsaw"]},
-  {"code": "PT", "name": "Portugal", "region": "Europe", "x": 47.708, "y": 32.786, "cities": 1, "regions": 0, "top": ["Lisboa"]}
+  {"code": "PT", "name": "Portugal", "region": "Europe", "x": 47.708, "y": 32.786, "cities": 1, "regions": 0, "top": ["Lisboa"]},
+  {"code": "MU", "name": "Mauritius", "region": "Africa", "x": 65.557, "y": 74.102, "cities": 0, "regions": 0, "top": []}
 ];
     // </countries>
 
@@ -146,13 +147,17 @@
         var places = c.top.length
             ? '<p class="wm-places">' + c.top.join(' \u00b7 ') + (c.cities > c.top.length ? ' \u2026' : '') + '</p>'
             : '';
-        var unit = c.cities === 1 ? 'place' : 'places';
+        // Countries with no logged GPS points get the pin and the name only;
+        // "0 places" reads like a bug rather than like a place he has been.
+        var count = c.cities
+            ? '<p class="wm-count">' + c.cities + ' ' + (c.cities === 1 ? 'place' : 'places') +
+              (c.regions ? ' across ' + c.regions + ' states' : '') + '</p>'
+            : '';
         panel.innerHTML =
             '<div class="wm-panel-in">' +
               '<span class="wm-panel-eyebrow">Pinned</span>' +
               '<h3>' + c.name + '</h3>' +
-              '<p class="wm-count">' + c.cities + ' ' + unit +
-                (c.regions ? ' across ' + c.regions + ' states' : '') + '</p>' +
+              count +
               places +
             '</div>';
         panel.classList.add('is-open');

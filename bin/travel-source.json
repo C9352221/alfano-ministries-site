@@ -1914,5 +1914,26 @@
    "lng": 7.4246
   },
   "region": "Europe"
+ },
+ {
+  "code": "MU",
+  "name": "Mauritius",
+  "points": 0,
+  "bounds": [
+   [
+    -20.525,
+    57.307
+   ],
+   [
+    -19.9835,
+    57.805
+   ]
+  ],
+  "cities": [],
+  "pin": {
+   "lat": -20.2833,
+   "lng": 57.5522
+  },
+  "region": "Africa"
  }
 ]
