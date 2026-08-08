@@ -2461,6 +2461,64 @@ ul { list-style: none; }
 }
 
 /* ==========================================================================
+   Section jump bar — in-page navigation for long pages (media.html)
+   Sticks below the fixed 72px navbar so it stays reachable while scrolling.
+   ========================================================================== */
+
+.section-jump {
+    position: sticky;
+    top: 72px;
+    z-index: 900;
+    background: rgba(253, 248, 239, 0.94);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+}
+
+.section-jump-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 12px 0;
+}
+
+.section-jump a {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 0.76rem;
+    font-weight: 600;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: var(--royal-blue);
+    text-decoration: none;
+    padding: 9px 20px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--white);
+    transition: var(--transition);
+    white-space: nowrap;
+}
+
+.section-jump a:hover,
+.section-jump a:focus-visible {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--royal-blue-dark);
+    transform: translateY(-2px);
+}
+
+/* Clear the fixed navbar plus this bar when an anchor is jumped to. */
+.jump-target { scroll-margin-top: 132px; }
+
+@media (max-width: 480px) {
+    .section-jump a { font-size: 0.68rem; padding: 8px 14px; letter-spacing: 1.2px; }
+    .section-jump-inner { gap: 6px; }
+}
+
+/* ==========================================================================
    Library hub — the shelf on library.html
    Covers are the design. They need a dark ground to sit against, not white.
    ========================================================================== */
