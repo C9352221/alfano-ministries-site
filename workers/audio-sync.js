@@ -38,6 +38,18 @@ const GHL_LOCATION_ID = "AIPTqymDwrSMF9zx8Pul";
 // outside the segment he emails. GHL lowercases tags on save.
 const PARTNER_TAG = "monthly partner audio";
 
+// Giving addresses that must NOT be pushed to GoHighLevel. These people are
+// already in the CRM under a different address, and a GHL upsert with an
+// unknown email CREATES a contact, so syncing them spawns a duplicate that
+// would receive every partner email twice. They still get audio access
+// normally; this only suppresses the CRM write.
+//   dustin@wearedwc.com  -> Dustin Wells, in GHL as dustinmonavie@gmail.com
+//                           (personal) and office@wearedwc.com (business),
+//                           which Marc keeps deliberately separate.
+const TAG_SKIP = new Set([
+  "dustin@wearedwc.com",
+]);
+
 const LOOKBACK_HOURS = 48;
 const RECURRING_GRACE_DAYS = 5;
 const SEEN_TTL_SEC = 90 * 86400;   // remember processed payments for 90 days
@@ -198,7 +210,7 @@ async function processOne(env, payment, opts = {}) {
   // so a "granted"-only rule would never tag them and the CRM segment could
   // never be verified or repaired. GHL's upsert is idempotent, so re-applying
   // an existing tag is a no-op. Never tag a revoked person.
-  const tagWorthy = result === "granted" || result === "already-permanent";
+  const tagWorthy = (result === "granted" || result === "already-permanent") && !TAG_SKIP.has(email);
   const tagged = tagWorthy ? await tagContact(env, payment, email) : false;
 
   return { id: payment.id, email, result, tagged, grant };
