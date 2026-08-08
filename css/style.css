@@ -2478,6 +2478,20 @@ ul { list-style: none; }
 }
 
 /* ==========================================================================
+   media.html: audiobook rows
+   A 150px cover beside a text column whose button will not shrink. Below
+   420px that pair needs more width than the viewport has, so the row stacks.
+   ========================================================================== */
+
+@media (max-width: 420px) {
+    .audiobook-row {
+        flex-direction: column;
+        text-align: center;
+        gap: 16px !important;
+    }
+}
+
+/* ==========================================================================
    Home: the bookshelf
    Covers vary in ratio (0.62 to 0.75), so they are sized by HEIGHT and left
    to find their own width. That is how a real shelf looks, and it avoids
