@@ -526,6 +526,10 @@ ul { list-style: none; }
     box-shadow: var(--shadow-md);
     transition: var(--transition);
     border: 1px solid var(--border);
+    /* Column layout so card links share a baseline when one card's copy runs
+       a line longer than its neighbours'. */
+    display: flex;
+    flex-direction: column;
 }
 
 .card:hover {
@@ -554,6 +558,9 @@ ul { list-style: none; }
 
 .card-body {
     padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
 }
 
 .card h3 {
@@ -572,7 +579,9 @@ ul { list-style: none; }
 
 .card-link {
     display: inline-block;
-    margin-top: 16px;
+    align-self: flex-start;
+    margin-top: auto;   /* pins the link to the card foot */
+    padding-top: 16px;
     color: var(--gold-warm);
     font-weight: 600;
     font-size: 14px;
@@ -2459,6 +2468,142 @@ ul { list-style: none; }
     text-align: center;
     margin: 14px 0 0;
 }
+
+/* ==========================================================================
+   Home: the bookshelf
+   Covers vary in ratio (0.62 to 0.75), so they are sized by HEIGHT and left
+   to find their own width. That is how a real shelf looks, and it avoids
+   cropping titles the way a forced aspect-ratio would.
+   ========================================================================== */
+
+.home-books {
+    background:
+        radial-gradient(ellipse at 50% -20%, rgba(232, 185, 35, 0.18) 0%, transparent 60%),
+        linear-gradient(172deg, var(--royal-blue-dark) 0%, #0e1e35 100%);
+    padding: 76px 24px 84px;
+}
+
+.home-books .section-eyebrow { color: var(--gold); }
+
+.home-books h2 {
+    font-family: 'Lora', serif;
+    font-weight: 700;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    color: var(--white);
+    margin-bottom: 16px;
+}
+
+.home-books-intro {
+    max-width: 620px;
+    margin: 0 auto 46px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.72);
+    line-height: 1.8;
+}
+
+.bookshelf {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 26px;
+    max-width: 1000px;
+    margin: 0 auto 44px;
+    padding-bottom: 26px;
+    border-bottom: 1px solid rgba(232, 185, 35, 0.28);
+}
+
+.bookshelf a {
+    display: block;
+    line-height: 0;
+    transition: var(--transition);
+}
+
+.bookshelf img {
+    height: 230px;
+    width: auto;
+    border-radius: 6px;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.45);
+    transition: var(--transition);
+}
+
+.bookshelf a:hover { transform: translateY(-8px); }
+
+.bookshelf a:hover img {
+    box-shadow: 0 20px 44px rgba(0, 0, 0, 0.6);
+    outline: 2px solid rgba(232, 185, 35, 0.7);
+    outline-offset: 3px;
+}
+
+.home-books-actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+
+.home-books-actions .btn-outline {
+    color: var(--white);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.home-books-actions .btn-outline:hover {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--royal-blue-dark);
+}
+
+@media (max-width: 640px) {
+    .bookshelf img { height: 160px; }
+    .bookshelf { gap: 16px; }
+}
+
+/* ==========================================================================
+   Home: impact stats
+   Scoped to .stats-showcase so the plain .stats-grid on about/give/tours
+   is left alone.
+   ========================================================================== */
+
+.stats-showcase {
+    background:
+        radial-gradient(ellipse at 50% 120%, rgba(232, 185, 35, 0.14) 0%, transparent 60%),
+        var(--royal-blue);
+}
+
+.stats-showcase .stats-grid {
+    max-width: 780px;
+    margin: 0 auto;
+    gap: 0;
+}
+
+.stats-showcase .stats-grid > div {
+    padding: 0 24px;
+    border-right: 1px solid rgba(232, 185, 35, 0.3);
+}
+
+.stats-showcase .stats-grid > div:last-child { border-right: none; }
+
+.stats-showcase .stat-label {
+    font-size: 0.74rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.62);
+}
+
+/* The dividers only make sense while the stats sit on one row. */
+@media (max-width: 620px) {
+    .stats-showcase .stats-grid > div { border-right: none; padding: 0; }
+    .stats-showcase .stats-grid { gap: 34px; }
+}
+
+/* ==========================================================================
+   Home: tighter vertical rhythm
+   .cta-banner carries 80px of its own padding inside an 80px section, which
+   on the home page stacked into nearly a full empty screen. Scoped to
+   .home-cta so the other ten pages using .cta-banner are untouched.
+   ========================================================================== */
+
+.home-cta { padding: 44px 24px; }
 
 /* ==========================================================================
    Section jump bar — in-page navigation for long pages (media.html)
