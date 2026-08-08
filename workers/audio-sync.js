@@ -192,12 +192,20 @@ async function processOne(env, payment, opts = {}) {
   }
 
   const result = await applyGrant(env, email, grant, payment);
-  if (result === "granted") await tagContact(env, payment, email);
-  return { id: payment.id, email, result, grant };
+
+  // Tag on any payment from someone who is legitimately entitled, not only the
+  // first grant. Partners carried over by the backfill are already permanent,
+  // so a "granted"-only rule would never tag them and the CRM segment could
+  // never be verified or repaired. GHL's upsert is idempotent, so re-applying
+  // an existing tag is a no-op. Never tag a revoked person.
+  const tagWorthy = result === "granted" || result === "already-permanent";
+  const tagged = tagWorthy ? await tagContact(env, payment, email) : false;
+
+  return { id: payment.id, email, result, tagged, grant };
 }
 
 async function syncSince(env, sinceUnix) {
-  const summary = { scanned: 0, granted: 0, revoked: 0, skipped: 0, errors: [] };
+  const summary = { scanned: 0, granted: 0, tagged: 0, revoked: 0, skipped: 0, errors: [] };
   let cursor;
 
   for (let page = 0; page < 50; page++) {   // hard stop; 50 pages = 5,000 payments
@@ -212,6 +220,7 @@ async function syncSince(env, sinceUnix) {
       summary.scanned++;
       try {
         const r = await processOne(env, p);
+        if (r.tagged) summary.tagged++;
         if (r.result === "granted") summary.granted++;
         else if (r.result === "revoked") summary.revoked++;
         else summary.skipped++;
