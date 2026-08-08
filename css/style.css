@@ -2580,6 +2580,10 @@ ul { list-style: none; }
     padding: 26px 22px 28px;
     text-align: center;
     transition: var(--transition);
+    /* Column layout so the Listen buttons line up across cards even when a
+       subtitle wraps to two lines, as Wiser Than AI's does. */
+    display: flex;
+    flex-direction: column;
 }
 
 .library-card:hover {
@@ -2625,7 +2629,10 @@ ul { list-style: none; }
     letter-spacing: 1px;
     color: rgba(255, 255, 255, 0.55);
     margin-bottom: 20px;
+    margin-top: auto;   /* pushes the meta line and button to the card foot */
 }
+
+.library-card .btn-primary { align-self: center; }
 
 .library-note {
     text-align: center;
