@@ -591,7 +591,7 @@ function copyToClipboard(btn, text) {
     // bin/stamp-assets.py only rewrites HTML, so this reference cannot be
     // hashed automatically. Bump ?v= by hand whenever the image is replaced,
     // or browsers will keep serving the old one for the cache lifetime.
-    const AVATAR = '/assets/photos/marc-avatar.jpg?v=2';
+    const AVATAR = '/assets/photos/marc-avatar.jpg?v=3';
     const DEFAULT_AVATAR = 'defaultAvatar.png';
     const started = Date.now();
     let observing = false;
