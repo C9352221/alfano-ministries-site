@@ -583,14 +583,17 @@ function copyToClipboard(btn, text) {
 //      ever configured. Only images still pointing at that default are
 //      swapped, so the moment a real avatar is uploaded in GoHighLevel this
 //      code stops touching it and can be deleted.
+//
+// The element is inserted before its shadow root is attached, so waiting on a
+// single mutation is not enough; this polls until the shadow root exists and
+// only then starts observing it.
 (function themeChatWidget() {
     const AVATAR = '/assets/photos/marc-avatar.jpg';
     const DEFAULT_AVATAR = 'defaultAvatar.png';
+    const started = Date.now();
+    let observing = false;
 
-    function apply(widget) {
-        const root = widget.shadowRoot;
-        if (!root) return;
-
+    function apply(root) {
         if (!root.querySelector('[data-am-chat-theme]')) {
             const style = document.createElement('style');
             style.setAttribute('data-am-chat-theme', '');
@@ -599,28 +602,23 @@ function copyToClipboard(btn, text) {
                 '{ color: #1e3a5f !important; }';
             root.appendChild(style);
         }
-
         root.querySelectorAll('img').forEach(img => {
             if (img.src.indexOf(DEFAULT_AVATAR) !== -1) img.src = AVATAR;
         });
     }
 
-    function watch(widget) {
-        apply(widget);
-        if (widget.shadowRoot) {
-            new MutationObserver(() => apply(widget))
-                .observe(widget.shadowRoot, { childList: true, subtree: true });
-        }
-    }
-
-    const existing = document.querySelector('chat-widget');
-    if (existing) { watch(existing); return; }
-
-    // The loader injects <chat-widget> well after DOMContentLoaded.
-    const observer = new MutationObserver(() => {
+    const timer = setInterval(() => {
         const widget = document.querySelector('chat-widget');
-        if (widget) { observer.disconnect(); watch(widget); }
-    });
-    observer.observe(document.documentElement, { childList: true, subtree: true });
-    setTimeout(() => observer.disconnect(), 30000);
+        const root = widget && widget.shadowRoot;
+        if (root) {
+            apply(root);
+            if (!observing) {
+                observing = true;
+                new MutationObserver(() => apply(root))
+                    .observe(root, { childList: true, subtree: true });
+            }
+            clearInterval(timer);
+        }
+        if (Date.now() - started > 60000) clearInterval(timer);
+    }, 400);
 })();
