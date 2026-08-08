@@ -573,3 +573,54 @@ function copyToClipboard(btn, text) {
         setTimeout(() => { btn.textContent = original; }, 3000);
     });
 }
+
+// ── GoHighLevel chat widget: icon contrast and avatar ──
+// The palette is themed from style.css via custom properties, but two things
+// cannot be reached that way:
+//   1. The bubble icon is hard-coded white inside the shadow root. White on
+//      gold is unreadable, so a style is appended to the shadow root itself.
+//   2. The avatar is LeadConnector's stock defaultAvatar.png, meaning none was
+//      ever configured. Only images still pointing at that default are
+//      swapped, so the moment a real avatar is uploaded in GoHighLevel this
+//      code stops touching it and can be deleted.
+(function themeChatWidget() {
+    const AVATAR = '/assets/photos/marc-avatar.jpg';
+    const DEFAULT_AVATAR = 'defaultAvatar.png';
+
+    function apply(widget) {
+        const root = widget.shadowRoot;
+        if (!root) return;
+
+        if (!root.querySelector('[data-am-chat-theme]')) {
+            const style = document.createElement('style');
+            style.setAttribute('data-am-chat-theme', '');
+            style.textContent =
+                '.lc_text-widget--bubble, .lc_text-widget--bubble svg' +
+                '{ color: #1e3a5f !important; }';
+            root.appendChild(style);
+        }
+
+        root.querySelectorAll('img').forEach(img => {
+            if (img.src.indexOf(DEFAULT_AVATAR) !== -1) img.src = AVATAR;
+        });
+    }
+
+    function watch(widget) {
+        apply(widget);
+        if (widget.shadowRoot) {
+            new MutationObserver(() => apply(widget))
+                .observe(widget.shadowRoot, { childList: true, subtree: true });
+        }
+    }
+
+    const existing = document.querySelector('chat-widget');
+    if (existing) { watch(existing); return; }
+
+    // The loader injects <chat-widget> well after DOMContentLoaded.
+    const observer = new MutationObserver(() => {
+        const widget = document.querySelector('chat-widget');
+        if (widget) { observer.disconnect(); watch(widget); }
+    });
+    observer.observe(document.documentElement, { childList: true, subtree: true });
+    setTimeout(() => observer.disconnect(), 30000);
+})();

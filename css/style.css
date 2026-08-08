@@ -185,6 +185,33 @@ ul { list-style: none; }
     .nav-cta-mobile { font-size: 12px; padding: 9px 16px; }
 }
 
+/* ==========================================================================
+   GoHighLevel chat widget theming
+   The widget renders in an open shadow root but exposes its palette as CSS
+   custom properties, and custom properties inherit through the shadow
+   boundary. Setting them on the host element re-themes it from here, no
+   platform hack required. !important is needed because the widget declares
+   its defaults on :host, which outranks a plain element selector.
+
+   NOTE: if the widget's colour is ever set inside GoHighLevel, these will
+   still win. Delete this block at that point rather than fighting it there.
+   The bubble icon colour has no custom property, so it is patched into the
+   shadow root from main.js instead.
+   ========================================================================== */
+
+chat-widget {
+    --chat-widget-primary-color: var(--gold) !important;
+    --chat-widget-active-color: var(--gold) !important;
+    --chat-widget-bubble-color: var(--gold) !important;
+    --chat-widget-button-color: var(--gold) !important;
+    --chat-widget-header-color: var(--royal-blue) !important;
+    --chat-widget-header-darken-color: var(--royal-blue-dark) !important;
+    --chat-widget-sender-message-color: var(--royal-blue) !important;
+    --chat-widget-sender-message-text-color: #ffffff !important;
+    --chat-widget-avatar-border-color: var(--gold) !important;
+    --chat-widget-font-family: 'Open Sans', sans-serif !important;
+}
+
 /* Hamburger */
 .hamburger {
     display: none;
