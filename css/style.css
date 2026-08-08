@@ -515,7 +515,7 @@ ul { list-style: none; }
 /* ── Cards ── */
 .cards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
     gap: 28px;
 }
 
@@ -834,7 +834,7 @@ ul { list-style: none; }
 /* ── Video Grid ── */
 .video-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
     gap: 28px;
 }
 
@@ -1385,7 +1385,7 @@ ul { list-style: none; }
 /* ── Podcast Episode Cards ── */
 .episode-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
     gap: 24px;
     margin-bottom: 40px;
 }
