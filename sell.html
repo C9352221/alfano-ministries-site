@@ -321,7 +321,7 @@ async function loadFX(){
 }
 function fxHint(){
   const el=document.getElementById("fxHint");
-  if(!FX.date){ el.className="hint warn"; el.textContent="Live rates unavailable — showing USD."; return; }
+  if(!FX.date){ el.className="hint warn"; el.textContent="Live rates unavailable, showing USD."; return; }
   const days = Math.floor((Date.now()-FX.date)/86400000);
   el.className = days>2 ? "hint warn" : "hint";
   el.textContent = "Prices convert live · rates "+(days<=0?"today":days+"d old");
@@ -414,7 +414,7 @@ function renderCheckout(){
   document.getElementById("cartRows").innerHTML = items.map(i=>`
     <div class="row"><div class="l">
         <img src="${i.book.cover}" alt="">
-        <div><div class="name">${i.book.title}${i.format?` <span style="color:var(--dim)">— ${i.format}</span>`:""}</div>
+        <div><div class="name">${i.book.title}${i.format?` <span style="color:var(--dim)">&middot; ${i.format}</span>`:""}</div>
           <div class="meta">${fmt(priceOf(i.unitUSD))} each · <b style="color:var(--gold)">${fmt(priceOf(i.unitUSD)*i.qty)}</b></div></div>
       </div>
       <div style="display:flex;align-items:center;gap:8px;flex:0 0 auto">

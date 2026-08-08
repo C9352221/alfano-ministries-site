@@ -569,7 +569,7 @@ function copyToClipboard(btn, text) {
         setTimeout(() => { btn.textContent = original; }, 2000);
     }).catch(() => {
         const original = btn.textContent;
-        btn.textContent = 'Copy failed — try manually';
+        btn.textContent = 'Copy failed, try manually';
         setTimeout(() => { btn.textContent = original; }, 3000);
     });
 }
