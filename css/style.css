@@ -735,10 +735,6 @@ ul { list-style: none; }
     .give-grid-2x2 {
         grid-template-columns: 1fr;
     }
-
-    .pillars-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
 }
 
 .give-card {
@@ -1069,6 +1065,18 @@ ul { list-style: none; }
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 20px;
+}
+
+/* This override has to live AFTER the base rule, not with the other mobile
+   rules further up the file. `1fr` is minmax(auto, 1fr), so five columns
+   cannot shrink below their content and the grid ran to 670px inside a 390px
+   phone viewport, scrolling the whole page sideways. */
+@media (max-width: 900px) {
+    .pillars-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 600px) {
+    .pillars-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 .pillar {
