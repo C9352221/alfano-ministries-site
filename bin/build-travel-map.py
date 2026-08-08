@@ -159,6 +159,38 @@ def age(img):
     return ImageChops.multiply(img, Image.merge("RGB", (v, v, v)))
 
 
+def country_path(geom, proj, top, budget=9000):
+    """SVG path for a country, in sheet pixel space, for the highlight overlay.
+
+    Tolerance is raised per country until the path fits the budget, so Canada's
+    Arctic archipelago cannot quietly cost 36KB while Monaco costs 40 bytes.
+    The shapes only ever sit under a translucent wash, so coarse is fine; what
+    matters is that the total stays small enough to inline.
+    """
+    tol = 0.8
+    while True:
+        parts = []
+        for ring in rings(geom):
+            pts = []
+            for lon, lat in ring:
+                x, y = proj(lon, lat)
+                y -= top
+                if pts and abs(x - pts[-1][0]) < tol and abs(y - pts[-1][1]) < tol:
+                    continue
+                pts.append((x, y))
+            if len(pts) < 3:
+                continue
+            xs = [q[0] for q in pts]
+            ys = [q[1] for q in pts]
+            if max(xs) - min(xs) < 1.2 and max(ys) - min(ys) < 1.2:
+                continue        # an islet too small to see even zoomed in
+            parts.append("M" + "L".join(f"{x:.1f},{y:.1f}" for x, y in pts) + "Z")
+        d = "".join(parts)
+        if len(d) <= budget or tol > 6:
+            return d
+        tol *= 1.6
+
+
 def clean(name):
     return name.split(",")[0].strip()
 
@@ -170,7 +202,9 @@ def is_named(name):
 
 def main():
     src = json.loads((ROOT / "bin" / "travel-source.json").read_text())
-    visited = {c["code"] for c in src}
+    # sub-regions like Hawaii are pinned but are not countries, so they have no
+    # ISO code to tint or draw a shape for
+    visited = {c["code"] for c in src if "part_of" not in c}
 
     out = ROOT / "assets" / "travel"
     out.mkdir(parents=True, exist_ok=True)
@@ -195,38 +229,65 @@ def main():
         round(WIDTH / ((X1 - X0) / (Y1 - Y0)))
 
     proj = make_proj(WIDTH, full_h)
+    shapes = {}
+    for code, geom in coastlines():
+        if code in visited:
+            shapes[code] = shapes.get(code, "") + country_path(geom, proj, top)
+
+    by_code = {c["code"]: c for c in src}
     rows = []
     for c in src:
         x, y = proj(c["pin"]["lng"], c["pin"]["lat"])
-        cities = [ci for s in c.get("states", []) for ci in s.get("cities", [])] \
-            or c.get("cities", [])
-        cities.sort(key=lambda ci: -ci.get("visits", 0))
-        rows.append({
+        parent = by_code.get(c.get("part_of"))
+        if parent:
+            # a region pinned inside a country it does not replace, e.g. Hawaii.
+            # Its cities belong to the parent and are already counted there.
+            state = next((st for st in parent.get("states", [])
+                          if st["name"] == c.get("state")), None)
+            cities, regions = (state or {}).get("cities", []), 0
+        else:
+            cities = [ci for st in c.get("states", []) for ci in st.get("cities", [])] \
+                or c.get("cities", [])
+            regions = len(c.get("states", []))
+        cities = sorted(cities, key=lambda ci: -ci.get("visits", 0))
+        row = {
             "code": c["code"], "name": c["name"], "region": c["region"],
             "x": round(x / WIDTH * 100, 3),
             "y": round((y - top) / (bot - top) * 100, 3),
             "cities": len(cities),
-            "regions": len(c.get("states", [])),
+            "regions": regions,
             "top": [clean(ci["name"]) for ci in cities if is_named(ci["name"])][:6],
-        })
+            "d": shapes.get(c["code"], ""),
+        }
+        if parent:
+            row["partOf"] = parent["name"]
+        rows.append(row)
 
     order = {"Americas": 0, "Europe": 1, "Middle East": 2, "Africa": 3}
     rows.sort(key=lambda r: (order.get(r["region"], 9), -r["cities"], r["name"]))
-    block = "[\n" + ",\n".join(
-        "  " + json.dumps(r, ensure_ascii=False) for r in rows) + "\n]"
+    block = ("{\n  \"viewBox\": \"0 0 %d %.2f\",\n  \"list\": [\n"
+             % (WIDTH, bot - top)) + ",\n".join(
+        "    " + json.dumps(r, ensure_ascii=False) for r in rows) + "\n  ]\n}"
 
     js = ROOT / "js" / "travel-map.js"
     text = js.read_text()
     new, n = re.subn(
         r"(// <countries>[^\n]*\n).*?(\n\s*// </countries>)",
-        lambda m: m.group(1) + "    var COUNTRIES = " + block + ";" + m.group(2),
+        lambda m: m.group(1) + "    var MAPDATA = " + block + ";" + m.group(2),
         text, flags=re.S)
     if n != 1:
         sys.exit("could not find the // <countries> markers in js/travel-map.js")
     js.write_text(new)
 
-    total = sum(r["cities"] for r in rows)
-    print(f"rewrote js/travel-map.js: {len(rows)} countries, {total} places")
+    countries = [r for r in rows if "partOf" not in r]
+    total = sum(r["cities"] for r in countries)   # sub-regions would double count
+    shape_kb = sum(len(r["d"]) for r in rows) / 1024
+    noshape = [r["code"] for r in rows if not r["d"]]
+    print(f"rewrote js/travel-map.js: {len(countries)} countries, {total} places, "
+          f"{len(rows)} pins, {shape_kb:.1f}KB of highlight shapes")
+    print(f"  headline for travel-map.html: {len(countries)} countries \u00b7 {total} places")
+    if noshape:
+        print(f"warning: no highlight shape for {noshape}")
     print("now run: python3 bin/stamp-assets.py")
 
 

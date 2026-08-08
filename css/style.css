@@ -2984,6 +2984,42 @@ chat-widget {
 .wm-tack.bl { bottom: 9px; left: 9px; }
 .wm-tack.br { bottom: 9px; right: 9px; }
 
+/* ── country highlight ──
+   Outlines in the sheet's own coordinate space, stretched over the JPEG.
+   Transparent until selected, so the map reads as paper until you pick a
+   country and it washes gold. non-scaling-stroke keeps the outline a hair
+   wide at every zoom instead of ballooning with the transform. */
+.wm-shapes {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+    overflow: visible;
+}
+
+.wm-shapes path,
+.wm-shapes circle {
+    fill: transparent;
+    stroke: transparent;
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+    transition: fill 0.2s ease, stroke 0.2s ease;
+}
+
+.wm-shapes .is-active {
+    fill: rgba(232, 185, 35, 0.42);
+    stroke: rgba(232, 185, 35, 0.95);
+}
+
+.wm-parent {
+    margin: 2px 0 6px;
+    color: rgba(253, 248, 239, 0.5);
+    font-size: 0.82rem;
+    font-style: italic;
+}
+
 /* ── push pins ── */
 .wm-pin {
     position: absolute;

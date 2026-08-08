@@ -778,6 +778,17 @@
   "region": "Americas"
  },
  {
+  "code": "US-HI",
+  "name": "Hawaii",
+  "part_of": "US",
+  "state": "Hawaii",
+  "pin": {
+   "lat": 21.3069,
+   "lng": -157.8583
+  },
+  "region": "Americas"
+ },
+ {
   "code": "IT",
   "name": "Italy",
   "points": 310,
