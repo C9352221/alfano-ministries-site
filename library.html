@@ -23,9 +23,12 @@
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <style>
         .library-wrap { max-width: 900px; margin: 0 auto; }
-        .library-gate { max-width: 620px; margin: 0 auto 48px; background: #fff;
-                        border: 1px solid #e6e2d2; border-radius: 12px; padding: 30px 26px;
-                        box-shadow: 0 6px 20px rgba(0,0,0,.07); }
+        .library-gate { max-width: 640px; margin: 0 auto; background: var(--warm-white);
+                        border: 1px solid var(--border); border-top: 4px solid var(--gold);
+                        border-radius: 4px 4px 12px 12px; padding: 34px 30px;
+                        box-shadow: 0 10px 34px rgba(30,58,95,.10); }
+        .library-intro { max-width: 640px; margin: 0 auto 30px; text-align: center;
+                         font-size: 1.05rem; line-height: 1.8; color: var(--text-body); }
     </style>
 </head>
 <body>
@@ -94,32 +97,57 @@
                     </div>
                 </div>
 
-                <div class="library-grid">
-                    <div class="library-card">
-                        <img src="assets/books/faith-to-build-audiobook.jpg" alt="Faith to Build audiobook cover" width="800" height="800" loading="lazy">
-                        <h3>Faith to Build</h3>
-                        <p class="library-meta">1 hr 9 min &nbsp;&bull;&nbsp; 12 chapters</p>
-                        <a href="listen.html" class="btn-primary">Listen</a>
-                    </div>
+            </div>
+        </div>
+    </section>
 
-                    <div class="library-card">
-                        <img src="assets/books/go-audiobook.jpg" alt="GO: Connected, Called, Commissioned audiobook cover" width="800" height="1280" loading="lazy">
-                        <h3>GO</h3>
-                        <p class="library-meta">2 hr 21 min &nbsp;&bull;&nbsp; 14 chapters</p>
-                        <a href="listen-go.html" class="btn-primary">Listen</a>
-                    </div>
+    <!-- The shelf -->
+    <section class="library-shelf">
+        <div class="container">
 
-                    <div class="library-card">
-                        <img src="assets/books/wiser-audiobook.jpg" alt="Wiser Than AI audiobook cover" width="800" height="1280" loading="lazy">
-                        <h3>Wiser Than AI</h3>
-                        <p class="library-meta">1 hr 27 min &nbsp;&bull;&nbsp; 16 chapters</p>
-                        <a href="listen-wiser.html" class="btn-primary">Listen</a>
-                    </div>
+            <div class="library-stats">
+                <div class="library-stat">
+                    <div class="library-stat-num">3</div>
+                    <div class="library-stat-label">Audiobooks</div>
+                </div>
+                <div class="library-stat">
+                    <div class="library-stat-num">42</div>
+                    <div class="library-stat-label">Chapters</div>
+                </div>
+                <div class="library-stat">
+                    <div class="library-stat-num">4:57</div>
+                    <div class="library-stat-label">Hours of Audio</div>
+                </div>
+            </div>
+
+            <div class="library-grid">
+                <div class="library-card">
+                    <a href="listen.html"><img src="assets/books/faith-to-build-audiobook.jpg" alt="Faith to Build audiobook cover" width="800" height="800" loading="lazy"></a>
+                    <h3>Faith to Build</h3>
+                    <p class="library-sub">A Kingdom Business Blueprint</p>
+                    <p class="library-meta">1 hr 9 min &nbsp;&bull;&nbsp; 12 chapters</p>
+                    <a href="listen.html" class="btn-primary">Listen</a>
                 </div>
 
-                <p class="listen-note" style="text-align:center; margin-top:36px;">These audiobooks are narrated by a digital voice trained on Marc's own.</p>
+                <div class="library-card">
+                    <a href="listen-go.html"><img src="assets/books/go-audiobook.jpg" alt="GO: Connected, Called, Commissioned audiobook cover" width="800" height="1280" loading="lazy"></a>
+                    <h3>GO</h3>
+                    <p class="library-sub">Connected, Called, Commissioned</p>
+                    <p class="library-meta">2 hr 21 min &nbsp;&bull;&nbsp; 14 chapters</p>
+                    <a href="listen-go.html" class="btn-primary">Listen</a>
+                </div>
 
+                <div class="library-card">
+                    <a href="listen-wiser.html"><img src="assets/books/wiser-audiobook.jpg" alt="Wiser Than AI audiobook cover" width="800" height="1280" loading="lazy"></a>
+                    <h3>Wiser Than AI</h3>
+                    <p class="library-sub">The Three Ingredients God Gave You</p>
+                    <p class="library-meta">1 hr 27 min &nbsp;&bull;&nbsp; 16 chapters</p>
+                    <a href="listen-wiser.html" class="btn-primary">Listen</a>
+                </div>
             </div>
+
+            <p class="library-note">Narrated by a digital voice trained on Marc's own. Chapter one of every book is free to anyone; the complete audiobooks are open to our monthly partners.</p>
+
         </div>
     </section>
 

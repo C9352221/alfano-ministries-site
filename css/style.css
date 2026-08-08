@@ -2458,52 +2458,125 @@ ul { list-style: none; }
 }
 
 /* ==========================================================================
-   Library hub — book grid on library.html
+   Library hub — the shelf on library.html
+   Covers are the design. They need a dark ground to sit against, not white.
    ========================================================================== */
+
+.library-shelf {
+    background:
+        radial-gradient(ellipse at 50% -10%, rgba(232, 185, 35, 0.16) 0%, transparent 55%),
+        linear-gradient(175deg, var(--royal-blue-dark) 0%, #0f2038 100%);
+    padding: 68px 24px 76px;
+}
+
+.library-stats {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0;
+    max-width: 700px;
+    margin: 0 auto 52px;
+}
+
+.library-stat {
+    flex: 1 1 auto;
+    min-width: 130px;
+    text-align: center;
+    padding: 0 22px;
+    border-right: 1px solid rgba(232, 185, 35, 0.28);
+}
+
+.library-stat:last-child { border-right: none; }
+
+.library-stat-num {
+    font-family: 'Lora', serif;
+    font-size: 2rem;
+    line-height: 1.1;
+    color: var(--gold);
+    margin-bottom: 4px;
+}
+
+.library-stat-label {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.62);
+}
 
 .library-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 28px;
-    max-width: 900px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 34px;
+    max-width: 960px;
     margin: 0 auto;
 }
 
 .library-card {
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 22px;
+    background: rgba(255, 255, 255, 0.045);
+    border: 1px solid rgba(232, 185, 35, 0.20);
+    border-radius: 14px;
+    padding: 26px 22px 28px;
     text-align: center;
-    box-shadow: var(--shadow-sm);
     transition: var(--transition);
 }
 
 .library-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-md);
+    transform: translateY(-6px);
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(232, 185, 35, 0.55);
 }
 
 .library-card img {
     width: 100%;
-    max-width: 190px;
+    max-width: 220px;
     height: auto;
     border-radius: 8px;
-    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.22);
-    margin: 0 auto 18px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
+    margin: 0 auto 20px;
     display: block;
+    transition: var(--transition);
+}
+
+.library-card:hover img {
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(232, 185, 35, 0.35);
 }
 
 .library-card h3 {
     font-family: 'Lora', serif;
-    font-size: 1.15rem;
-    color: var(--royal-blue);
-    margin-bottom: 6px;
+    font-size: 1.3rem;
+    color: #ffffff;
+    margin-bottom: 4px;
+}
+
+.library-card .library-sub {
+    font-family: 'Lora', serif;
+    font-style: italic;
+    font-size: 0.92rem;
+    color: var(--gold-light);
+    margin-bottom: 10px;
+    line-height: 1.5;
 }
 
 .library-card .library-meta {
-    font-size: 0.85rem;
-    color: var(--text-body);
-    opacity: 0.75;
-    margin-bottom: 16px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.55);
+    margin-bottom: 20px;
+}
+
+.library-note {
+    text-align: center;
+    max-width: 560px;
+    margin: 44px auto 0;
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+@media (max-width: 600px) {
+    .library-shelf { padding: 48px 18px 56px; }
+    .library-stat { border-right: none; padding: 10px 0; min-width: 100%; }
+    .library-stats { margin-bottom: 34px; }
 }
