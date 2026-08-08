@@ -3161,7 +3161,8 @@ chat-widget {
 
 .wm-panel h3 { margin: 4px 0 2px; color: var(--cream); font-size: 1.5rem; }
 .wm-count   { margin: 0; color: rgba(253, 248, 239, 0.62); font-size: 0.88rem; }
-.wm-places  { margin: 8px 0 0; color: rgba(253, 248, 239, 0.82); font-size: 0.92rem; line-height: 1.6; }
+.wm-places  { margin: 8px 0 0; color: rgba(253, 248, 239, 0.82); font-size: 0.92rem; line-height: 1.7; }
+.wm-unnamed { color: rgba(253, 248, 239, 0.42); font-style: italic; }
 
 /* ── country list ── */
 .wm-list { max-width: 1180px; margin: 26px auto 0; }

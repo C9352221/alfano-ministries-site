@@ -256,7 +256,12 @@ def main():
             "y": round((y - top) / (bot - top) * 100, 3),
             "cities": len(cities),
             "regions": regions,
-            "top": [clean(ci["name"]) for ci in cities if is_named(ci["name"])][:6],
+            # every place, not a top-six: the card is the record of where he
+            # actually went, and a truncated list just raises the question
+            "places": [clean(ci["name"]) for ci in cities if is_named(ci["name"])],
+            # the handful the geocoder only ever gave coordinates for, so the
+            # count and the list cannot silently disagree
+            "unnamed": sum(1 for ci in cities if not is_named(ci["name"])),
             "d": shapes.get(c["code"], ""),
         }
         if parent:
