@@ -2510,8 +2510,8 @@ ul { list-style: none; }
     transform: translateY(-2px);
 }
 
-/* Clear the fixed navbar plus this bar when an anchor is jumped to. */
-.jump-target { scroll-margin-top: 132px; }
+/* Clear the fixed navbar (72px) plus this bar (66px) when an anchor is jumped to. */
+.jump-target { scroll-margin-top: 140px; }
 
 @media (max-width: 480px) {
     .section-jump a { font-size: 0.68rem; padding: 8px 14px; letter-spacing: 1.2px; }
