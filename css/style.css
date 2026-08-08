@@ -2559,6 +2559,18 @@ ul { list-style: none; }
 }
 
 /* ==========================================================================
+   Home: podcast
+   Only two episodes here, and .episode-grid is auto-fit 1fr, so without a cap
+   the two cards would stretch to ~590px each and dwarf everything around them.
+   ========================================================================== */
+
+.home-podcast .episode-grid {
+    max-width: 820px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ==========================================================================
    Home: impact stats
    Scoped to .stats-showcase so the plain .stats-grid on about/give/tours
    is left alone.
