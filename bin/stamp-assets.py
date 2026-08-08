@@ -29,6 +29,11 @@ ASSETS = [
     "js/main.js",
     "js/audio-library.js",
     "js/travel-map.js",
+    # the wall map is regenerated whenever a country is added, so a cached
+    # sheet would show the old tints
+    "assets/travel/world-map-6000.jpg",
+    "assets/travel/world-map-2400.jpg",
+    "assets/travel/world-map-1200.jpg",
     "assets/books/faith-to-build-audiobook.jpg",
     "assets/books/go-audiobook.jpg",
     "assets/books/wiser-audiobook.jpg",

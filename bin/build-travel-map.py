@@ -34,7 +34,8 @@ CACHE = ROOT / "bin" / ".cache"
 NE_URL = ("https://raw.githubusercontent.com/nvkelso/natural-earth-vector/"
           "master/geojson/ne_50m_admin_0_countries.geojson")
 
-WIDTH = 2400
+WIDTH = 2400          # the sheet the page loads first
+DETAIL = 6000         # lazy-loaded once the reader zooms in; see js/travel-map.js
 LAT_TOP, LAT_BOT = 86.0, -58.0   # crop Antarctica off the sheet, as wall maps do
 
 OCEAN = (183, 201, 205)
@@ -102,9 +103,9 @@ def coastlines():
     return feats
 
 
-def render(visited, ss=3):
-    full_h = round(WIDTH / ((X1 - X0) / (Y1 - Y0)))
-    w, h = WIDTH * ss, full_h * ss
+def render(visited, width=WIDTH, ss=3):
+    full_h = round(width / ((X1 - X0) / (Y1 - Y0)))
+    w, h = width * ss, full_h * ss
     proj = make_proj(w, h)
     img = Image.new("RGB", (w, h), OCEAN)
     d = ImageDraw.Draw(img)
@@ -140,7 +141,7 @@ def render(visited, ss=3):
 
     top, bot = proj(0, LAT_TOP)[1], proj(0, LAT_BOT)[1]
     img = img.crop((0, int(top), w, int(bot)))
-    img = img.resize((WIDTH, round(img.height / ss)), Image.LANCZOS)
+    img = img.resize((width, round(img.height / ss)), Image.LANCZOS)
     return img, top / ss, bot / ss, full_h
 
 
@@ -171,17 +172,29 @@ def main():
     src = json.loads((ROOT / "bin" / "travel-source.json").read_text())
     visited = {c["code"] for c in src}
 
-    sheet, top, bot, full_h = render(visited)
-    sheet = age(sheet)
     out = ROOT / "assets" / "travel"
     out.mkdir(parents=True, exist_ok=True)
+
+    # One geometry pass at detail resolution, then age each size separately so
+    # the paper grain is sized for the sheet it lands on rather than being
+    # smoothed away by the downscale.
+    big, top_d, bot_d, _ = render(visited, DETAIL, ss=2)
+    age(big).save(out / f"world-map-{DETAIL}.jpg", "JPEG",
+                  quality=78, optimize=True, progressive=True)
+    print(f"wrote world-map-{DETAIL}.jpg  {big.width}x{big.height}")
+
+    sheet = age(big.resize((WIDTH, round(big.height * WIDTH / DETAIL)), Image.LANCZOS))
     sheet.save(out / "world-map-2400.jpg", "JPEG", quality=84, optimize=True, progressive=True)
-    small = sheet.resize((1200, round(sheet.height * 1200 / WIDTH)), Image.LANCZOS)
+    small = age(big.resize((1200, round(big.height * 1200 / DETAIL)), Image.LANCZOS))
     small.save(out / "world-map-1200.jpg", "JPEG", quality=82, optimize=True, progressive=True)
-    print(f"wrote assets/travel/world-map-2400.jpg  {WIDTH}x{sheet.height}"
+    del big
+    print(f"wrote world-map-2400.jpg  {WIDTH}x{sheet.height}"
           f"  aspect {WIDTH / sheet.height:.5f}")
 
-    proj = make_proj(WIDTH, round(full_h))
+    top, bot, full_h = top_d * WIDTH / DETAIL, bot_d * WIDTH / DETAIL, \
+        round(WIDTH / ((X1 - X0) / (Y1 - Y0)))
+
+    proj = make_proj(WIDTH, full_h)
     rows = []
     for c in src:
         x, y = proj(c["pin"]["lng"], c["pin"]["lat"])

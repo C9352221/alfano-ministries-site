@@ -12,41 +12,44 @@
 
     // <countries>  regenerate with: python3 bin/build-travel-map.py
     var COUNTRIES = [
-  {"code": "US", "name": "United States", "region": "Americas", "x": 28.004, "y": 34.129, "cities": 81, "regions": 18, "top": ["Hillsborough County", "North Franklin Township", "Robinson Township", "Charlotte", "Orange County", "Lakeland"]},
-  {"code": "GT", "name": "Guatemala", "region": "Americas", "x": 25.072, "y": 48.995, "cities": 8, "regions": 0, "top": ["San Andrés Semetabaj", "Mixco", "Santa Cruz Muluá", "San Juan Bautista", "Zaragoza", "Fray Bartolomé de las Casas"]},
-  {"code": "CA", "name": "Canada", "region": "Americas", "x": 33.254, "y": 23.987, "cities": 5, "regions": 0, "top": ["Victoria", "Mississauga", "Rivière-Koksoak", "Bridgewater"]},
-  {"code": "HN", "name": "Honduras", "region": "Americas", "x": 25.972, "y": 48.675, "cities": 4, "regions": 0, "top": ["El Progreso", "Santa Cruz de Yojoa", "El Rosario", "La Lima"]},
-  {"code": "MX", "name": "Mexico", "region": "Americas", "x": 23.976, "y": 46.407, "cities": 3, "regions": 0, "top": ["San Cristóbal", "Tuxtla Gutiérrez", "Ciudad de México"]},
-  {"code": "AR", "name": "Argentina", "region": "Americas", "x": 35.061, "y": 84.229, "cities": 2, "regions": 0, "top": ["Buenos Aires", "Mar del Plata"]},
-  {"code": "TT", "name": "Trinidad & Tobago", "region": "Americas", "x": 33.049, "y": 52.346, "cities": 2, "regions": 0, "top": []},
-  {"code": "IT", "name": "Italy", "region": "Europe", "x": 52.865, "y": 30.473, "cities": 13, "regions": 0, "top": ["San Felice sul Panaro", "Torino", "Bologna", "Roma", "Lucca", "Venezia"]},
-  {"code": "AT", "name": "Austria", "region": "Europe", "x": 53.329, "y": 26.483, "cities": 10, "regions": 0, "top": ["Eben am Achensee", "Wien", "Hallwang", "Parndorf/Pandrof", "Michelhausen", "Asten"]},
-  {"code": "DE", "name": "Germany", "region": "Europe", "x": 52.429, "y": 25.737, "cities": 10, "regions": 0, "top": ["Oberding", "Frankfurt am Main", "Bad Wiessee", "Teisendorf", "Prien am Chiemsee", "Saulheim"]},
-  {"code": "HU", "name": "Hungary", "region": "Europe", "x": 54.313, "y": 26.727, "cities": 10, "regions": 0, "top": ["Budapest", "Balatonfüred", "Sárszentmihály", "Velence", "Komárom", "Monori járás"]},
-  {"code": "SE", "name": "Sweden", "region": "Europe", "x": 53.39, "y": 19.597, "cities": 10, "regions": 0, "top": ["Stockholm", "Sigtuna kommun", "Malmö", "Norrköping", "Linköping", "Hässleholms kommun"]},
-  {"code": "GB", "name": "United Kingdom", "region": "Europe", "x": 49.298, "y": 22.576, "cities": 9, "regions": 0, "top": ["Greater London", "Belfast", "Reading", "Ayrshire", "Mid and East Antrim District", "South Ayrshire"]},
-  {"code": "FR", "name": "France", "region": "Europe", "x": 50.533, "y": 25.123, "cities": 7, "regions": 0, "top": ["Paris", "Tillé", "Seclin", "Peuplingues", "Bornel", "Vémars"]},
-  {"code": "DK", "name": "Denmark", "region": "Europe", "x": 52.748, "y": 20.952, "cities": 3, "regions": 0, "top": ["København", "Hillerød Kommune", "Køge Kommune"]},
-  {"code": "NL", "name": "Netherlands", "region": "Europe", "x": 51.086, "y": 23.371, "cities": 3, "regions": 0, "top": ["Hoofddorp", "Amsterdam", "Oosthuizen"]},
-  {"code": "TR", "name": "Turkey", "region": "Europe", "x": 57.179, "y": 31.059, "cities": 3, "regions": 0, "top": ["Arnavutköy", "Pendik", "Istanbul"]},
-  {"code": "CH", "name": "Switzerland", "region": "Europe", "x": 52.144, "y": 27.762, "cities": 2, "regions": 0, "top": ["Lugano", "Ascona"]},
-  {"code": "IS", "name": "Iceland", "region": "Europe", "x": 45.469, "y": 15.202, "cities": 1, "regions": 0, "top": ["Suðurnesjabær"]},
-  {"code": "IE", "name": "Ireland", "region": "Europe", "x": 48.588, "y": 22.667, "cities": 1, "regions": 0, "top": ["Dublin"]},
-  {"code": "MC", "name": "Monaco", "region": "Europe", "x": 51.807, "y": 29.34, "cities": 1, "regions": 0, "top": ["Monte Carlo"]},
-  {"code": "PL", "name": "Poland", "region": "Europe", "x": 54.784, "y": 23.375, "cities": 1, "regions": 0, "top": ["Warsaw"]},
-  {"code": "PT", "name": "Portugal", "region": "Europe", "x": 47.708, "y": 32.786, "cities": 1, "regions": 0, "top": ["Lisboa"]},
-  {"code": "AE", "name": "United Arab Emirates", "region": "Middle East", "x": 64.717, "y": 41.889, "cities": 1, "regions": 0, "top": ["Dubai"]},
-  {"code": "MU", "name": "Mauritius", "region": "Africa", "x": 65.557, "y": 74.102, "cities": 0, "regions": 0, "top": []}
+  {"code": "US", "name": "United States", "region": "Americas", "x": 28.004, "y": 34.119, "cities": 81, "regions": 18, "top": ["Hillsborough County", "North Franklin Township", "Robinson Township", "Charlotte", "Orange County", "Lakeland"]},
+  {"code": "GT", "name": "Guatemala", "region": "Americas", "x": 25.072, "y": 48.981, "cities": 8, "regions": 0, "top": ["San Andrés Semetabaj", "Mixco", "Santa Cruz Muluá", "San Juan Bautista", "Zaragoza", "Fray Bartolomé de las Casas"]},
+  {"code": "CA", "name": "Canada", "region": "Americas", "x": 33.254, "y": 23.98, "cities": 5, "regions": 0, "top": ["Victoria", "Mississauga", "Rivière-Koksoak", "Bridgewater"]},
+  {"code": "HN", "name": "Honduras", "region": "Americas", "x": 25.972, "y": 48.661, "cities": 4, "regions": 0, "top": ["El Progreso", "Santa Cruz de Yojoa", "El Rosario", "La Lima"]},
+  {"code": "MX", "name": "Mexico", "region": "Americas", "x": 23.976, "y": 46.394, "cities": 3, "regions": 0, "top": ["San Cristóbal", "Tuxtla Gutiérrez", "Ciudad de México"]},
+  {"code": "AR", "name": "Argentina", "region": "Americas", "x": 35.061, "y": 84.205, "cities": 2, "regions": 0, "top": ["Buenos Aires", "Mar del Plata"]},
+  {"code": "TT", "name": "Trinidad & Tobago", "region": "Americas", "x": 33.049, "y": 52.331, "cities": 2, "regions": 0, "top": []},
+  {"code": "IT", "name": "Italy", "region": "Europe", "x": 52.865, "y": 30.464, "cities": 13, "regions": 0, "top": ["San Felice sul Panaro", "Torino", "Bologna", "Roma", "Lucca", "Venezia"]},
+  {"code": "AT", "name": "Austria", "region": "Europe", "x": 53.329, "y": 26.475, "cities": 10, "regions": 0, "top": ["Eben am Achensee", "Wien", "Hallwang", "Parndorf/Pandrof", "Michelhausen", "Asten"]},
+  {"code": "DE", "name": "Germany", "region": "Europe", "x": 52.429, "y": 25.73, "cities": 10, "regions": 0, "top": ["Oberding", "Frankfurt am Main", "Bad Wiessee", "Teisendorf", "Prien am Chiemsee", "Saulheim"]},
+  {"code": "HU", "name": "Hungary", "region": "Europe", "x": 54.313, "y": 26.719, "cities": 10, "regions": 0, "top": ["Budapest", "Balatonfüred", "Sárszentmihály", "Velence", "Komárom", "Monori járás"]},
+  {"code": "SE", "name": "Sweden", "region": "Europe", "x": 53.39, "y": 19.591, "cities": 10, "regions": 0, "top": ["Stockholm", "Sigtuna kommun", "Malmö", "Norrköping", "Linköping", "Hässleholms kommun"]},
+  {"code": "GB", "name": "United Kingdom", "region": "Europe", "x": 49.298, "y": 22.569, "cities": 9, "regions": 0, "top": ["Greater London", "Belfast", "Reading", "Ayrshire", "Mid and East Antrim District", "South Ayrshire"]},
+  {"code": "FR", "name": "France", "region": "Europe", "x": 50.533, "y": 25.115, "cities": 7, "regions": 0, "top": ["Paris", "Tillé", "Seclin", "Peuplingues", "Bornel", "Vémars"]},
+  {"code": "DK", "name": "Denmark", "region": "Europe", "x": 52.748, "y": 20.945, "cities": 3, "regions": 0, "top": ["København", "Hillerød Kommune", "Køge Kommune"]},
+  {"code": "NL", "name": "Netherlands", "region": "Europe", "x": 51.086, "y": 23.364, "cities": 3, "regions": 0, "top": ["Hoofddorp", "Amsterdam", "Oosthuizen"]},
+  {"code": "TR", "name": "Turkey", "region": "Europe", "x": 57.179, "y": 31.049, "cities": 3, "regions": 0, "top": ["Arnavutköy", "Pendik", "Istanbul"]},
+  {"code": "CH", "name": "Switzerland", "region": "Europe", "x": 52.144, "y": 27.754, "cities": 2, "regions": 0, "top": ["Lugano", "Ascona"]},
+  {"code": "IS", "name": "Iceland", "region": "Europe", "x": 45.469, "y": 15.197, "cities": 1, "regions": 0, "top": ["Suðurnesjabær"]},
+  {"code": "IE", "name": "Ireland", "region": "Europe", "x": 48.588, "y": 22.66, "cities": 1, "regions": 0, "top": ["Dublin"]},
+  {"code": "MC", "name": "Monaco", "region": "Europe", "x": 51.807, "y": 29.331, "cities": 1, "regions": 0, "top": ["Monte Carlo"]},
+  {"code": "PL", "name": "Poland", "region": "Europe", "x": 54.784, "y": 23.368, "cities": 1, "regions": 0, "top": ["Warsaw"]},
+  {"code": "PT", "name": "Portugal", "region": "Europe", "x": 47.708, "y": 32.776, "cities": 1, "regions": 0, "top": ["Lisboa"]},
+  {"code": "AE", "name": "United Arab Emirates", "region": "Middle East", "x": 64.717, "y": 41.877, "cities": 1, "regions": 0, "top": ["Dubai"]},
+  {"code": "MU", "name": "Mauritius", "region": "Africa", "x": 65.557, "y": 74.081, "cities": 0, "regions": 0, "top": []}
 ];
     // </countries>
 
-    var MIN = 1, MAX = 7;
+    // MAX is capped at what the detail sheet can actually resolve; going
+    // further only magnifies JPEG, it does not add map.
+    var MIN = 1, MAX = 5;
     var vp = document.getElementById('wm-viewport');
     if (!vp) return;
     var canvas = document.getElementById('wm-canvas');
     var panel  = document.getElementById('wm-panel');
     var list   = document.getElementById('wm-list');
     var reset  = document.getElementById('wm-reset');
+    var sheet  = document.getElementById('wm-sheet');
 
     // baseScale is the resting zoom: 1 on a desktop, but on a phone the frame
     // is taller than the sheet, so the map rests zoomed in far enough to fill
@@ -65,6 +68,10 @@
         b.style.top  = c.y + '%';
         b.setAttribute('aria-label', c.name);
         b.innerHTML = '<span class="wm-pin-needle"></span><span class="wm-pin-head"></span>';
+        var tag = document.createElement('span');
+        tag.className = 'wm-pin-label';
+        tag.textContent = c.name;      // textContent, so "Trinidad & Tobago" is safe
+        b.appendChild(tag);
         b.addEventListener('click', function (e) { e.stopPropagation(); select(c, true); });
         canvas.appendChild(b);
         pinEls[c.code] = b;
@@ -91,6 +98,27 @@
         list.appendChild(row);
     });
 
+    // ── detail sheet ──
+    // The page opens on a 2400px sheet, which is plenty at resting zoom and
+    // costs ~190KB. Zooming past that turns it to mush, so the first time the
+    // reader zooms in, fetch the 6000px version and swap it in once it has
+    // decoded. Nobody who only looks at the world view ever pays for it.
+    var detailSrc = sheet.getAttribute('data-detail');
+    var detailAsked = false;
+
+    function loadDetail() {
+        if (detailAsked || !detailSrc) return;
+        detailAsked = true;
+        var pre = new Image();
+        pre.onload = function () {
+            // srcset outranks src, so it has to go or the swap does nothing
+            sheet.removeAttribute('srcset');
+            sheet.removeAttribute('sizes');
+            sheet.src = detailSrc;
+        };
+        pre.src = detailSrc;
+    }
+
     // ── transform ──
     function clamp(v, lo, hi) { return v < lo ? lo : v > hi ? hi : v; }
 
@@ -108,6 +136,7 @@
         // scale. At rest touch-action stays pan-y so a thumb dragged up the
         // screen scrolls the page instead of being swallowed by the map.
         vp.classList.toggle('is-zoomed', scale > baseScale * 1.01);
+        if (scale > baseScale * 1.2) loadDetail();
     }
 
     function pannable() {
