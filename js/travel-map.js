@@ -56,6 +56,18 @@
     var sheet  = document.getElementById('wm-sheet');
     var COUNTRIES = MAPDATA.list;
 
+    // ── running tally in the hero ──
+    // Filled from MAPDATA so the headline can never drift from the pins.
+    // Sub-regions like Hawaii carry partOf and would double count.
+    (function () {
+        var nCountries = document.getElementById('wm-tally-countries');
+        var nPlaces    = document.getElementById('wm-tally-places');
+        if (!nCountries || !nPlaces) return;
+        var whole = COUNTRIES.filter(function (c) { return !c.partOf; });
+        nCountries.textContent = whole.length;
+        nPlaces.textContent = whole.reduce(function (n, c) { return n + c.cities; }, 0);
+    }());
+
     // baseScale is the resting zoom: 1 on a desktop, but on a phone the frame
     // is taller than the sheet, so the map rests zoomed in far enough to fill
     // it. Everything below compares against baseScale rather than 1, so the

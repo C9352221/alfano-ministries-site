@@ -2958,6 +2958,46 @@ chat-widget {
     .world-map-cta { justify-content: center; text-align: center; padding: 26px 16px 14px; }
 }
 
+/* ── Travel tally (travel-map.html hero) ──
+   The running total, above the fold, before the map has even loaded. */
+.travel-tally {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(20px, 5vw, 44px);
+    margin: 0 auto 8px;
+}
+
+.travel-tally-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.travel-tally-num {
+    font-family: 'Lora', serif;
+    font-weight: 700;
+    font-size: clamp(2.1rem, 6vw, 2.9rem);
+    line-height: 1;
+    color: var(--gold);
+}
+
+.travel-tally-label {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.travel-tally-rule {
+    width: 1px;
+    align-self: stretch;
+    background: rgba(255, 255, 255, 0.22);
+}
+
 /* ── Wall map (travel-map.html) ──
    The map hangs on a wall the way Ezra's does in chapter 3 of The Last
    Convert: a National Geographic sheet on a mounting board under a bare

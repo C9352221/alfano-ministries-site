@@ -21,7 +21,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Lora:wght@400;500;600;700&family=Open+Sans:wght@300;400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Lora:wght@400;500;600;700&family=Open+Sans:wght@300;400;500;600;700&display=swap"></noscript>
-    <link rel="stylesheet" href="css/style.css?v=ea03381482">
+    <link rel="stylesheet" href="css/style.css?v=4e171862eb">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
 <body>
@@ -60,6 +60,19 @@
             <div class="hero-eyebrow">Across the Nations</div>
             <h1>Travel <span class="gold">Map</span></h1>
             <div class="hero-divider"></div>
+            <!-- Fallback numbers match bin/travel-source.json; travel-map.js
+                 overwrites them from MAPDATA so they cannot go stale. -->
+            <div class="travel-tally" id="wm-tally">
+                <div class="travel-tally-item">
+                    <span class="travel-tally-num" id="wm-tally-countries">25</span>
+                    <span class="travel-tally-label">Countries</span>
+                </div>
+                <span class="travel-tally-rule" aria-hidden="true"></span>
+                <div class="travel-tally-item">
+                    <span class="travel-tally-num" id="wm-tally-places">191</span>
+                    <span class="travel-tally-label">Places</span>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -94,7 +107,7 @@
                 <button type="button" id="wm-reset">Reset</button>
             </div>
         </div>
-        <p class="wm-hint">25 countries &middot; 191 places &middot; tap a pin, or choose a country below</p>
+        <p class="wm-hint">Tap a pin, or choose a country below</p>
         <div class="wm-panel" id="wm-panel" role="status" aria-live="polite"></div>
         <div class="wm-list" id="wm-list"></div>
     </section>
@@ -157,7 +170,7 @@
     </footer>
 
     <script src="js/main.js?v=289c1d07eb" defer></script>
-    <script src="js/travel-map.js?v=455fdf2018" defer></script>
+    <script src="js/travel-map.js?v=478ef376ce" defer></script>
     <!-- GHL Chat Widget -->
     <script src="https://widgets.leadconnectorhq.com/loader.js" data-resources-url="https://widgets.leadconnectorhq.com/chat-widget/loader.js" data-widget-id="6a05e884f127bb1bb0a44a06" data-source="WEB_USER"></script>
 </body>
