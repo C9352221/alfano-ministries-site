@@ -3163,6 +3163,25 @@ chat-widget {
 .wm-count   { margin: 0; color: rgba(253, 248, 239, 0.62); font-size: 0.88rem; }
 .wm-places  { margin: 8px 0 0; color: rgba(253, 248, 239, 0.82); font-size: 0.92rem; line-height: 1.7; }
 .wm-unnamed { color: rgba(253, 248, 239, 0.42); font-style: italic; }
+.wm-places [hidden] { display: none; }
+
+.wm-more {
+    margin: 10px 0 0;
+    padding: 5px 12px;
+    border: 1px solid rgba(232, 185, 35, 0.45);
+    border-radius: 999px;
+    background: none;
+    color: var(--gold);
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.wm-more:hover { background: rgba(232, 185, 35, 0.14); border-color: var(--gold); }
+.wm-more:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 
 /* ── country list ── */
 .wm-list { max-width: 1180px; margin: 26px auto 0; }

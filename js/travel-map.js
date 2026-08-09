@@ -213,15 +213,23 @@
         Object.keys(shapeEls).forEach(function (k) {
             shapeEls[k].classList.toggle('is-active', k === c.code);
         });
-        // Every place, listed. A truncated list on a card that says "13 places"
-        // only makes the reader ask where the other seven went.
+        // Six places, then the rest behind a toggle. The button carries the
+        // exact count so the card never just trails off into an ellipsis.
+        var SHOWN = 6, SEP = ' \u00b7 ';
+        var head = c.places.slice(0, SHOWN);
+        var rest = c.places.slice(SHOWN);
+        // The unnamed footnote stays out of the collapse; it explains the
+        // headline count, so hiding it is what caused the mismatch before.
         var missing = c.unnamed
             ? '<span class="wm-unnamed">+' + c.unnamed + ' with no place name on record</span>'
             : '';
-        var places = (c.places.length || c.unnamed)
-            ? '<p class="wm-places">' + c.places.join(' \u00b7 ') +
-              (c.places.length && missing ? ' \u00b7 ' : '') + missing + '</p>'
-            : '';
+        var places = '';
+        if (c.places.length || c.unnamed) {
+            places = '<p class="wm-places">' + head.join(SEP) +
+                (rest.length ? '<span class="wm-rest" hidden>' + SEP + rest.join(SEP) + '</span>' : '') +
+                (head.length && missing ? SEP : '') + missing + '</p>' +
+                (rest.length ? '<button type="button" class="wm-more">+' + rest.length + ' more</button>' : '');
+        }
         // Countries with no logged GPS points get the pin and the name only;
         // "0 places" reads like a bug rather than like a place he has been.
         var count = c.cities
@@ -237,6 +245,24 @@
               places +
             '</div>';
         panel.classList.add('is-open');
+
+        var more = panel.querySelector('.wm-more');
+        if (more) {
+            more.addEventListener('click', function () {
+                var el = panel.querySelector('.wm-rest');
+                var open = !el.hasAttribute('hidden');
+                if (open) {
+                    el.setAttribute('hidden', '');
+                    more.textContent = '+' + rest.length + ' more';
+                } else {
+                    el.removeAttribute('hidden');
+                    more.textContent = 'Show fewer';
+                }
+                more.setAttribute('aria-expanded', String(!open));
+            });
+            more.setAttribute('aria-expanded', 'false');
+        }
+
         if (move) centreOn(c, Math.max(scale, c.region === 'Europe' ? 4.5 : 2.6));
     }
 
