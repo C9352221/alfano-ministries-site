@@ -33,6 +33,7 @@ ASSETS = [
     # sheet would show the old tints
     "assets/travel/world-map-6000.jpg",
     "assets/travel/world-map-2400.jpg",
+    "assets/travel/world-map-pinned-1200.jpg",
     "assets/travel/world-map-1200.jpg",
     "assets/books/faith-to-build-audiobook.jpg",
     "assets/books/go-audiobook.jpg",

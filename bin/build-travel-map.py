@@ -191,6 +191,36 @@ def country_path(geom, proj, top, budget=9000):
         tol *= 1.6
 
 
+def draw_pins(sheet, rows, ss=4):
+    """Bake push pins onto a copy of the sheet, for the teaser on marketplace.
+
+    The live map draws its pins as HTML so they stay crisp and clickable; this
+    is the flat version for pages that only link through to it.
+    """
+    W, H = sheet.size
+    r = max(5, round(W / 150))          # head radius, scaled to the sheet
+    lay = Image.new("RGBA", (W * ss, H * ss), (0, 0, 0, 0))
+    shadow = Image.new("RGBA", lay.size, (0, 0, 0, 0))
+    sd, R = ImageDraw.Draw(shadow), r * ss
+    spots = [((row["x"] / 100) * W * ss, (row["y"] / 100) * H * ss) for row in rows]
+    for x, y in spots:
+        sd.ellipse([x - R * 0.4, y - R * 0.55 + R * 0.75,
+                    x + R * 1.6, y + R * 0.8 + R * 0.75], fill=(60, 45, 30, 110))
+    shadow = shadow.filter(ImageFilter.GaussianBlur(R * 0.35))
+    lay = Image.alpha_composite(lay, shadow)
+    d = ImageDraw.Draw(lay)
+    for x, y in spots:
+        d.line([(x, y), (x + R * 0.30, y + R * 1.5)], fill=(70, 60, 50, 220),
+               width=max(1, int(R * 0.16)))
+        d.ellipse([x - R, y - R, x + R, y + R], fill=(176, 42, 36),
+                  outline=(74, 20, 16, 255), width=max(1, int(R * 0.10)))
+        d.ellipse([x - R * 0.52, y - R * 0.62, x - R * 0.02, y - R * 0.14],
+                  fill=(238, 133, 122, 210))
+    out = sheet.convert("RGBA")
+    out.alpha_composite(lay.resize((W, H), Image.LANCZOS))
+    return out.convert("RGB")
+
+
 def clean(name):
     return name.split(",")[0].strip()
 
@@ -273,6 +303,11 @@ def main():
     block = ("{\n  \"viewBox\": \"0 0 %d %.2f\",\n  \"list\": [\n"
              % (WIDTH, bot - top)) + ",\n".join(
         "    " + json.dumps(r, ensure_ascii=False) for r in rows) + "\n  ]\n}"
+
+    pinned = draw_pins(small, rows)
+    pinned.save(out / "world-map-pinned-1200.jpg", "JPEG",
+                quality=84, optimize=True, progressive=True)
+    print(f"wrote world-map-pinned-1200.jpg  {pinned.width}x{pinned.height}")
 
     js = ROOT / "js" / "travel-map.js"
     text = js.read_text()
