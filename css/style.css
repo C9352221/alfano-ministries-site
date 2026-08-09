@@ -3111,10 +3111,40 @@ chat-widget {
     transform: rotate(1.5deg);
 }
 
-/* below this the wall is all map; the notes would sit on top of the board */
+/* Below this there is no bare wall left to tack anything to: the board fills
+   it, so the absolutely positioned notes would land on top of the map. They
+   come out of the wall and stack in normal flow above the board instead,
+   still taped and still crooked, just smaller and in two rows. */
 @media (max-width: 860px) {
-    .wall-notes,
-    .wall-heading { display: none; }
+    .wall-heading {
+        position: static;
+        transform: rotate(-1deg);
+        margin: 0 0 26px;
+        font-size: 1.85rem;
+        text-align: center;
+        white-space: normal;
+    }
+
+    .wall-notes {
+        position: static;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 30px 16px;
+        margin: 0 0 30px;
+    }
+
+    /* static kills top/left/right; the per-note rotations survive */
+    .wall-note {
+        position: static;
+        min-width: 0;
+        flex: 0 1 auto;
+        padding: 12px 14px 13px;
+        font-size: 1.15rem;
+    }
+
+    .wall-note::before { width: 38px; height: 14px; margin-left: -19px; top: -8px; }
 }
 
 .wallmap-board {
