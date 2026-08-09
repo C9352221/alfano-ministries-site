@@ -2910,7 +2910,7 @@ chat-widget {
 
 /* room above the map for the notes tacked to the wall */
 @media (min-width: 861px) {
-    .wallroom { padding-top: 158px; }
+    .wallroom { padding-top: 190px; }   /* clears the list note */
 }
 
 /* plaster tooth */
@@ -2961,9 +2961,27 @@ chat-widget {
     transform: rotate(-4deg);
 }
 
-.wall-note.n1 { top: 30px; left: 7%;  transform: rotate(-3.5deg); }
-.wall-note.n2 { top: 40px; left: 27%; transform: rotate(2.5deg); }
-.wall-note.n3 { top: 24px; right: 9%; transform: rotate(-2deg); }
+.wall-note.n1 { top: 34px; left: 7%;  transform: rotate(-3.5deg); }
+.wall-note.n2 { top: 46px; left: 27%; transform: rotate(2.5deg); }
+.wall-note.n3 { top: 28px; right: 9%; transform: rotate(-2deg); }
+
+/* the list note. Two columns so adding a name grows it sideways instead of
+   pushing the whole wall taller. */
+.wall-note.n4 {
+    top: 26px;
+    left: 46%;
+    padding: 15px 19px 17px;
+    text-align: left;
+    column-count: 2;
+    column-gap: 20px;
+    transform: rotate(1.5deg);
+}
+
+.wall-note.n4 i {
+    display: block;
+    font-style: normal;
+    line-height: 1.38;
+}
 
 /* below this the wall is all map; the notes would sit on top of the board */
 @media (max-width: 860px) {
