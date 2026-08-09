@@ -2897,10 +2897,20 @@ chat-widget {
     position: relative;
     padding: clamp(22px, 5vw, 70px);
     background:
-        radial-gradient(120% 90% at 18% -10%, rgba(243, 217, 160, 0.30), transparent 58%),
-        radial-gradient(90% 70% at 50% 120%, rgba(0, 0, 0, 0.45), transparent 60%),
-        linear-gradient(160deg, #2c2620 0%, #221d19 48%, #191512 100%);
+        /* bare bulb, high and to the left, as in the chapter 3 illustration */
+        radial-gradient(120% 90% at 18% -10%, rgba(243, 217, 160, 0.32), transparent 58%),
+        radial-gradient(90% 70% at 50% 120%, rgba(0, 0, 0, 0.48), transparent 60%),
+        /* cinder block in running bond: two courses per tile, the lower one
+           offset half a block, which is what makes it read as a wall rather
+           than as graph paper */
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='152'%3E%3Cg fill='rgba(0,0,0,0.24)'%3E%3Crect width='320' height='4'/%3E%3Crect y='76' width='320' height='4'/%3E%3Crect width='4' height='76'/%3E%3Crect x='160' width='4' height='76'/%3E%3Crect x='80' y='76' width='4' height='76'/%3E%3Crect x='240' y='76' width='4' height='76'/%3E%3C/g%3E%3Cg fill='rgba(255,240,214,0.045)'%3E%3Crect y='4' width='320' height='3'/%3E%3Crect y='80' width='320' height='3'/%3E%3C/g%3E%3C/svg%3E"),
+        linear-gradient(160deg, #3a332b 0%, #2b2520 48%, #1d1815 100%);
     overflow: hidden;
+}
+
+/* room above the map for the notes tacked to the wall */
+@media (min-width: 861px) {
+    .wallroom { padding-top: 158px; }
 }
 
 /* plaster tooth */
@@ -2911,6 +2921,53 @@ chat-widget {
     opacity: 0.5;
     pointer-events: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
+}
+
+/* ── notes tacked to the wall ──
+   Decorative, and aria-hidden on purpose: these are places he has not been,
+   so a screen reader must not read them alongside the 25 that he has. */
+.wall-notes {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.wall-note {
+    position: absolute;
+    display: block;
+    min-width: 106px;
+    padding: 15px 17px 17px;
+    text-align: center;
+    color: #4c4031;
+    font-family: "Caveat", "Bradley Hand", "Segoe Script", cursive;
+    font-size: 1.45rem;
+    font-weight: 600;
+    line-height: 1;
+    background: linear-gradient(168deg, #f7edd3 0%, #ece0bd 100%);
+    box-shadow: 0 7px 16px rgba(0, 0, 0, 0.48), 0 1px 0 rgba(255, 255, 255, 0.25) inset;
+}
+
+/* a strip of tape across the top corner */
+.wall-note::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    width: 48px;
+    height: 18px;
+    margin-left: -24px;
+    background: rgba(255, 249, 232, 0.40);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.32);
+    transform: rotate(-4deg);
+}
+
+.wall-note.n1 { top: 30px; left: 7%;  transform: rotate(-3.5deg); }
+.wall-note.n2 { top: 40px; left: 27%; transform: rotate(2.5deg); }
+.wall-note.n3 { top: 24px; right: 9%; transform: rotate(-2deg); }
+
+/* below this the wall is all map; the notes would sit on top of the board */
+@media (max-width: 860px) {
+    .wall-notes { display: none; }
 }
 
 .wallmap-board {
