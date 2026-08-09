@@ -2910,7 +2910,7 @@ chat-widget {
 
 /* room above the map for the notes tacked to the wall */
 @media (min-width: 861px) {
-    .wallroom { padding-top: 190px; }   /* clears the list note */
+    .wallroom { padding-top: 258px; }   /* the heading, then the notes */
 }
 
 /* plaster tooth */
@@ -2926,6 +2926,25 @@ chat-widget {
 /* ── notes tacked to the wall ──
    Decorative, and aria-hidden on purpose: these are places he has not been,
    so a screen reader must not read them alongside the 25 that he has. */
+/* Written on the wall above the notes. Kept OUT of .wall-notes, and so out of
+   its aria-hidden, because this line is the one piece a screen reader should
+   hear: it says plainly that these are places prayed for, not places visited. */
+.wall-heading {
+    position: absolute;
+    top: 26px;
+    left: 50%;
+    margin: 0;
+    transform: translateX(-50%) rotate(-1deg);
+    color: rgba(247, 237, 211, 0.86);
+    font-family: "Caveat", "Bradley Hand", "Segoe Script", cursive;
+    font-size: 2.15rem;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+    text-shadow: 0 2px 7px rgba(0, 0, 0, 0.55);
+    pointer-events: none;
+}
+
 .wall-notes {
     position: absolute;
     inset: 0;
@@ -2961,31 +2980,27 @@ chat-widget {
     transform: rotate(-4deg);
 }
 
-.wall-note.n1 { top: 34px; left: 7%;  transform: rotate(-3.5deg); }
-.wall-note.n2 { top: 46px; left: 27%; transform: rotate(2.5deg); }
-.wall-note.n3 { top: 28px; right: 9%; transform: rotate(-2deg); }
-
-/* the list note. Two columns so adding a name grows it sideways instead of
-   pushing the whole wall taller. */
-.wall-note.n4 {
-    top: 26px;
-    left: 46%;
-    padding: 15px 19px 17px;
-    text-align: left;
-    column-count: 2;
-    column-gap: 20px;
-    transform: rotate(1.5deg);
-}
-
-.wall-note.n4 i {
+.wall-note i {
     display: block;
     font-style: normal;
-    line-height: 1.38;
+    line-height: 1.4;
+}
+
+.wall-note.n1 { top: 100px; left: 7%;  transform: rotate(-3.5deg); }
+.wall-note.n2 { top: 112px; left: 27%; transform: rotate(2.5deg); }
+.wall-note.n3 { top: 94px; right: 9%; transform: rotate(-2deg); }
+
+/* the middle sheet carries three; the others carry two */
+.wall-note.n4 {
+    top: 92px;
+    left: 48%;
+    transform: rotate(1.5deg);
 }
 
 /* below this the wall is all map; the notes would sit on top of the board */
 @media (max-width: 860px) {
-    .wall-notes { display: none; }
+    .wall-notes,
+    .wall-heading { display: none; }
 }
 
 .wallmap-board {
