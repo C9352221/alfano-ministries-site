@@ -53,7 +53,7 @@ const nameFor = (id, format) => {
 function corsHeaders(origin) {
   return {
     "Access-Control-Allow-Origin": origin,
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type",
     "Access-Control-Max-Age": "86400",
   };
@@ -87,6 +87,30 @@ export default {
     const safe = ok ? origin : ALLOWED_ORIGINS[0];
 
     if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: corsHeaders(safe) });
+
+    // GET /session/<id> -- did this checkout actually get paid?
+    // The POS asks when a card buyer never made it back to the app (closed the
+    // Stripe tab, or the redirect opened somewhere else), so the sale can be
+    // counted instead of silently lost. Session ids are long and unguessable
+    // and the answer carries no customer details, only whether money moved.
+    const m = new URL(request.url).pathname.match(/^\/session\/(cs_[A-Za-z0-9_]+)$/);
+    if (request.method === "GET" && m) {
+      if (!ok) return json({ error: "Forbidden" }, 403, safe);
+      try {
+        const res = await fetch(`${STRIPE}/checkout/sessions/${m[1]}`, {
+          headers: { Authorization: `Bearer ${env.STRIPE_API_KEY}` },
+        });
+        const s = await res.json();
+        if (!res.ok) return json({ error: "Not found" }, 404, safe);
+        return json({
+          payment_status: s.payment_status, status: s.status,
+          amount_total: s.amount_total, currency: s.currency, created: s.created,
+        }, 200, safe);
+      } catch (err) {
+        return json({ error: "Service unavailable." }, 503, safe);
+      }
+    }
+
     if (request.method !== "POST") return json({ error: "Method not allowed" }, 405, safe);
     if (!ok) return json({ error: "Forbidden" }, 403, safe);
 

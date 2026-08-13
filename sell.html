@@ -10,6 +10,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Book Table">
+<link rel="apple-touch-icon" href="assets/sell-icon.png">
 <style>
   :root{
     --navy:#0a162a; --navy2:#12243f; --navy3:#1b3252; --card:#122844;
@@ -193,6 +194,13 @@ const CONFIG = {
   CHECKOUT_URL: "https://book-checkout.alfanoministries.workers.dev",
   SALE_URL:     "https://book-sale.alfanoministries.workers.dev",
 
+  // Cloud sales book. Leave LEDGER_URL blank to run with no backup at all
+  // (everything still works, it just lives on this phone only). LEDGER_KEY is
+  // a spam filter, NOT a secret -- this page is public. It can only append
+  // sales; reading and exporting need the admin secret, which is never here.
+  LEDGER_URL: "https://book-ledger.alfanoministries.workers.dev",
+  LEDGER_KEY: "",
+
   // Manual payment details — filled in Phase 4.
   ZELLE:   { handle: "marc@alfanoministries.com", qr: "assets/pay/zelle-qr.jpg" },
   CASHAPP: { handle: "$AlfanoMinistries",          qr: "assets/pay/cashapp-qr.jpg" },
@@ -257,6 +265,7 @@ const CONFIG = {
     <div id="fxHint" class="hint"></div>
     <div id="tally" class="tally" onclick="openSales()"></div>
     <div id="stockPill" class="tally" onclick="openStock()"></div>
+    <div id="syncLine" class="hint" style="margin:-6px 0 12px"></div>
     <div id="grid" class="grid"></div>
   </div>
 
@@ -383,6 +392,7 @@ function tryPin(){
 function unlock(){
   document.getElementById("pin").style.display="none";
   show("store"); initCurrencies(); loadFX(); renderCatalog();
+  askDeviceLabel(); startSyncLoop(); reconcileCardSales();
 }
 
 /* ============================ CURRENCY / FX ============================ */
@@ -571,7 +581,13 @@ async function payCard(){
     const r = await fetch(CONFIG.CHECKOUT_URL,{method:"POST",headers:{"Content-Type":"application/json"},
       body:JSON.stringify({items:cartItems().map(i=>({id:i.book.id,format:i.format,qty:i.qty})), currency:CUR, giftStep: giftCUR()>0?giftMode:0})});
     const d = await r.json();
-    if(d.url){ sessionStorage.setItem("bt_pending", JSON.stringify(pending)); location.href=d.url; }
+    if(d.url){
+      pending.saleId = newSaleId();          // fixed now so the recovery path and the normal
+                                             // return can never produce two rows for one sale
+      sessionStorage.setItem("bt_pending", JSON.stringify(pending));
+      pushCardPending({saleId:pending.saleId, sessionId:d.id, ts:Date.now(), tries:0, pending});
+      location.href=d.url;
+    }
     else alert(d.message||"Could not start checkout.");
   }catch(e){ alert("Network error starting checkout."); }
 }
@@ -733,7 +749,9 @@ function upgradeRow(s){
     recovered:false, void:false, sync:1
   }, s);
 }
-function saleRows(){ return readSales(); }
+/* Everything the table sold: this phone's rows plus the other phone's mirror.
+   Writes only ever touch readSales(); the mirror is read-only. */
+function saleRows(){ return readSales().concat(mirrorRows()); }
 function liveRows(rows){ return rows.filter(r=>!r.void); }
 
 function saleUSD(p){
@@ -770,6 +788,7 @@ function commitSale(source){
   for(const k of Object.keys(cart)) delete cart[k];
   for(const k of Object.keys(fsel)) delete fsel[k];
   giftMode = 0;
+  syncSoon();
   renderTally(); renderCatalog();
   return row;
 }
@@ -778,11 +797,13 @@ function annotateSale(id, patch){
   Object.assign(r, patch); r.rev=(r.rev||1)+1; r.sync=0;
   writeSales(log);
   if(SALE && SALE.id===id) Object.assign(SALE, patch);
+  syncSoon();
 }
 function voidSale(id){
   const log=readSales(), r=log.find(x=>x.id===id); if(!r || r.void) return;
   r.void=true; r.rev=(r.rev||1)+1; r.sync=0;
   writeSales(log);
+  syncSoon();
   renderTally(); renderCatalog();
 }
 
@@ -865,6 +886,7 @@ function holdStart(id){ clearTimeout(holdT); holdT=setTimeout(()=>offerUndo(id),
 function holdEnd(){ clearTimeout(holdT); }
 function offerUndo(id){
   const r=saleRows().find(x=>x.id===id); if(!r) return false;
+  if(r.device){ alert("That sale was taken on "+(r.deviceLabel||"the other phone")+".\n\nUndo it there and it will update here."); return false; }
   if(confirm("Undo the "+fmtCur(r.amt,r.cur)+" sale at "+new Date(r.ts).toLocaleTimeString([], {hour:"numeric",minute:"2-digit"})+"?\n\nIt comes out of the tally and the books go back. Any payment already taken is NOT refunded.")){
     voidSale(id); renderSales();
   }
@@ -906,6 +928,7 @@ function setPacked(key, n){
   s.counts[key] = Object.assign({}, s.counts[key], {packed:n});
   s.eventId = eventId();
   writeStock(s);
+  syncSoon();
   renderStock(); renderCatalog(); renderStockPill();
 }
 function bumpPacked(key, d){ setPacked(key, (packedOf(key)||0) + d); }
@@ -1015,15 +1038,217 @@ function copyReorder(){
   else legacyCopy(txt, done);
 }
 
+/* ============================ CLOUD LEDGER + SECOND PHONE ============================
+   The phone is the source of truth while selling: rows are written locally
+   first and pushed in the background, so a basement with no signal never
+   blocks a sale. The queue is not a separate list -- it is any local row with
+   sync!==1 -- so it can never drift out of step with the ledger itself.
+
+   The second phone works by pulling the OTHER device's rows into a read-only
+   mirror. Local rows stay strictly this device's own, which is what keeps the
+   queue honest; the tally, the reports and the stock count read both. */
+const LEDGER_ON = () => !!(CONFIG.LEDGER_URL && CONFIG.LEDGER_KEY);
+
+function device(){
+  let d=null;
+  try{ d=JSON.parse(localStorage.getItem("bt_device")||"null"); }catch(e){}
+  if(!d || !d.id){
+    d={ id:"d-"+Math.random().toString(36).slice(2,8)+Date.now().toString(36).slice(-4), label:"" };
+    try{ localStorage.setItem("bt_device", JSON.stringify(d)); }catch(e){}
+  }
+  return d;
+}
+function setDeviceLabel(label){
+  const d=device(); d.label=String(label||"").slice(0,40);
+  try{ localStorage.setItem("bt_device", JSON.stringify(d)); }catch(e){}
+}
+/* Asked once, so the report can say which phone took which sale. */
+function askDeviceLabel(){
+  if(!LEDGER_ON() || device().label) return;
+  const v=prompt("Whose phone is this? (shows on the sales report)", "Marc");
+  setDeviceLabel(v && v.trim() ? v.trim() : "This phone");
+}
+
+function readMirror(){
+  try{ const m=JSON.parse(localStorage.getItem("bt_mirror")||"null");
+       return (m && m.event===eventId() && Array.isArray(m.rows)) ? m : null; }catch(e){ return null; }
+}
+function mirrorRows(){ const m=readMirror(); return m ? m.rows : []; }
+
+/* ---- push ---- */
+let syncTimer=null, syncing=false;
+function syncSoon(){ if(!LEDGER_ON()) return; clearTimeout(syncTimer); syncTimer=setTimeout(syncNow, 800); }
+/* Hidden rows still upload: "clear today's list" is a display preference, and
+   clearing before the signal came back must not strand a real sale. */
+function unsyncedRows(){ return readSales().filter(r=>r.sync!==1 && r.v>=2); }
+
+async function syncNow(){
+  if(!LEDGER_ON() || syncing || !navigator.onLine) return;
+  const state=syncState();
+  if(state.nextAt && Date.now()<state.nextAt) return;
+  const queue=unsyncedRows().slice(0,50);
+  if(queue.length===0){ renderSyncLine(); return; }
+  syncing=true;
+  try{
+    const stock=readStock();
+    const ctrl=new AbortController(); const t=setTimeout(()=>ctrl.abort(), 6000);
+    const r=await fetch(CONFIG.LEDGER_URL.replace(/\/$/,"")+"/sync",{
+      method:"POST", headers:{"Content-Type":"application/json"}, signal:ctrl.signal,
+      body:JSON.stringify({
+        key:CONFIG.LEDGER_KEY, deviceId:device().id, label:device().label, eventId:eventId(),
+        sales:queue.map(stripForLedger),
+        stock:{rev:stock.rev||0, counts:stock.counts||{}}
+      })
+    });
+    clearTimeout(t);
+    const d=await r.json();
+    if(d && d.ok){
+      // Mark synced at the rev that was actually sent: an edit made while the
+      // request was in flight has a higher rev and must stay queued.
+      const sent={}; queue.forEach(q=>sent[q.id]=q.rev);
+      const log=readSales(); let touched=false;
+      (d.accepted||[]).forEach(id=>{ const row=log.find(x=>x.id===id);
+        if(row && (row.rev||1)<=sent[id]){ row.sync=1; touched=true; } });
+      (d.rejected||[]).forEach(x=>{ const row=log.find(y=>y.id===(x&&x.id));
+        if(row){ row.sync=2; row.syncError=(x&&x.reason)||"rejected"; touched=true; } });
+      if(touched) writeSales(log);
+      if(d.stock) adoptStock(d.stock);
+      setSyncState({failures:0, nextAt:0, lastOk:Date.now()});
+    } else {
+      backoff();
+    }
+  }catch(e){ backoff(); }
+  syncing=false;
+  renderSyncLine();
+  if(unsyncedRows().length) syncSoon();          // more than one batch waiting
+}
+/* The ledger is a money log, not a mailing list: the buyer's email never leaves
+   this phone. (The worker strips it too, belt and braces.) */
+function stripForLedger(r){
+  const {email, ...rest}=r;
+  return rest;
+}
+function syncState(){ try{ return JSON.parse(localStorage.getItem("bt_syncstate")||"{}")||{}; }catch(e){ return {}; } }
+function setSyncState(s){ try{ localStorage.setItem("bt_syncstate", JSON.stringify(s)); }catch(e){} }
+function backoff(){
+  const s=syncState(); const f=(s.failures||0)+1;
+  setSyncState({failures:f, nextAt:Date.now()+Math.min(600000, 5000*Math.pow(2, Math.min(f,7))), lastOk:s.lastOk||0});
+}
+
+/* ---- pull: what the other phone sold ---- */
+let pullTimer=null, pulling=false;
+async function pullNow(){
+  if(!LEDGER_ON() || pulling || !navigator.onLine) return;
+  pulling=true;
+  try{
+    const u=CONFIG.LEDGER_URL.replace(/\/$/,"")+"/event?id="+encodeURIComponent(eventId())
+      +"&device="+encodeURIComponent(device().id)+"&key="+encodeURIComponent(CONFIG.LEDGER_KEY);
+    const ctrl=new AbortController(); const t=setTimeout(()=>ctrl.abort(), 6000);
+    const r=await fetch(u,{signal:ctrl.signal});
+    clearTimeout(t);
+    const d=await r.json();
+    if(d && d.ok){
+      try{ localStorage.setItem("bt_mirror", JSON.stringify({
+        event:d.event, rows:d.rows||[], devices:d.devices||[], at:Date.now() })); }catch(e){}
+      if(d.stock) adoptStock(d.stock);
+      renderTally(); renderStockPill(); renderCatalog();
+      if(document.getElementById("sales").classList.contains("on")) renderSales();
+    }
+  }catch(e){ /* offline: keep selling on this phone's own numbers */ }
+  pulling=false;
+  renderSyncLine();
+}
+/* Shared stock: a higher rev wins. Adopting the remote rev keeps the counter
+   monotonic across both phones, so the next local edit outranks what it saw. */
+function adoptStock(remote){
+  if(!remote || !remote.counts) return;
+  const s=readStock();
+  if((remote.rev||0) <= (s.rev||0)) return;
+  s.counts=remote.counts; s.rev=remote.rev; s.updated=remote.updated||new Date().toISOString();
+  try{ localStorage.setItem("bt_stock", JSON.stringify(s)); }catch(e){}   // direct: writeStock would bump rev
+  if(document.getElementById("stock").classList.contains("on")) renderStock();
+}
+function startSyncLoop(){
+  if(!LEDGER_ON()) return;
+  syncNow(); pullNow();
+  clearInterval(pullTimer);
+  pullTimer=setInterval(()=>{
+    if(document.hidden) return;
+    const on=["store","sales","stock","reorder"].some(id=>document.getElementById(id).classList.contains("on"));
+    if(on){ pullNow(); syncNow(); }
+  }, 10000);
+  window.addEventListener("online", ()=>{ setSyncState({failures:0,nextAt:0}); syncNow(); pullNow(); });
+  document.addEventListener("visibilitychange", ()=>{ if(!document.hidden){ syncNow(); pullNow(); } });
+}
+function renderSyncLine(){
+  const el=document.getElementById("syncLine"); if(!el) return;
+  if(!LEDGER_ON()){ el.textContent=""; return; }
+  const waiting=unsyncedRows().length;
+  const m=readMirror();
+  const other=(m && m.devices && m.devices.length)
+    ? m.devices.map(d=>(d.label||"other phone")+": "+d.count).join(" · ") : "";
+  const seen=(m && m.at) ? new Date(m.at).toLocaleTimeString([], {hour:"numeric",minute:"2-digit"}) : null;
+  const back = !navigator.onLine ? "No signal — selling offline"
+    : waiting ? "● "+waiting+" not backed up yet"
+    : "✓ Backed up";
+  el.innerHTML = back + (other?` · ${other}`:"") + (seen && !navigator.onLine?` · other phone last seen ${seen}`:"");
+  el.className = (waiting || !navigator.onLine) ? "hint warn" : "hint";
+}
+
+/* ============================ CARD SALES THAT NEVER CAME BACK ============================
+   Same hole as the receipt-less cash buyer, reached a different way: the buyer
+   pays on Stripe's page and the app never sees the return -- they close the
+   tab, or the redirect opens in a different browser than the one holding the
+   order. The money is captured and nothing here knows. So the order is written
+   down BEFORE the redirect and checked against Stripe on the next open. */
+function readCardPending(){ try{ return JSON.parse(localStorage.getItem("bt_cardpend")||"[]")||[]; }catch(e){ return []; } }
+function writeCardPending(a){ try{ localStorage.setItem("bt_cardpend", JSON.stringify(a)); }catch(e){} }
+function pushCardPending(entry){ const a=readCardPending().filter(x=>x.sessionId!==entry.sessionId); a.push(entry); writeCardPending(a); }
+function clearCardPending(sessionId){ writeCardPending(readCardPending().filter(x=>x.sessionId!==sessionId)); }
+
+async function reconcileCardSales(){
+  if(!CONFIG.CHECKOUT_URL || !navigator.onLine) return;
+  const list=readCardPending();
+  if(!list.length) return;
+  const keep=[], known={};
+  readSales().forEach(r=>{ if(r.stripeSessionId) known[r.stripeSessionId]=true; if(r.id) known[r.id]=true; });
+  for(const e of list){
+    if(Date.now()-e.ts < 120000){ keep.push(e); continue; }        // still mid-checkout
+    if(known[e.sessionId] || known[e.saleId]) continue;            // the normal return already counted it
+    try{
+      const ctrl=new AbortController(); const t=setTimeout(()=>ctrl.abort(), 6000);
+      const r=await fetch(CONFIG.CHECKOUT_URL.replace(/\/$/,"")+"/session/"+encodeURIComponent(e.sessionId), {signal:ctrl.signal});
+      clearTimeout(t);
+      const d=await r.json();
+      if(d && d.payment_status==="paid"){
+        pending=Object.assign({}, e.pending, {saleId:e.saleId, stripeSessionId:e.sessionId, method:"card", recovered:true});
+        commitSale("card");
+        // Deliberately NOT re-firing the sale worker: if the redirect landed in
+        // another browser, that one already sent the receipt and added the buyer
+        // to the list. A double receipt is worse than a card sale relying on
+        // Stripe's own. The row is flagged so it can be resent from GHL.
+      } else if(d && (d.payment_status==="unpaid" || d.status==="expired")){
+        // they backed out on Stripe's page; nothing was taken
+      } else { keep.push(e); }
+    }catch(err){
+      e.tries=(e.tries||0)+1;
+      if(Date.now()-e.ts < 7*86400000) keep.push(e);               // give up after a week
+    }
+  }
+  writeCardPending(keep);
+  renderTally();
+}
+
 /* ============================ CSV EXPORT ============================ */
 function csvCell(v){ const s=(v==null?"":String(v)); return /[",\n]/.test(s) ? '"'+s.replace(/"/g,'""')+'"' : s; }
 function exportCSV(){
   const rows=saleRows();
-  const head=["sale_id","ts_utc","local_date","method","currency","sale_total_cur","sale_total_usd","gift_cur",
+  const head=["sale_id","phone","ts_utc","local_date","event","method","currency","sale_total_cur","sale_total_usd","gift_cur",
               "item_id","item_title","item_format","item_qty","item_unit_cur","item_unit_usd","voided","receipt","order_id"];
   const lines=[head.join(",")];
   rows.forEach(r=>{
-    const base=[r.id,r.ts,r.date,r.method,r.cur,r.amt,r.amtUSD==null?"":r.amtUSD,r.gift||0];
+    const who=r.device ? (r.deviceLabel||"other phone") : (device().label||"this phone");
+    const base=[r.id,who,r.ts,r.date,r.event||r.date,r.method,r.cur,r.amt,r.amtUSD==null?"":r.amtUSD,r.gift||0];
     const tail=[r.void?"yes":"",r.receipt||"",r.orderId||""];
     if(r.items && r.items.length){
       r.items.forEach(i=>lines.push(base.concat([i.id,i.title,i.format||"",i.qty,i.unit,i.unitUSD==null?"":i.unitUSD]).concat(tail).map(csvCell).join(",")));
@@ -1041,7 +1266,7 @@ function exportCSV(){
 
 /* ============================ HELPERS ============================ */
 function show(id){ document.querySelectorAll(".screen").forEach(s=>s.classList.remove("on"));
-  document.getElementById(id).classList.add("on"); window.scrollTo(0,0); renderCartBar(); renderTally(); renderStockPill(); }
+  document.getElementById(id).classList.add("on"); window.scrollTo(0,0); renderCartBar(); renderTally(); renderStockPill(); renderSyncLine(); }
 function val(id){ return document.getElementById(id).value.trim(); }
 
 /* return from Stripe? (?paid=SESSION_ID). Stripe already collected the buyer's
@@ -1058,7 +1283,9 @@ const RET_CANCEL = new URLSearchParams(location.search).get("canceled");
   document.getElementById("pin").style.display="none";
   history.replaceState({}, "", "sell.html");
   cardThanks();
+  clearCardPending(RET_PAID);     // counted the normal way; the sweep must not see it
   fireCardSale(RET_PAID);
+  startSyncLoop();
 })();
 /* Tell the sale worker a card sale finished: it reads name/email from Stripe, adds
    the buyer to the list, and fires the receipt. Nothing to type on this device. */
