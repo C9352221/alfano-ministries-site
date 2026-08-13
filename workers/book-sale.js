@@ -53,7 +53,11 @@ function today() {
   try { return new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric" }).format(new Date()); }
   catch { return new Date().toISOString().slice(0, 10); }
 }
-const payLabel = (m) => ({ card: "Card", cash: "Cash", zelle: "Zelle", cashapp: "Cash App" }[m] || "Card");
+// "taptopay" = charged on the phone in the Stripe Dashboard app (contactless
+// card / Apple Pay / Google Pay). It reaches this worker down the MANUAL path,
+// because Book Table never sees a Stripe session for it -- so it needs its own
+// label or the fallback below would file it as a plain card sale.
+const payLabel = (m) => ({ card: "Card", cash: "Cash", zelle: "Zelle", cashapp: "Cash App", taptopay: "Tap to Pay" }[m] || "Card");
 
 function corsHeaders(origin) {
   return {

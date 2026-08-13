@@ -145,6 +145,37 @@
   .trow .tq{color:var(--gold); font-weight:bold; font-size:1.05rem; min-width:34px; text-align:right}
   .trow .tr{color:var(--dim); font-size:.78rem; min-width:66px; text-align:right}
   .foot{color:var(--dim); font-size:.74rem; line-height:1.4; margin:10px 2px 0}
+  /* stock */
+  .book{position:relative}
+  .badge{position:absolute; top:7px; right:7px; z-index:2; padding:4px 8px; border-radius:999px;
+    font-size:.72rem; font-weight:bold; font-family:'Open Sans',sans-serif;
+    background:rgba(10,22,42,.86); border:1px solid var(--gold); color:var(--gold)}
+  .badge.out{border-color:var(--danger); color:var(--danger)}
+  .strow{display:flex; align-items:center; gap:9px; padding:10px 0; border-bottom:1px solid var(--line)}
+  .strow:last-child{border-bottom:none}
+  .strow img{width:30px; height:45px; object-fit:cover; border-radius:4px; flex:0 0 auto}
+  .strow .sn{flex:1; min-width:0; font-size:.88rem; line-height:1.25}
+  .strow .sn .sub{color:var(--dim); font-size:.73rem; margin-top:2px}
+  .sctl{display:flex; flex-direction:column; align-items:flex-end; gap:5px; flex:0 0 auto}
+  .steps{display:flex; align-items:center; gap:5px}
+  .stepbig{width:52px; height:52px; border-radius:12px; border:1px solid var(--line);
+    background:var(--navy3); color:var(--cream); font-size:1.4rem; cursor:pointer}
+  .stepbig:active{background:var(--navy2)}
+  .stepnum{min-width:44px; height:52px; border-radius:10px; border:1px dashed var(--line);
+    background:transparent; color:var(--gold); font-family:inherit; font-weight:bold; font-size:1.2rem; cursor:pointer}
+  .bulk{display:flex; gap:5px}
+  .bulk button{padding:5px 11px; border-radius:8px; border:1px solid var(--line);
+    background:var(--navy2); color:var(--dim); font-family:inherit; font-size:.74rem; cursor:pointer}
+  .bar{height:4px; background:var(--navy3); border-radius:3px; margin-top:6px; overflow:hidden}
+  .bar i{display:block; height:100%; background:var(--gold)}
+  /* Tap to Pay hand-off: the number the seller keys into the Stripe app */
+  .keyin{display:flex; align-items:center; gap:10px; justify-content:center; flex-wrap:wrap;
+    background:var(--navy3); border:1px solid var(--line); border-radius:12px; padding:12px 14px; margin:2px 0 12px}
+  .keyin .lbl{width:100%; text-align:center; color:var(--dim); font-size:.74rem; letter-spacing:.06em; text-transform:uppercase}
+  .keyin .num{font-family:ui-monospace,Menlo,Consolas,monospace; font-size:1.9rem; font-weight:bold; color:var(--cream); letter-spacing:.02em}
+  .copybtn{background:var(--navy2); color:var(--gold); border:1px solid var(--line); border-radius:9px;
+    padding:10px 14px; font-family:inherit; font-size:.86rem; cursor:pointer; min-width:92px}
+  .copybtn:active{background:var(--navy)}
   .undo{background:none; border:none; color:var(--dim); font-family:inherit; font-size:.85rem;
     text-decoration:underline; cursor:pointer; padding:10px; margin-top:6px}
 </style>
@@ -190,6 +221,14 @@ const CONFIG = {
     {code:"TRY", sym:"₺",  name:"Turkish Lira"},
     {code:"MUR", sym:"₨",  name:"Mauritian Rupee"},
   ],
+  // Tap to Pay lives in the Stripe Dashboard app -- no web page can start it,
+  // so this tile is a hand-off: it shows the amount to key in over there, and
+  // Book Table still keeps the cart, the tally and the receipt.
+  TAPTOPAY: { enabled: true },
+
+  // Stock badge turns gold at or below this many left.
+  LOW_STOCK_AT: 3,
+
   // Currencies with NO minor units (whole-number only).
   ZERO_DECIMAL: ["JPY","KRW","VND","CLP","ISK","HUF","UGX","XAF","XOF","RWF"],
 };
@@ -216,6 +255,7 @@ const CONFIG = {
     </header>
     <div id="fxHint" class="hint"></div>
     <div id="tally" class="tally" onclick="openSales()"></div>
+    <div id="stockPill" class="tally" onclick="openStock()"></div>
     <div id="grid" class="grid"></div>
   </div>
 
@@ -238,6 +278,7 @@ const CONFIG = {
     <h2 class="sc" id="mTitle"></h2>
     <div class="panel center">
       <div class="big" id="mAmount"></div>
+      <div id="mCopy"></div>
       <div id="mBody"></div>
       <p class="hint" id="mNote"></p>
     </div>
@@ -271,6 +312,27 @@ const CONFIG = {
     </div>
     <button class="btn" onclick="newSale()">New sale</button>
     <div class="center"><button class="undo" onclick="undoLastSale()">Undo this sale</button></div>
+  </div>
+
+  <!-- ===================== STOCK ===================== -->
+  <div id="stock" class="screen">
+    <button class="back" onclick="show('store')">‹ Back to books</button>
+    <h2 class="sc">Stock on hand</h2>
+    <p class="hint" id="stockEvent" style="margin-top:0"></p>
+    <div class="panel" id="stockList"></div>
+    <button class="btn secondary" onclick="openReorder()">What to reorder ›</button>
+    <button class="btn secondary" style="margin-top:10px" onclick="startNewEvent()">Start a new event</button>
+    <p class="fine">Enter what you packed for this event. Every sale counts it down. Selling past zero is allowed, it just shows as over.</p>
+  </div>
+
+  <!-- ===================== REORDER ===================== -->
+  <div id="reorder" class="screen">
+    <button class="back" onclick="show('stock')">‹ Back to stock</button>
+    <h2 class="sc">What to reorder</h2>
+    <div class="scope" id="reorderScope"></div>
+    <div class="panel" id="reorderList"></div>
+    <button class="btn secondary" onclick="copyReorder()" id="reorderCopy">Copy list</button>
+    <p class="fine">Sorted by what sells fastest. "Left" only shows for titles you have counted.</p>
   </div>
 
   <!-- ===================== TODAY'S SALES ===================== -->
@@ -390,7 +452,14 @@ function renderCatalog(){
     const ctl = q>0
       ? `<div class="qtybar"><button onclick="decKey('${key}')">−</button><span class="n">${q}</span><button onclick="incKey('${key}')">+</button></div>`
       : `<button class="add" onclick="incKey('${key}')">Add</button>`;
+    // Stock badge, shown only for titles he has actually counted. It never
+    // blocks a sale -- he restocks out of the car all the time.
+    const left=remainingOf(key);
+    const badge = left===null ? ""
+      : left<=0 ? `<span class="badge out">${left<0?"over "+(-left):"Out"}</span>`
+      : left<=CONFIG.LOW_STOCK_AT ? `<span class="badge low">${left} left</span>` : "";
     return `<div class="book">
+      ${badge}
       <img src="${b.cover}" alt="" loading="lazy">
       <div class="b">
         <div class="t">${b.title}</div>
@@ -467,6 +536,7 @@ function renderCheckout(){
   const usdOnly = CUR!=="USD";
   const methods = [
     {k:"card",   ic:"💳", t:"Pay by card",  d:"Visa · Mastercard · Amex", show:true},
+    {k:"taptopay",ic:"📲",t:"Tap to Pay",   d:"Apple Pay · Google Pay · tap a card", show:CONFIG.TAPTOPAY && CONFIG.TAPTOPAY.enabled!==false},
     {k:"zelle",  ic:"🏦", t:"Zelle",         d:"US bank transfer",         show:!usdOnly},
     {k:"cashapp",ic:"💵", t:"Cash App",      d:"$"+"cashtag",              show:!usdOnly},
     {k:"cash",   ic:"👐", t:"Cash",          d:"Pay Marc directly",        show:true},
@@ -513,14 +583,40 @@ function payManual(method){
     zelle:  {title:"Zelle", handle:CONFIG.ZELLE.handle,  qr:CONFIG.ZELLE.qr,  note:"Have the buyer send to the Zelle above, then confirm it arrived."},
     cashapp:{title:"Cash App", handle:CONFIG.CASHAPP.handle, qr:CONFIG.CASHAPP.qr, note:"Have the buyer scan / send to the $cashtag, then confirm it arrived."},
     cash:   {title:"Cash", handle:"", qr:"", note:"Collect the cash, then tap the button below."},
+    taptopay:{title:"Tap to Pay", handle:"", qr:"", copy:true,
+              note:"Open the Stripe app → + → Charge a card → key in this amount → Tap to Pay → have them tap their card, phone or watch. Come back here when it approves."},
   }[method];
   document.getElementById("mTitle").textContent = map.title + " payment";
+  // The seller retypes this number into Stripe's keypad, so show it bare: no
+  // symbol, no thousands separator, always two decimals.
+  document.getElementById("mCopy").innerHTML = map.copy
+    ? `<div class="keyin"><span class="lbl">Key this into Stripe</span>
+         <span class="num" id="ttpNum">${plainAmount(pending.totalCUR)}</span>
+         <button class="copybtn" id="ttpCopy" onclick="copyAmount()">Copy</button></div>`
+    : "";
   let body="";
   if(map.qr) body += `<div class="qr"><img src="${map.qr}" alt=""><div class="tag">${map.handle}</div></div>`;
   else if(map.handle) body += `<div class="qr" style="padding:18px 16px"><div class="tag" style="font-size:1.05rem">${map.handle}</div></div>`;
   document.getElementById("mBody").innerHTML = body;
   document.getElementById("mNote").textContent = map.note;
   show("manual");
+}
+function plainAmount(v){ return Number(v).toFixed(isZeroDec(CUR)?0:2); }
+function copyAmount(){
+  const txt=document.getElementById("ttpNum").textContent.trim();
+  const done=()=>{ const b=document.getElementById("ttpCopy"); if(!b) return;
+    b.textContent="Copied ✓"; setTimeout(()=>{ if(b) b.textContent="Copy"; }, 1500); };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(done).catch(()=>legacyCopy(txt,done));
+  } else legacyCopy(txt, done);
+}
+function legacyCopy(txt, done){
+  // iOS standalone mode occasionally refuses the async clipboard API.
+  const i=document.createElement("input"); i.value=txt;
+  i.style.cssText="position:fixed;opacity:0;left:0;top:0";
+  document.body.appendChild(i); i.select(); i.setSelectionRange(0, 99);
+  try{ document.execCommand("copy"); done(); }catch(e){}
+  i.remove();
 }
 /* The money is in hand the moment this is tapped, so the sale is RECORDED here.
    Everything on the capture screen after this is receipt paperwork -- a buyer
@@ -646,6 +742,7 @@ function commitSale(source){
   const row={
     v:2, id: pending.saleId || newSaleId(), rev:1,
     ts:new Date().toISOString(), date:todayKey(),   // stamped once, here; never recomputed on sync
+    event:eventId(),
     cur:pending.currency, amt:pending.totalCUR, amtUSD:saleUSD(pending),
     method:pending.method, books:items.reduce((s,i)=>s+(i.qty||0),0),
     gift:pending.gift||0, items,
@@ -679,7 +776,7 @@ function voidSale(id){
 
 /* ============================ TALLY + REPORTS ============================ */
 function fmtCur(amount, cur){ const info=curInfo(cur); const dp=Number.isInteger(amount)?0:2; return info.sym+Number(amount).toFixed(dp); }
-const METHOD_LABEL={card:"Card", cash:"Cash", zelle:"Zelle", cashapp:"Cash App"};
+const METHOD_LABEL={card:"Card", cash:"Cash", zelle:"Zelle", cashapp:"Cash App", taptopay:"Tap to Pay"};
 
 let SCOPE = "today";                                  // today | all
 const SCOPES = [{k:"today", t:"Today"}, {k:"all", t:"All time"}];
@@ -771,6 +868,141 @@ function clearToday(){
   renderSales(); renderTally();
 }
 
+/* ============================ STOCK ============================
+   `packed` is what went into the boxes for this event and is the only number
+   entered by hand. `sold` is DERIVED from the sale rows, never counted
+   separately -- so an undone sale puts the book back with no bookkeeping, and
+   a second phone's sales can be folded in the same way once they sync. */
+function readStock(){
+  try{ const s=JSON.parse(localStorage.getItem("bt_stock")||"null");
+       if(s && s.v>=1) return s; }catch(e){}
+  return {v:1, rev:0, updated:null, eventId:eventId(), counts:{}};
+}
+function writeStock(s){ s.rev=(s.rev||0)+1; s.updated=new Date().toISOString();
+  try{ localStorage.setItem("bt_stock", JSON.stringify(s)); }catch(e){} }
+function eventId(){ try{ return localStorage.getItem("bt_event") || todayKey(); }catch(e){ return todayKey(); } }
+function eventRows(){ const ev=eventId(); return liveRows(saleRows()).filter(r=>(r.event||r.date)===ev); }
+
+function packedOf(key){ const c=readStock().counts[key]; return c && c.packed!=null ? c.packed : null; }
+function soldOf(key){
+  return eventRows().reduce((n,r)=> n + (r.items||[]).reduce((m,i)=> m + (cartKey(i.id,i.format)===key ? (i.qty||0) : 0), 0), 0);
+}
+function remainingOf(key){ const p=packedOf(key); return p==null ? null : p - soldOf(key); }
+function setPacked(key, n){
+  const s=readStock();
+  n=Math.max(0, Math.min(999, Math.round(n)||0));
+  s.counts[key] = Object.assign({}, s.counts[key], {packed:n});
+  s.eventId = eventId();
+  writeStock(s);
+  renderStock(); renderCatalog(); renderStockPill();
+}
+function bumpPacked(key, d){ setPacked(key, (packedOf(key)||0) + d); }
+function askPacked(key, title){
+  const cur=packedOf(key);
+  const v=prompt("How many "+title+" did you pack?", cur==null?"":String(cur));
+  if(v===null) return;
+  const n=parseInt(String(v).replace(/[^\d]/g,""),10);
+  if(!isNaN(n)) setPacked(key, n);
+}
+/* Every title/format pair, flattened, in catalog order. */
+function stockKeys(){
+  const out=[];
+  CONFIG.BOOKS.forEach(b=>fmtsOf(b).forEach(f=>out.push({
+    key:cartKey(b.id,f.label), id:b.id, title:b.title, format:f.label||"", cover:b.cover, usd:f.usd })));
+  return out;
+}
+
+function openStock(){ renderStock(); show("stock"); }
+function renderStock(){
+  const ev=eventId();
+  document.getElementById("stockEvent").textContent =
+    "Event: "+(ev===todayKey() ? "today" : ev)+" · counts and sales are grouped by event";
+  document.getElementById("stockList").innerHTML = stockKeys().map(k=>{
+    const p=packedOf(k.key), sold=soldOf(k.key), left=p==null?null:p-sold;
+    const leftTxt = p==null ? `<span style="color:var(--dim)">not counted</span>`
+      : left<0 ? `<span style="color:var(--gold)">over by ${-left}</span>`
+      : `<b style="color:${left<=CONFIG.LOW_STOCK_AT?"var(--gold)":"var(--cream)"}">${left} left</b>`;
+    return `<div class="strow">
+      <img src="${k.cover}" alt="">
+      <div class="sn"><div>${k.title}</div>
+        <div class="sub">${k.format?k.format+" · ":""}sold ${sold}${p==null?"":" of "+p} · ${leftTxt}</div></div>
+      <div class="sctl">
+        <div class="steps">
+          <button class="stepbig" onclick="bumpPacked('${k.key}',-1)">−</button>
+          <button class="stepnum" onclick="askPacked('${k.key}','${(k.title+(k.format?" "+k.format:"")).replace(/'/g,"\\'")}')">${p==null?"–":p}</button>
+          <button class="stepbig" onclick="bumpPacked('${k.key}',1)">+</button>
+        </div>
+        <div class="bulk">
+          <button onclick="bumpPacked('${k.key}',5)">+5</button>
+          <button onclick="bumpPacked('${k.key}',10)">+10</button>
+        </div>
+      </div>
+    </div>`;
+  }).join("");
+}
+function renderStockPill(){
+  const el=document.getElementById("stockPill"); if(!el) return;
+  const counted=stockKeys().filter(k=>packedOf(k.key)!=null);
+  if(counted.length===0){
+    el.innerHTML=`<span class="tl">Stock</span><span class="tv">Not counted yet</span><span class="tgo">Set up ›</span>`;
+    return;
+  }
+  const low=counted.filter(k=>{ const r=remainingOf(k.key); return r!==null && r<=CONFIG.LOW_STOCK_AT; });
+  const left=counted.reduce((n,k)=>n+Math.max(0,remainingOf(k.key)),0);
+  el.innerHTML=`<span class="tl">Stock</span><span class="tv">${left} left${low.length?` · ${low.length} running low`:""}</span><span class="tgo">View ›</span>`;
+}
+function startNewEvent(){
+  const name=prompt("Name this event (a church, a city, a date). Sales and stock counts start fresh.\n\nLeave blank to go back to plain dates.", "");
+  if(name===null) return;
+  const id=name.trim() ? todayKey()+"-"+name.trim().toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"") : todayKey();
+  try{ localStorage.setItem("bt_event", id); }catch(e){}
+  const s=readStock(); s.eventId=id; writeStock(s);   // packed counts carry over; sold restarts with the event
+  renderStock(); renderCatalog(); renderStockPill(); renderTally();
+}
+
+/* ============================ REORDER ============================ */
+let RSCOPE="event";
+const RSCOPES=[{k:"event",t:"This event"},{k:"all",t:"All time"}];
+function openReorder(){ renderReorder(); show("reorder"); }
+function setRScope(k){ RSCOPE=k; renderReorder(); }
+function reorderRows(){
+  const rows = RSCOPE==="event" ? eventRows() : liveRows(saleRows());
+  const rep = titleReport(rows);
+  const seen = {}; rep.forEach(t=>seen[t.key]=t);
+  // titles that never sold still matter -- they are the ones NOT to reorder
+  stockKeys().forEach(k=>{ if(!seen[k.key] && packedOf(k.key)!=null)
+    seen[k.key]={key:k.key, id:k.id, title:k.title, format:k.format, cover:k.cover, qty:0, usd:0}; });
+  return Object.values(seen).sort((a,b)=>b.qty-a.qty);
+}
+function renderReorder(){
+  document.getElementById("reorderScope").innerHTML =
+    RSCOPES.map(x=>`<button class="${RSCOPE===x.k?"on":""}" onclick="setRScope('${x.k}')">${x.t}</button>`).join("");
+  const rows=reorderRows();
+  document.getElementById("reorderList").innerHTML = rows.length===0
+    ? `<p class="hint" style="margin:0">Nothing sold yet.</p>`
+    : rows.map(t=>{
+        const left=remainingOf(t.key), max=Math.max(1, rows[0].qty);
+        const flag = left!==null && left<=CONFIG.LOW_STOCK_AT;
+        return `<div class="trow">
+          ${t.cover?`<img src="${t.cover}" alt="" style="width:26px;height:39px;object-fit:cover;border-radius:4px">`:""}
+          <span class="tn">${t.title}${t.format?`<div class="sub">${t.format}</div>`:""}
+            <div class="bar"><i style="width:${Math.round(t.qty/max*100)}%"></i></div></span>
+          <span class="tq">${t.qty}</span>
+          <span class="tr">${left===null?"—":(left<0?"over "+(-left):left+" left")}${flag?' <span style="color:var(--gold)">•</span>':""}</span>
+        </div>`;
+      }).join("");
+}
+function copyReorder(){
+  const lines=reorderRows().map(t=>{
+    const left=remainingOf(t.key);
+    return "- "+t.title+(t.format?" ("+t.format+")":"")+": sold "+t.qty+(left===null?"":", "+(left<0?"over by "+(-left):left+" left"));
+  });
+  const txt="Book table reorder — "+(RSCOPE==="event"?eventId():"all time")+"\n"+lines.join("\n");
+  const done=()=>{ const b=document.getElementById("reorderCopy"); b.textContent="Copied ✓"; setTimeout(()=>b.textContent="Copy list",1500); };
+  if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(done).catch(()=>legacyCopy(txt,done));
+  else legacyCopy(txt, done);
+}
+
 /* ============================ CSV EXPORT ============================ */
 function csvCell(v){ const s=(v==null?"":String(v)); return /[",\n]/.test(s) ? '"'+s.replace(/"/g,'""')+'"' : s; }
 function exportCSV(){
@@ -797,7 +1029,7 @@ function exportCSV(){
 
 /* ============================ HELPERS ============================ */
 function show(id){ document.querySelectorAll(".screen").forEach(s=>s.classList.remove("on"));
-  document.getElementById(id).classList.add("on"); window.scrollTo(0,0); renderCartBar(); renderTally(); }
+  document.getElementById(id).classList.add("on"); window.scrollTo(0,0); renderCartBar(); renderTally(); renderStockPill(); }
 function val(id){ return document.getElementById(id).value.trim(); }
 
 /* return from Stripe? (?paid=SESSION_ID). Stripe already collected the buyer's
