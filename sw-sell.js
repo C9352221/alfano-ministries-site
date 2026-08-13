@@ -1,6 +1,6 @@
 /* Book Table — service worker: cache the app shell + covers for offline catalog use.
    Payment + capture still require connectivity (handled network-first). */
-const CACHE = "booktable-v2";
+const CACHE = "booktable-v3";
 const SHELL = [
   "sell.html",
   "sell.webmanifest",

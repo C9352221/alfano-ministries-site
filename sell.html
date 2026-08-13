@@ -62,6 +62,9 @@
   .btn{background:var(--gold); color:#25200a; border:none; border-radius:11px;
     padding:14px 18px; font-family:inherit; font-weight:bold; font-size:1rem; cursor:pointer; flex:1}
   .btn:active{background:var(--goldd)}
+  /* A .btn standing on its own in a screen is a full-width thumb target. Inside
+     the cart bar and the PIN pad it stays auto-width (those set flex inline). */
+  .screen > button.btn{display:block; width:100%}
   .btn.sec{background:var(--navy3); color:var(--cream); border:1px solid var(--line)}
   .btn.ok{background:var(--ok); color:#06210f}
   .btn:disabled{opacity:.4}
@@ -128,6 +131,22 @@
   .srow{display:flex; justify-content:space-between; padding:10px 2px; border-bottom:1px solid var(--line); font-size:.95rem; color:var(--cream)}
   .srow:last-child{border-bottom:none}
   .srow b{color:var(--gold)}
+  .srow.voided{opacity:.5} .srow.voided span, .srow.voided b{text-decoration:line-through}
+  .srow{-webkit-touch-callout:none; user-select:none; -webkit-user-select:none}
+  /* sales report */
+  .scope{display:flex; gap:8px; margin:0 0 12px}
+  .scope button{flex:1; padding:9px 6px; border-radius:9px; border:1px solid var(--line);
+    background:var(--navy3); color:var(--dim); font-family:inherit; font-size:.84rem; cursor:pointer}
+  .scope button.on{border-color:var(--gold); color:var(--gold); background:rgba(232,185,35,.12)}
+  .trow{display:flex; align-items:center; gap:10px; padding:9px 2px; border-bottom:1px solid var(--line); font-size:.9rem}
+  .trow:last-child{border-bottom:none}
+  .trow .tn{flex:1; line-height:1.25}
+  .trow .tn .sub{color:var(--dim); font-size:.74rem}
+  .trow .tq{color:var(--gold); font-weight:bold; font-size:1.05rem; min-width:34px; text-align:right}
+  .trow .tr{color:var(--dim); font-size:.78rem; min-width:66px; text-align:right}
+  .foot{color:var(--dim); font-size:.74rem; line-height:1.4; margin:10px 2px 0}
+  .undo{background:none; border:none; color:var(--dim); font-family:inherit; font-size:.85rem;
+    text-decoration:underline; cursor:pointer; padding:10px; margin-top:6px}
 </style>
 </head>
 <body>
@@ -229,7 +248,7 @@ const CONFIG = {
   <div id="capture" class="screen">
     <h2 class="sc">Your receipt</h2>
     <div class="panel">
-      <p class="hint" style="margin-top:0">Enter your email to get your receipt.</p>
+      <p class="hint" id="capNote" style="margin-top:0">Sale recorded. Enter an email to send a receipt.</p>
       <label>Full name</label><input id="cName" autocomplete="name">
       <label>Email (for your receipt)</label><input id="cEmail" type="email" inputmode="email" autocomplete="email">
       <label>Phone (optional)</label><input id="cPhone" type="tel" inputmode="tel" autocomplete="tel">
@@ -237,6 +256,7 @@ const CONFIG = {
         <span>Yes, add me to the Alfano Ministries email list for new books, teaching, and event updates. I can unsubscribe anytime.</span></label>
     </div>
     <button class="btn" id="finishBtn" onclick="finishSale()">Send my receipt</button>
+    <button class="btn secondary" style="margin-top:10px" onclick="noReceipt()">No receipt — done</button>
     <p class="fine">Your receipt is emailed to you. We never sell or share your information. <a href="privacy.html" target="_blank">Privacy Policy</a></p>
     <div id="captureStub" class="stub"></div>
   </div>
@@ -250,19 +270,25 @@ const CONFIG = {
       <div id="doneOrder" style="color:var(--gold); font-size:.9rem"></div>
     </div>
     <button class="btn" onclick="newSale()">New sale</button>
+    <div class="center"><button class="undo" onclick="undoLastSale()">Undo this sale</button></div>
   </div>
 
   <!-- ===================== TODAY'S SALES ===================== -->
   <div id="sales" class="screen">
     <button class="back" onclick="show('store')">‹ Back to books</button>
-    <h2 class="sc">Today's Sales</h2>
+    <h2 class="sc">Sales</h2>
+    <div class="scope" id="salesScope"></div>
     <div class="panel center">
       <div id="salesTotals"></div>
       <p class="hint" id="salesMeta" style="margin:6px 0 0"></p>
     </div>
+    <h2 class="sc">What sold</h2>
+    <div class="panel" id="salesTitles"></div>
+    <h2 class="sc">Every sale</h2>
     <div class="panel" id="salesList"></div>
-    <button class="btn secondary" onclick="clearToday()">Clear today</button>
-    <p class="fine">This tally is kept on this phone only. Clearing it does not affect any payment or receipt already made.</p>
+    <button class="btn secondary" onclick="exportCSV()">Download spreadsheet (CSV)</button>
+    <button class="btn secondary" style="margin-top:10px" onclick="clearToday()">Clear today's list</button>
+    <p class="fine">Tap and hold any sale to undo it. Clearing the list only hides it here; it does not affect any payment or receipt already made.</p>
   </div>
 
 </div>
@@ -455,7 +481,9 @@ function renderCheckout(){
 
 function pick(method){
   const gift = giftCUR();
-  const items = cartItems().map(i=>({id:i.book.id, format:i.format, title:i.book.title+(i.format?` (${i.format})`:""), qty:i.qty, unit:priceOf(i.unitUSD)}));
+  // unitUSD travels with the item so per-title revenue is still reportable
+  // months later, after today's exchange rate is long gone.
+  const items = cartItems().map(i=>({id:i.book.id, format:i.format, title:i.book.title+(i.format?` (${i.format})`:""), qty:i.qty, unit:priceOf(i.unitUSD), unitUSD:i.unitUSD}));
   if(gift>0) items.push({id:"ministry-gift", format:"", title:"Gift to the ministry (tax-deductible)", qty:1, unit:gift, gift:true});
   pending = { method, currency:CUR, items, gift, totalCUR: orderTotalCUR(), totalUSD: cartTotalUSD() };
   if(method==="card") payCard();
@@ -494,16 +522,27 @@ function payManual(method){
   document.getElementById("mNote").textContent = map.note;
   show("manual");
 }
-function afterPaid(){ show("capture"); document.getElementById("captureStub").textContent = DEMO()?"Demo mode: receipt/list are not really sent until the worker is connected.":""; }
+/* The money is in hand the moment this is tapped, so the sale is RECORDED here.
+   Everything on the capture screen after this is receipt paperwork -- a buyer
+   who declines a receipt and walks away is already counted. */
+function afterPaid(){
+  const row = commitSale("manual");
+  document.getElementById("capNote").textContent = row
+    ? "Sale recorded ("+fmtCur(row.amt,row.cur)+"). Enter an email to send a receipt."
+    : "Enter an email to send a receipt.";
+  show("capture");
+  document.getElementById("captureStub").textContent = DEMO()?"Demo mode: receipt/list are not really sent until the worker is connected.":"";
+}
 
 /* ============================ CAPTURE + FINISH ============================ */
 async function finishSale(){
   const name=val("cName"), email=val("cEmail"), phone=val("cPhone");
   const consent=document.getElementById("cConsent").checked;
-  if(!email){ alert("Please enter an email so we can send the receipt."); return; }
+  if(!email){ alert("Please enter an email so we can send the receipt.\n\nIf they don't want one, tap “No receipt — done”."); return; }
+  if(!SALE_ORDER){ noReceipt(); return; }          // nothing to receipt; sale is already counted
   const btn=document.getElementById("finishBtn"); btn.disabled=true; btn.textContent="Sending…";
   const orderId = "AM-"+new Date().toISOString().slice(0,10).replace(/-/g,"")+"-"+Math.random().toString(36).slice(2,6).toUpperCase();
-  const payload = { orderId, customer:{name,email,phone,marketingConsent:consent}, order:pending, paymentMethod:pending.method };
+  const payload = { orderId, customer:{name,email,phone,marketingConsent:consent}, order:SALE_ORDER, paymentMethod:SALE_ORDER.method };
 
   if(DEMO()){
     finishDone(orderId, email, true); return;
@@ -518,39 +557,140 @@ async function finishSale(){
 function finishDone(orderId, email, demo){
   document.getElementById("doneMsg").textContent = (email?("Receipt sent to "+email):"You're all set")+(demo?" (demo)":"");
   document.getElementById("doneOrder").textContent = "Order "+orderId;
-  logSale();
+  if(SALE) annotateSale(SALE.id, {email, orderId, receipt:"emailed"});
+  show("done");
+}
+/* The buyer doesn't want a receipt. The sale was already recorded at
+   "Payment received", so this is only navigation -- and that is the point. */
+function noReceipt(){
+  document.getElementById("doneMsg").textContent = "Sale recorded. No receipt sent.";
+  document.getElementById("doneOrder").textContent = SALE ? fmtCur(SALE.amt, SALE.cur) : "";
   show("done");
 }
 /* Card sale returned from Stripe: Stripe has the buyer's info + receipt email. Just confirm. */
 function cardThanks(){
-  const total = pending && pending.totalCUR!=null ? fmt(pending.totalCUR) : "";
+  const total = pending && pending.totalCUR!=null ? fmtCur(pending.totalCUR, pending.currency) : "";
+  commitSale("card");
   document.getElementById("doneMsg").textContent = DEMO()
     ? "Payment received. (Receipt + email list connect in the next step.)"
     : "Payment received. Your receipt is on its way to your email.";
   document.getElementById("doneOrder").textContent = total ? ("Paid "+total) : "";
-  logSale();
   show("done");
 }
 function newSale(){
   for(const k of Object.keys(cart)) delete cart[k];
-  pending=null; giftMode=0; ["cName","cEmail","cPhone"].forEach(id=>document.getElementById(id).value="");
+  for(const k of Object.keys(fsel)) delete fsel[k];   // a format choice must not follow the next buyer
+  pending=null; SALE=null; SALE_ORDER=null; giftMode=0;
+  ["cName","cEmail","cPhone"].forEach(id=>document.getElementById(id).value="");
   document.getElementById("cConsent").checked=false;
   const b=document.getElementById("finishBtn"); b.disabled=false; b.textContent="Send my receipt";
   renderCatalog(); show("store");
 }
-
-/* ============================ TODAY'S SALES TALLY (this phone only) ============================ */
-function todayKey(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
-function readSales(){ try{ return JSON.parse(localStorage.getItem("bt_sales")||"[]"); }catch(e){ return []; } }
-function todaySales(){ const t=todayKey(); return readSales().filter(s=>s.date===t); }
-function logSale(){
-  if(!pending || pending.totalCUR==null) return;
-  const books=(pending.items||[]).filter(i=>!i.gift && i.id!=="ministry-gift").reduce((s,i)=>s+(i.qty||0),0);
-  const log=readSales();
-  log.push({ts:new Date().toISOString(), date:todayKey(), cur:pending.currency, amt:pending.totalCUR, method:pending.method, books});
-  try{ localStorage.setItem("bt_sales", JSON.stringify(log)); }catch(e){}
+function undoLastSale(){
+  if(!SALE){ show("store"); return; }
+  if(!confirm("Undo this sale?\n\nIt comes out of the tally and the books go back on the shelf. Any payment already taken is NOT refunded.")) return;
+  voidSale(SALE.id);
+  const items = SALE.items||[];
+  SALE=null; SALE_ORDER=null; pending=null;
+  items.forEach(i=>{ const k=cartKey(i.id, i.format); cart[k]=(cart[k]||0)+i.qty; });   // put it back in the cart to re-take
+  renderCatalog(); show("store");
 }
+
+/* ============================ THE SALES LEDGER ============================
+   One row per sale in localStorage["bt_sales"]. A sale is born in
+   commitSale() and nowhere else, so there is exactly one code path that
+   can create one -- which is why a receipt-less buyer can no longer slip
+   through. Rows are never hard-deleted: stock is derived from them, and
+   the cloud backup dedupes on `id`. */
+let SALE = null;         // the row just committed (snapshot, for the done screen)
+let SALE_ORDER = null;   // its original pending payload, for the receipt worker
+
+function todayKey(d){ d=d||new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+function newSaleId(){ return "s-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,6); }
+
+function readSales(){
+  try{ return (JSON.parse(localStorage.getItem("bt_sales")||"[]")||[]).map(upgradeRow).filter(Boolean); }
+  catch(e){ return []; }
+}
+function writeSales(log){ try{ localStorage.setItem("bt_sales", JSON.stringify(log)); }catch(e){} }
+/* Rows written before per-title tracking existed. They still count toward the
+   money totals; they are excluded from the title breakdown (no line items to
+   break down) and marked sync:1 so they never upload junk to the ledger. */
+function upgradeRow(s){
+  if(!s || typeof s!=="object") return null;
+  if(s.v>=2) return s;
+  return Object.assign({
+    v:1, id:"legacy-"+(Date.parse(s.ts)||0)+"-"+(s.method||"x"), rev:1, items:[],
+    amtUSD:null, gift:0, email:"", orderId:"", stripeSessionId:"", receipt:"",
+    recovered:false, void:false, sync:1
+  }, s);
+}
+function saleRows(){ return readSales(); }
+function liveRows(rows){ return rows.filter(r=>!r.void); }
+
+function saleUSD(p){
+  const books=(p.items||[]).filter(i=>!i.gift && i.id!=="ministry-gift")
+    .reduce((s,i)=> s + (i.unitUSD!=null ? i.unitUSD*i.qty : 0), 0);
+  const rt=rate(p.currency);
+  const giftUSD = (p.gift && rt) ? p.gift/rt : 0;
+  return Math.round((books+giftUSD)*100)/100;
+}
+
+function commitSale(source){
+  if(!pending || pending.totalCUR==null) return null;
+  if(pending.__committed) return SALE;              // double-tap, or the Stripe-return race
+  pending.__committed = true;
+
+  const items=(pending.items||[]).filter(i=>!i.gift && i.id!=="ministry-gift")
+    .map(i=>({id:i.id, title:i.title, format:i.format||"", qty:i.qty, unit:i.unit, unitUSD:i.unitUSD==null?null:i.unitUSD}));
+  const row={
+    v:2, id: pending.saleId || newSaleId(), rev:1,
+    ts:new Date().toISOString(), date:todayKey(),   // stamped once, here; never recomputed on sync
+    cur:pending.currency, amt:pending.totalCUR, amtUSD:saleUSD(pending),
+    method:pending.method, books:items.reduce((s,i)=>s+(i.qty||0),0),
+    gift:pending.gift||0, items,
+    email:"", orderId:"", stripeSessionId:pending.stripeSessionId||"",
+    receipt: source==="card" ? "stripe" : "none",
+    recovered: !!pending.recovered, void:false, sync:0
+  };
+  const log=readSales(); log.push(row); writeSales(log);
+
+  SALE = JSON.parse(JSON.stringify(row));
+  SALE_ORDER = pending;
+  pending = null;
+  for(const k of Object.keys(cart)) delete cart[k];
+  for(const k of Object.keys(fsel)) delete fsel[k];
+  giftMode = 0;
+  renderTally(); renderCatalog();
+  return row;
+}
+function annotateSale(id, patch){
+  const log=readSales(), r=log.find(x=>x.id===id); if(!r) return;
+  Object.assign(r, patch); r.rev=(r.rev||1)+1; r.sync=0;
+  writeSales(log);
+  if(SALE && SALE.id===id) Object.assign(SALE, patch);
+}
+function voidSale(id){
+  const log=readSales(), r=log.find(x=>x.id===id); if(!r || r.void) return;
+  r.void=true; r.rev=(r.rev||1)+1; r.sync=0;
+  writeSales(log);
+  renderTally(); renderCatalog();
+}
+
+/* ============================ TALLY + REPORTS ============================ */
 function fmtCur(amount, cur){ const info=curInfo(cur); const dp=Number.isInteger(amount)?0:2; return info.sym+Number(amount).toFixed(dp); }
+const METHOD_LABEL={card:"Card", cash:"Cash", zelle:"Zelle", cashapp:"Cash App"};
+
+let SCOPE = "today";                                  // today | all
+const SCOPES = [{k:"today", t:"Today"}, {k:"all", t:"All time"}];
+function scopeRows(scope){
+  const rows=liveRows(saleRows()).filter(r=>!r.hidden);
+  if((scope||SCOPE)==="today"){ const t=todayKey(); return rows.filter(r=>r.date===t); }
+  return rows;
+}
+function todaySales(){ return scopeRows("today"); }
+function hiddenCount(){ return saleRows().filter(r=>r.hidden && !r.void).length; }
+
 function renderTally(){
   const el=document.getElementById("tally"); if(!el) return;
   const s=todaySales();
@@ -559,29 +699,100 @@ function renderTally(){
   const totals=Object.keys(byCur).map(c=>fmtCur(byCur[c],c)).join(" · ");
   el.innerHTML=`<span class="tl">Today</span><span class="tv">${s.length} sale${s.length>1?"s":""} · ${totals}</span><span class="tgo">View ›</span>`;
 }
-const METHOD_LABEL={card:"Card", cash:"Cash", zelle:"Zelle", cashapp:"Cash App"};
-function openSales(){ renderSales(); show("sales"); }
+
+/* Units and revenue per title. Only v2 rows carry line items, so v1 rows are
+   counted in the money totals above and named in a footnote here. */
+function titleReport(rows){
+  const by={};
+  rows.filter(r=>r.v>=2).forEach(r=>(r.items||[]).forEach(i=>{
+    const k=cartKey(i.id, i.format);
+    const b=bookById(i.id);
+    const t=by[k] || (by[k]={key:k, id:i.id, title:(b&&b.title)||i.title||i.id, format:i.format||"", cover:b&&b.cover, qty:0, usd:0});
+    t.qty+=i.qty||0;
+    t.usd+=(i.unitUSD!=null?i.unitUSD:0)*(i.qty||0);
+  }));
+  return Object.values(by).sort((a,b)=>b.qty-a.qty || b.usd-a.usd);
+}
+
+function openSales(){ SCOPE="today"; renderSales(); show("sales"); }
+function setScope(k){ SCOPE=k; renderSales(); }
 function renderSales(){
-  const s=todaySales();
+  const s=scopeRows();
+  document.getElementById("salesScope").innerHTML =
+    SCOPES.map(x=>`<button class="${SCOPE===x.k?"on":""}" onclick="setScope('${x.k}')">${x.t}</button>`).join("");
+
   const byCur={}, byMethod={}; let books=0;
   s.forEach(x=>{ byCur[x.cur]=(byCur[x.cur]||0)+x.amt; byMethod[x.method]=(byMethod[x.method]||0)+1; books+=x.books||0; });
   document.getElementById("salesTotals").innerHTML = s.length===0
-    ? `<p class="hint" style="margin:0">No sales yet today.</p>`
+    ? `<p class="hint" style="margin:0">No sales ${SCOPE==="today"?"yet today":"recorded"}.</p>`
     : Object.keys(byCur).map(c=>`<div class="bigt">${fmtCur(byCur[c],c)}</div>`).join("");
   document.getElementById("salesMeta").innerHTML = s.length===0 ? "" :
     `${s.length} sale${s.length>1?"s":""} · ${books} book${books!==1?"s":""}<br>`+
     Object.keys(byMethod).map(m=>`${METHOD_LABEL[m]||m}: ${byMethod[m]}`).join(" · ");
+
+  const titles=titleReport(s), legacy=s.filter(r=>r.v<2).length;
+  document.getElementById("salesTitles").innerHTML = (titles.length===0
+    ? `<p class="hint" style="margin:0">Nothing itemized yet.</p>`
+    : titles.map(t=>`<div class="trow">
+        ${t.cover?`<img src="${t.cover}" alt="" style="width:26px;height:39px;object-fit:cover;border-radius:4px">`:""}
+        <span class="tn">${t.title}${t.format?`<div class="sub">${t.format}</div>`:""}</span>
+        <span class="tq">${t.qty}</span><span class="tr">$${t.usd.toFixed(0)}</span>
+      </div>`).join(""))
+    + (legacy?`<p class="foot">${legacy} earlier sale${legacy>1?"s":""} counted in the totals above but recorded before per-title tracking, so ${legacy>1?"they are":"it is"} not broken out here.</p>`:"")
+    + (hiddenCount()?`<p class="foot">${hiddenCount()} cleared sale${hiddenCount()>1?"s":""} hidden from this screen. Still in the spreadsheet and in your stock counts.</p>`:"");
+
   document.getElementById("salesList").innerHTML = s.length===0 ? "" :
-    s.slice().reverse().map(x=>{
+    s.slice().sort((a,b)=>String(b.ts).localeCompare(String(a.ts))).map(x=>{
       const t=new Date(x.ts).toLocaleTimeString([], {hour:"numeric", minute:"2-digit"});
-      return `<div class="srow"><span>${t} · ${METHOD_LABEL[x.method]||x.method}</span><b>${fmtCur(x.amt,x.cur)}</b></div>`;
+      const what=(x.items&&x.items.length) ? x.items.map(i=>(i.qty>1?i.qty+"× ":"")+i.title).join(", ") : (x.books+" book"+(x.books===1?"":"s"));
+      return `<div class="srow" ontouchstart="holdStart('${x.id}')" ontouchend="holdEnd()" ontouchmove="holdEnd()" oncontextmenu="return offerUndo('${x.id}')">
+        <span>${t} · ${METHOD_LABEL[x.method]||x.method}<div class="sub" style="color:var(--dim);font-size:.74rem">${what}</div></span>
+        <b>${fmtCur(x.amt,x.cur)}</b></div>`;
     }).join("");
 }
+/* long-press a row to undo it */
+let holdT=null;
+function holdStart(id){ clearTimeout(holdT); holdT=setTimeout(()=>offerUndo(id), 650); }
+function holdEnd(){ clearTimeout(holdT); }
+function offerUndo(id){
+  const r=saleRows().find(x=>x.id===id); if(!r) return false;
+  if(confirm("Undo the "+fmtCur(r.amt,r.cur)+" sale at "+new Date(r.ts).toLocaleTimeString([], {hour:"numeric",minute:"2-digit"})+"?\n\nIt comes out of the tally and the books go back. Any payment already taken is NOT refunded.")){
+    voidSale(id); renderSales();
+  }
+  return false;
+}
+/* Hides today's rows from this list. Voided rather than deleted, because stock
+   is derived from these rows and the cloud copy dedupes on id. */
 function clearToday(){
-  if(!confirm("Clear today's tally on this phone? This does not affect any payment or receipt already made.")) return;
-  const t=todayKey();
-  try{ localStorage.setItem("bt_sales", JSON.stringify(readSales().filter(s=>s.date!==t))); }catch(e){}
+  if(!confirm("Clear today's list on this phone?\n\nThe sales stay in your records and in the backup; they just come off this screen. Stock counts are not affected.")) return;
+  const t=todayKey(), log=readSales();
+  log.forEach(r=>{ if(r.date===t) r.hidden=true; });
+  writeSales(log);
   renderSales(); renderTally();
+}
+
+/* ============================ CSV EXPORT ============================ */
+function csvCell(v){ const s=(v==null?"":String(v)); return /[",\n]/.test(s) ? '"'+s.replace(/"/g,'""')+'"' : s; }
+function exportCSV(){
+  const rows=saleRows();
+  const head=["sale_id","ts_utc","local_date","method","currency","sale_total_cur","sale_total_usd","gift_cur",
+              "item_id","item_title","item_format","item_qty","item_unit_cur","item_unit_usd","voided","receipt","order_id"];
+  const lines=[head.join(",")];
+  rows.forEach(r=>{
+    const base=[r.id,r.ts,r.date,r.method,r.cur,r.amt,r.amtUSD==null?"":r.amtUSD,r.gift||0];
+    const tail=[r.void?"yes":"",r.receipt||"",r.orderId||""];
+    if(r.items && r.items.length){
+      r.items.forEach(i=>lines.push(base.concat([i.id,i.title,i.format||"",i.qty,i.unit,i.unitUSD==null?"":i.unitUSD]).concat(tail).map(csvCell).join(",")));
+    } else {
+      lines.push(base.concat(["","","",r.books||"","",""]).concat(tail).map(csvCell).join(","));
+    }
+  });
+  const blob=new Blob([lines.join("\n")],{type:"text/csv;charset=utf-8"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="book-table-"+todayKey()+".csv";
+  document.body.appendChild(a); a.click();
+  setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 1000);
 }
 
 /* ============================ HELPERS ============================ */
