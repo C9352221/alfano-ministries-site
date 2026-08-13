@@ -176,6 +176,7 @@
   .copybtn{background:var(--navy2); color:var(--gold); border:1px solid var(--line); border-radius:9px;
     padding:10px 14px; font-family:inherit; font-size:.86rem; cursor:pointer; min-width:92px}
   .copybtn:active{background:var(--navy)}
+  a.btn.openstripe{display:block; width:100%; text-align:center; text-decoration:none; margin:0 0 12px}
   .undo{background:none; border:none; color:var(--dim); font-family:inherit; font-size:.85rem;
     text-decoration:underline; cursor:pointer; padding:10px; margin-top:6px}
 </style>
@@ -584,7 +585,7 @@ function payManual(method){
     cashapp:{title:"Cash App", handle:CONFIG.CASHAPP.handle, qr:CONFIG.CASHAPP.qr, note:"Have the buyer scan / send to the $cashtag, then confirm it arrived."},
     cash:   {title:"Cash", handle:"", qr:"", note:"Collect the cash, then tap the button below."},
     taptopay:{title:"Tap to Pay", handle:"", qr:"", copy:true,
-              note:"Open the Stripe app → + → Charge a card → key in this amount → Tap to Pay → have them tap their card, phone or watch. Come back here when it approves."},
+              note:"In Stripe: + → Charge a card → paste the amount → Tap to Pay → have them tap their card, phone or watch. Come back here when it approves."},
   }[method];
   document.getElementById("mTitle").textContent = map.title + " payment";
   // The seller retypes this number into Stripe's keypad, so show it bare: no
@@ -592,7 +593,9 @@ function payManual(method){
   document.getElementById("mCopy").innerHTML = map.copy
     ? `<div class="keyin"><span class="lbl">Key this into Stripe</span>
          <span class="num" id="ttpNum">${plainAmount(pending.totalCUR)}</span>
-         <button class="copybtn" id="ttpCopy" onclick="copyAmount()">Copy</button></div>`
+         <button class="copybtn" id="ttpCopy" onclick="copyAmount()">Copy</button></div>
+       <a class="btn openstripe" id="ttpOpen" href="${STRIPE_APP}" target="_blank" rel="noopener"
+          onclick="copyAmount()">Copy &amp; open Stripe ›</a>`
     : "";
   let body="";
   if(map.qr) body += `<div class="qr"><img src="${map.qr}" alt=""><div class="tag">${map.handle}</div></div>`;
@@ -602,6 +605,15 @@ function payManual(method){
   show("manual");
 }
 function plainAmount(v){ return Number(v).toFixed(isZeroDec(CUR)?0:2); }
+/* dashboard.stripe.com is a verified Android App Link (assetlinks.json names
+   com.stripe.android.dashboard) and an iOS Universal Link (its AASA lists the
+   exact path /dashboard), so tapping this opens the Stripe app on either
+   phone. It has to be a real anchor the finger touches -- iOS ignores
+   universal links opened from script -- and target=_blank means that if the
+   app isn't installed we get the website in a new tab instead of losing the
+   sale in progress. There is no deep link INTO Tap to Pay, so this drops him
+   at the app's front door with the amount already on the clipboard. */
+const STRIPE_APP = "https://dashboard.stripe.com/dashboard";
 function copyAmount(){
   const txt=document.getElementById("ttpNum").textContent.trim();
   const done=()=>{ const b=document.getElementById("ttpCopy"); if(!b) return;
