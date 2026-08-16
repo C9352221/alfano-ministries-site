@@ -213,7 +213,10 @@ const CONFIG = {
     { id:"daily-sword",   title:"The Daily Sword",    sub:"Read the Bible in a Year",cover:"assets/books/daily-sword-cover.jpg",       formats:[{label:"Paperback",usd:30},{label:"Hardcover",usd:50}] },
     { id:"now-faith",     title:"Now Faith",          sub:"",                        cover:"assets/books/now-faith-cover.jpg",         usd:15 },
     { id:"nf-journal",    title:"Now Faith Journal",  sub:"365-Day Companion",       cover:"assets/books/now-faith-journal-cover.jpg", usd:17 },
-    { id:"nf-bundle",     title:"Now Faith + Journal",sub:"Book + Journal · Bundle",  cover:"assets/books/nf-bundle-cover.jpg",          usd:30 },
+    // `parts` = a set, not a thing on the table. Stock counts the books inside
+    // it, so selling one takes a Now Faith AND a Journal off the shelf.
+    { id:"nf-bundle",     title:"Now Faith + Journal",sub:"Book + Journal · Bundle",  cover:"assets/books/nf-bundle-cover.jpg",          usd:30,
+      parts:[{id:"now-faith", qty:1},{id:"nf-journal", qty:1}] },
     { id:"wiser",         title:"Wiser Than AI",      sub:"",                        cover:"assets/books/wiser-than-ai-cover.jpg",     usd:12 },
     { id:"go",            title:"GO",                 sub:"Connected, Called, Sent",  cover:"assets/books/go-cover.jpg",                usd:15 },
     { id:"faith-to-build",title:"Faith to Build",     sub:"Kingdom Business",        cover:"assets/books/faith-to-build-cover.jpg",    usd:12 },
@@ -342,7 +345,7 @@ const CONFIG = {
     <div class="scope" id="reorderScope"></div>
     <div class="panel" id="reorderList"></div>
     <button class="btn secondary" onclick="copyReorder()" id="reorderCopy">Copy list</button>
-    <p class="fine">Sorted by what sells fastest. "Left" only shows for titles you have counted.</p>
+    <p class="fine">Sorted by what sells fastest. Bundles are counted as the books inside them. "Left" only shows for titles you have counted.</p>
   </div>
 
   <!-- ===================== TODAY'S SALES ===================== -->
@@ -448,6 +451,23 @@ const cartKey = (id,label) => label ? id+"::"+label : id;
 const parseKey = k => { const i=k.indexOf("::"); return i<0?{id:k,label:""}:{id:k.slice(0,i),label:k.slice(i+2)}; };
 const unitUSD = (b,label) => (fmtsOf(b).find(f=>f.label===label) || fmtsOf(b)[0]).usd;
 
+/* ---- bundles ----
+   A bundle is not an object on the table, it is one of each of its parts, so
+   stock has to count the books inside it. Everything that touches physical
+   copies runs its line items through explodeItems() first; the sale row itself
+   still records what was actually sold ("Now Faith + Journal", $30), because
+   that is what the buyer bought and what the receipt has to say. */
+const partsOf = b => (b && b.parts) || null;
+function explodeItems(items){
+  const out=[];
+  (items||[]).forEach(i=>{
+    const parts=partsOf(bookById(i.id));
+    if(parts) parts.forEach(p=>out.push({id:p.id, format:p.format||"", qty:(i.qty||0)*(p.qty||1)}));
+    else out.push({id:i.id, format:i.format||"", qty:i.qty||0});
+  });
+  return out;
+}
+
 function renderCatalog(){
   const g=document.getElementById("grid");
   g.innerHTML = CONFIG.BOOKS.map(b=>{
@@ -465,7 +485,7 @@ function renderCatalog(){
       : `<button class="add" onclick="incKey('${key}')">Add</button>`;
     // Stock badge, shown only for titles he has actually counted. It never
     // blocks a sale -- he restocks out of the car all the time.
-    const left=remainingOf(key);
+    const left=remainingForBook(b.id, b.formats?b.formats[fsel[b.id]||0].label:"");
     const badge = left===null ? ""
       : left<=0 ? `<span class="badge out">${left<0?"over "+(-left):"Out"}</span>`
       : left<=CONFIG.LOW_STOCK_AT ? `<span class="badge low">${left} left</span>` : "";
@@ -774,7 +794,7 @@ function commitSale(source){
     ts:new Date().toISOString(), date:todayKey(),   // stamped once, here; never recomputed on sync
     event:eventId(),
     cur:pending.currency, amt:pending.totalCUR, amtUSD:saleUSD(pending),
-    method:pending.method, books:items.reduce((s,i)=>s+(i.qty||0),0),
+    method:pending.method, books:explodeItems(items).reduce((s,i)=>s+(i.qty||0),0),   // a bundle is two books
     gift:pending.gift||0, items,
     email:"", orderId:"", stripeSessionId:pending.stripeSessionId||"",
     receipt: source==="card" ? "stripe" : "none",
@@ -831,15 +851,28 @@ function renderTally(){
 }
 
 /* Units and revenue per title. Only v2 rows carry line items, so v1 rows are
-   counted in the money totals above and named in a footnote here. */
-function titleReport(rows){
+   counted in the money totals above and named in a footnote here.
+
+   `explode` decides what a bundle counts as, and both answers are right for
+   their reader: "what sold" leaves it whole, because he wants to see whether
+   the bundle beats the singles as an offer; the reorder list breaks it apart,
+   because the printer ships books, not offers. */
+function titleReport(rows, explode){
   const by={};
+  const add=(id, format, qty, usd, fallbackTitle)=>{
+    const k=cartKey(id, format), b=bookById(id);
+    const t=by[k] || (by[k]={key:k, id, title:(b&&b.title)||fallbackTitle||id, format:format||"", cover:b&&b.cover, qty:0, usd:0});
+    t.qty+=qty||0; t.usd+=usd||0;
+  };
   rows.filter(r=>r.v>=2).forEach(r=>(r.items||[]).forEach(i=>{
-    const k=cartKey(i.id, i.format);
-    const b=bookById(i.id);
-    const t=by[k] || (by[k]={key:k, id:i.id, title:(b&&b.title)||i.title||i.id, format:i.format||"", cover:b&&b.cover, qty:0, usd:0});
-    t.qty+=i.qty||0;
-    t.usd+=(i.unitUSD!=null?i.unitUSD:0)*(i.qty||0);
+    const parts=explode ? partsOf(bookById(i.id)) : null;
+    if(!parts){ add(i.id, i.format, i.qty, (i.unitUSD!=null?i.unitUSD:0)*(i.qty||0), i.title); return; }
+    // Split the set's price across its books by list price, so a $30 bundle
+    // shows as $14 of Now Faith and $16 of Journal rather than $32 of nothing.
+    const list=parts.map(p=>{ const pb=bookById(p.id); return (pb?unitUSD(pb, p.format||""):0)*(p.qty||1); });
+    const sum=list.reduce((a,b)=>a+b,0) || 1;
+    const paid=(i.unitUSD!=null?i.unitUSD:0)*(i.qty||0);
+    parts.forEach((p,n)=>add(p.id, p.format||"", (i.qty||0)*(p.qty||1), paid*(list[n]/sum)));
   }));
   return Object.values(by).sort((a,b)=>b.qty-a.qty || b.usd-a.usd);
 }
@@ -919,9 +952,18 @@ function eventRows(){ const ev=eventId(); return liveRows(saleRows()).filter(r=>
 
 function packedOf(key){ const c=readStock().counts[key]; return c && c.packed!=null ? c.packed : null; }
 function soldOf(key){
-  return eventRows().reduce((n,r)=> n + (r.items||[]).reduce((m,i)=> m + (cartKey(i.id,i.format)===key ? (i.qty||0) : 0), 0), 0);
+  return eventRows().reduce((n,r)=> n + explodeItems(r.items).reduce((m,i)=> m + (cartKey(i.id,i.format)===key ? (i.qty||0) : 0), 0), 0);
 }
 function remainingOf(key){ const p=packedOf(key); return p==null ? null : p - soldOf(key); }
+/* What is left of a catalogue tile. A bundle has no shelf of its own: it can
+   only be made as often as its scarcest part allows, and shows nothing at all
+   until every part has been counted -- a wrong number is worse than none. */
+function remainingForBook(id, label){
+  const parts=partsOf(bookById(id));
+  if(!parts) return remainingOf(cartKey(id,label));
+  const each=parts.map(p=>{ const r=remainingOf(cartKey(p.id,p.format||"")); return r==null?null:Math.floor(r/(p.qty||1)); });
+  return each.some(v=>v===null) ? null : Math.min.apply(null, each);
+}
 function setPacked(key, n){
   const s=readStock();
   n=Math.max(0, Math.min(999, Math.round(n)||0));
@@ -939,10 +981,12 @@ function askPacked(key, title){
   const n=parseInt(String(v).replace(/[^\d]/g,""),10);
   if(!isNaN(n)) setPacked(key, n);
 }
-/* Every title/format pair, flattened, in catalog order. */
+/* Every title/format pair, flattened, in catalog order. Bundles are left out:
+   there is nothing to pack, and listing one would both put a dead row on the
+   stock screen and double-count its books in the "how many left" total. */
 function stockKeys(){
   const out=[];
-  CONFIG.BOOKS.forEach(b=>fmtsOf(b).forEach(f=>out.push({
+  CONFIG.BOOKS.filter(b=>!partsOf(b)).forEach(b=>fmtsOf(b).forEach(f=>out.push({
     key:cartKey(b.id,f.label), id:b.id, title:b.title, format:f.label||"", cover:b.cover, usd:f.usd })));
   return out;
 }
@@ -1002,7 +1046,7 @@ function openReorder(){ renderReorder(); show("reorder"); }
 function setRScope(k){ RSCOPE=k; renderReorder(); }
 function reorderRows(){
   const rows = RSCOPE==="event" ? eventRows() : liveRows(saleRows());
-  const rep = titleReport(rows);
+  const rep = titleReport(rows, true);      // physical books: that is what gets ordered
   const seen = {}; rep.forEach(t=>seen[t.key]=t);
   // titles that never sold still matter -- they are the ones NOT to reorder
   stockKeys().forEach(k=>{ if(!seen[k.key] && packedOf(k.key)!=null)
