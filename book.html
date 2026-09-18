@@ -3,14 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Redirecting...</title>
-    <meta http-equiv="refresh" content="0;url=store.html">
     <link rel="canonical" href="https://alfanoministries.com/store.html">
+    <!-- Redirect FIRST, in the head, so the query string survives.
+         A meta refresh here would drop ?free=1&lang=xx, so it lives in
+         <noscript> only. -->
+    <script>
+        window.location.replace('store.html' + window.location.search + window.location.hash);
+    </script>
+    <noscript><meta http-equiv="refresh" content="0;url=store.html"></noscript>
 </head>
 <body>
-    <p>Redirecting to <a href="store.html">Store</a>...</p>
+    <p>Redirecting to <a id="fallback" href="store.html">Store</a>...</p>
     <script>
-        // Preserve query params (e.g., ?free=1&lang=pl)
-        window.location.replace('store.html' + window.location.search + window.location.hash);
+        var a = document.getElementById('fallback');
+        if (a) a.href = 'store.html' + window.location.search + window.location.hash;
     </script>
     <!-- GHL Chat Widget -->
     <script src="https://widgets.leadconnectorhq.com/loader.js" data-resources-url="https://widgets.leadconnectorhq.com/chat-widget/loader.js" data-widget-id="6a05e884f127bb1bb0a44a06" data-source="WEB_USER"></script>
