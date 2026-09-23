@@ -1973,5 +1973,45 @@
    "lng": 55.2708
   },
   "region": "Middle East"
+ },
+ {
+  "code": "BG",
+  "name": "Bulgaria",
+  "points": 10,
+  "bounds": [
+   [
+    43.2141,
+    27.8273
+   ],
+   [
+    43.5726,
+    28.0417
+   ]
+  ],
+  "cities": [
+   {
+    "name": "Varna",
+    "lat": 43.2141,
+    "lng": 27.9147,
+    "visits": 5
+   },
+   {
+    "name": "Golden Sands",
+    "lat": 43.2833,
+    "lng": 28.0417,
+    "visits": 3
+   },
+   {
+    "name": "Dobrich",
+    "lat": 43.5726,
+    "lng": 27.8273,
+    "visits": 2
+   }
+  ],
+  "pin": {
+   "lat": 43.2141,
+   "lng": 27.9147
+  },
+  "region": "Europe"
  }
 ]

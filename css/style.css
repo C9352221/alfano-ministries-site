@@ -3100,6 +3100,26 @@ chat-widget {
     line-height: 1.4;
 }
 
+/* A prayer answered: the country got visited, so it gets crossed off. Drawn as
+   a tilted pen stroke rather than text-decoration, which renders too straight
+   and too even for a page whose whole conceit is a handwritten note. */
+.wall-note i.went {
+    position: relative;
+    color: #6b5c47;
+}
+.wall-note i.went::after {
+    content: "";
+    position: absolute;
+    left: -7%;
+    right: -7%;
+    top: 52%;
+    height: 2px;
+    border-radius: 2px;
+    background: #4c4031;
+    opacity: 0.85;
+    transform: rotate(-1.8deg);
+}
+
 .wall-note.n1 { top: 100px; left: 7%;  transform: rotate(-3.5deg); }
 .wall-note.n2 { top: 112px; left: 27%; transform: rotate(2.5deg); }
 .wall-note.n3 { top: 94px; right: 9%; transform: rotate(-2deg); }
