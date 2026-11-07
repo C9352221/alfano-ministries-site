@@ -1,6 +1,6 @@
 /* Book Table — service worker: cache the app shell + covers for offline catalog use.
    Payment + capture still require connectivity (handled network-first). */
-const CACHE = "booktable-v4";
+const CACHE = "booktable-v5";
 const SHELL = [
   "sell.html",
   "sell.webmanifest",
@@ -14,7 +14,7 @@ const SHELL = [
   "assets/books/nf-bundle-cover.jpg",
   "assets/books/wiser-than-ai-cover.jpg",
   "assets/books/go-cover.jpg",
-  "assets/books/faith-to-build-cover.jpg",
+  "assets/books/faith-to-build-cover.jpg?v=2026b",
   "assets/books/sammy-comes-home-cover.jpg",
 ];
 
