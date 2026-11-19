@@ -3484,3 +3484,12 @@ chat-widget {
 @media (prefers-reduced-motion: reduce) {
     .wm-canvas.is-animating { transition: none; }
 }
+
+/* Testimonies (home) */
+.testimonies .testimony-card { max-width: 820px; margin: 0 auto; background: var(--cream); border: 1px solid var(--border); border-left: 5px solid var(--gold); border-radius: var(--radius-lg); padding: 34px 38px 28px; box-shadow: var(--shadow-md); }
+.testimony-card blockquote { margin: 0; }
+.testimony-card blockquote p { font-family: 'Lora', serif; font-size: clamp(1.1rem, 2.2vw, 1.35rem); line-height: 1.7; color: var(--text-dark); font-style: italic; margin: 0; }
+.testimony-card figcaption { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; }
+.testimony-card figcaption strong { color: var(--royal-blue); font-size: 1.02rem; }
+.testimony-card figcaption span { color: var(--text-light); font-size: 0.92rem; }
+@media (max-width: 600px) { .testimonies .testimony-card { padding: 24px 20px 20px; } }
